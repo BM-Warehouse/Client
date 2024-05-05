@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo -e 'PRE-COMMIT'
+
+# Check Prettier standards
+echo -e ''
+echo 'Checking for prettier standards...'
+pnpm prettier:check ||
+(
+  echo '❌ Prettier Check Failed.';
+  echo 'Prettier Check Failed. Run pnpm prettier:format, add changes and try commit again.';
+  false;
+)
+
+# Check ESLint Standards
+echo -e ''
+echo 'Checking for linting errors...'
+pnpm lint ||
+(
+  echo '❌ ESLint Check Failed.'
+  echo 'Make the required changes listed above, add changes and try to commit again.'
+  false;  
+)
+
+# If everything passes... Now we can commit
+echo '✅✅ Checking success and committing this now. ✅✅'
