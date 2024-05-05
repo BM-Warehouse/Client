@@ -14,7 +14,8 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--font-dm-sans)'],
-        poppins: ['var(--font-poppins)']
+        poppins: ['var(--font-poppins)'],
+        josefin: ['var(--font-josefin-slab)']
       },
       colors: {
         primary: '#F7F3CE',

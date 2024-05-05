@@ -21,3 +21,11 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: #fff;
 }
+
+.elips-bg {
+  background-image: url('../assets/images/Ellipse.png');
+  background-size: cover;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}

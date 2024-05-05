@@ -1,4 +1,5 @@
-import { Poppins } from 'next/font/google';
+// eslint-disable-next-line camelcase
+import { Poppins, Josefin_Slab } from 'next/font/google';
 import './globals.css';
 
 const poppins = Poppins({
@@ -6,6 +7,13 @@ const poppins = Poppins({
   display: 'swap',
   variable: '--font-poppins',
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
+});
+
+const josefinSlab = Josefin_Slab({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-josefin-slab',
+  weight: ['100', '200', '300', '400', '500', '600', '700']
 });
 
 export const metadata = {
@@ -16,7 +24,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable}`}>{children}</body>
+      <body className={`${poppins.variable} ${josefinSlab.variable}`}>{children}</body>
     </html>
   );
 }
