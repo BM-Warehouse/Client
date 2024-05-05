@@ -3,6 +3,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="card w-96 bg-base-100 shadow-xl">
         <figure>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
             alt="Shoes"
@@ -16,6 +17,10 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <h2 className="font-poppins text-lg font-bold">TES POPPIN</h2>
+      <h5 className="font-poppins">
+        Whereas disregard and contempt for human rights have resulted
+      </h5>
     </main>
   );
 }
