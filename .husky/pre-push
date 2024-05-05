@@ -5,7 +5,7 @@ echo -e 'PRE-PUSH\n'
 
 # If everything passes... push to remote
 echo 'Trying to build now'
-yarn build ||
+pnpm build ||
 (
   echo 'Next build failed: View the errors above to see why.'
   false;
