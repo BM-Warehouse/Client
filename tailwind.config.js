@@ -30,7 +30,8 @@ module.exports = {
         grey: '#808080',
         lightblue: '#CCDFEF',
         darkblue: '#003d7e',
-        txt: '#1e1e1e'
+        txt: '#1e1e1e',
+        bgg: '#fffdea'
       },
       borderWidth: {
         DEFAULT: '1px',
