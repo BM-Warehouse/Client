@@ -8,7 +8,11 @@ import SidebarElem, { SidebarItem } from '@/components/elements/SidebarElem';
 function Sidebar() {
   return (
     <SidebarElem>
-      <SidebarItem icon={<MdOutlineDashboard className="text-xl" />} text="Dashboard" active />
+      <SidebarItem
+        icon={<MdOutlineDashboard className="text-xl text-primary" />}
+        text="Dashboard"
+        active
+      />
       <SidebarItem icon={<LuBox className="text-xl" />} text="Products" />
       <SidebarItem icon={<LuBoxes lassName="text-xl" />} text="Categories" />
       <SidebarItem icon={<LuWarehouse className="text-xl" />} text="Warehouses" />

@@ -8,16 +8,16 @@ import { LuChevronFirst, LuChevronLast } from 'react-icons/lu';
 
 const SidebarContext = createContext();
 function SidebarElem({ children }) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <aside
-      className={` fixed top-16   z-20  h-screen ${
+      className={` fixed bottom-0 z-10 w-full  md:top-16   md:h-screen  md:w-auto ${
         expanded ? 'w-7/12 md:w-5/12 xl:w-3/12' : 'w-1/5 md:w-1/12 xl:w-[5%]'
       }`}
     >
-      <nav className="flex h-full flex-col border-r bg-primary shadow-sm">
-        <div className="flex items-center justify-between p-4 pb-2">
+      <nav className="flex h-full flex-col border-r bg-primary ">
+        <div className="hidden items-center justify-between p-4 pb-2 md:flex">
           {/* <img
             src="https://img.logoipsum.com/243.svg"
             className={`overflow-hidden transition-all ${expanded ? 'w-32' : 'w-0'}`}
@@ -26,7 +26,7 @@ function SidebarElem({ children }) {
           <p> </p>
           <button
             onClick={() => setExpanded((curr) => !curr)}
-            className="rounded-lg bg-gray-50 p-1.5 hover:bg-gray-100"
+            className="rounded-lg bg-none p-1.5 text-secondary "
           >
             {expanded ? (
               <LuChevronFirst className="text-xl" />
@@ -36,7 +36,9 @@ function SidebarElem({ children }) {
           </button>
         </div>
         <SidebarContext.Provider value={{ expanded }}>
-          <ul className="flex-1 px-3">{children}</ul>
+          <ul className=" grid grid-cols-6 px-3 md:flex-1 md:grid-cols-1 md:pb-[1000px]">
+            {children}
+          </ul>
         </SidebarContext.Provider>
 
         {/* <div className="flex border-t p-3">
@@ -69,14 +71,10 @@ export function SidebarItem({ icon, text, active, alert }) {
   return (
     <li
       className={`
-           relative flex items-center py-2 px-3 my-1
-           font-medium rounded-md cursor-pointer
-           transition-colors group
-           ${
-             active
-               ? 'bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800'
-               : 'text-gray-600 hover:bg-indigo-50'
-           }
+           group relative my-1 flex w-12 cursor-pointer items-center rounded-md
+           px-3 py-2 font-medium
+           transition-colors md:w-auto
+           ${active ? 'bg-secondary text-primary' : 'text-secondary hover:bg-indigo-50'}
         `}
     >
       {icon}
@@ -91,10 +89,10 @@ export function SidebarItem({ icon, text, active, alert }) {
       {!expanded && (
         <div
           className={`
-          absolute left-full rounded-md px-2 py-1 ml-6
-          bg-indigo-100 text-indigo-800 text-sm
-          invisible opacity-20 -translate-x-3 transition-all
-          group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
+          invisible absolute left-full ml-6 -translate-x-3 rounded-md
+          bg-indigo-100 px-2 py-1
+          text-sm text-indigo-800 opacity-20 transition-all
+          md:group-hover:visible md:group-hover:translate-x-0 md:group-hover:opacity-100
       `}
         >
           {text}

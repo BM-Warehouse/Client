@@ -23,7 +23,7 @@ function Navbar() {
             <div className="indicator">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-5 w-5 text-secondary"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -35,7 +35,7 @@ function Navbar() {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <span className="badge indicator-item badge-sm">8</span>
+              <span className="badge indicator-item badge-sm text-tertiary">8</span>
             </div>
           </div>
           <div
@@ -43,10 +43,12 @@ function Navbar() {
             className="card dropdown-content card-compact z-[1] mt-3 w-52 bg-primary shadow"
           >
             <div className="card-body">
-              <span className="text-lg font-bold">8 Items</span>
+              <span className="text-lg font-bold text-tertiary">8 Items</span>
               <span className="text-info">Subtotal: $999</span>
               <div className="card-actions">
-                <button className="btn btn-primary btn-block">View cart</button>
+                <button className="btn bg-tertiary hover:bg-secondary text-primary btn-block">
+                  View cart
+                </button>
               </div>
             </div>
           </div>
@@ -62,7 +64,7 @@ function Navbar() {
           </div>
           <ul
             tabIndex={0}
-            className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-primary p-2 shadow"
+            className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-primary p-2 shadow text-secondary"
           >
             <li>
               <a className="justify-between">Profile</a>

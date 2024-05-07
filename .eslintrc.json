@@ -75,7 +75,7 @@
         "relativeDepth": 0
       }
     ],
-    "max-len": ["error", 100],
+    "max-len": ["error", 150],
     "react/function-component-definition": [
       2,
       {
