@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-consolee */
 import BASE_URL from '@/lib/baseUrl';
 
 const getAllProducts = async () => {
