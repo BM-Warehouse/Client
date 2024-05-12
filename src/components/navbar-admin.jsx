@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 
 import BMWLogo from '@/assets/images/LogoBMW2.png';
+import ProfilePhoto from '@/assets/images/profile-photo.jpg';
 import { adminRoute } from '@/lib/menu-route';
 
 const Navbar = () => {
@@ -22,8 +23,8 @@ const Navbar = () => {
             <Image src={BMWLogo} alt="BMW Logo" width={60} height={60} className="rounded-lg" />
           </div>
           <div className="hidden md:block">
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+            <Image
+              src={ProfilePhoto}
               alt="Tailwind CSS Navbar component"
               width={60}
               height={60}
