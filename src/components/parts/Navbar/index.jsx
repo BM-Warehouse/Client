@@ -46,7 +46,7 @@ function Navbar() {
               <span className="text-lg font-bold text-tertiary">8 Items</span>
               <span className="text-info">Subtotal: $999</span>
               <div className="card-actions">
-                <button className="btn bg-tertiary hover:bg-secondary text-primary btn-block">
+                <button className="btn btn-block bg-tertiary text-primary hover:bg-secondary">
                   View cart
                 </button>
               </div>
@@ -64,7 +64,7 @@ function Navbar() {
           </div>
           <ul
             tabIndex={0}
-            className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-primary p-2 shadow text-secondary"
+            className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-primary p-2 text-secondary shadow"
           >
             <li>
               <a className="justify-between">Profile</a>

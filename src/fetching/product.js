@@ -1,4 +1,3 @@
-/* eslint-disable no-consolee */
 import BASE_URL from '@/lib/baseUrl';
 
 const getAllProducts = async () => {
@@ -14,6 +13,7 @@ const getAllProducts = async () => {
     } = responseJson;
     return products;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching data:', error.message);
     throw error;
   }
