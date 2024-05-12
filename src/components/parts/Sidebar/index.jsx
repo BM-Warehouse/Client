@@ -14,7 +14,7 @@ function Sidebar() {
         active
       />
       <SidebarItem icon={<LuBox className="text-xl" />} text="Products" />
-      <SidebarItem icon={<LuBoxes lassName="text-xl" />} text="Categories" />
+      <SidebarItem icon={<LuBoxes className="text-xl" />} text="Categories" />
       <SidebarItem icon={<LuWarehouse className="text-xl" />} text="Warehouses" />
       <SidebarItem icon={<TbReceipt2 className="text-xl" />} text="Orders" alert />
       <SidebarItem icon={<HiOutlineUsers className="text-xl" />} text="Management Users" />
