@@ -1,5 +1,6 @@
 // eslint-disable-next-line camelcase
 import { Poppins, Josefin_Slab } from 'next/font/google';
+
 import './globals.css';
 
 const poppins = Poppins({

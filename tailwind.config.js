@@ -31,7 +31,7 @@ module.exports = {
         lightblue: '#CCDFEF',
         darkblue: '#003d7e',
         txt: '#1e1e1e',
-        bgg: '#fffdea'
+        bgColor: '#fffdea'
       },
       borderWidth: {
         DEFAULT: '1px',

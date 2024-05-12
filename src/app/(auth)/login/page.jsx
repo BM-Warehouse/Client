@@ -44,7 +44,7 @@ const LoginPage = () => (
 
           <span>
             Dont have an account yet?{' '}
-            <Link href="/" className=" font-semibold underline underline-offset-1">
+            <Link href="/register" className=" font-semibold underline underline-offset-1">
               Register Here
             </Link>
           </span>

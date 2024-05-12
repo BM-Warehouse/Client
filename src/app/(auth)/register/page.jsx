@@ -50,7 +50,7 @@ const RegisterPage = () => (
 
           <span>
             Already have an account?{' '}
-            <Link href="/" className=" font-semibold underline underline-offset-1">
+            <Link href="/login" className=" font-semibold underline underline-offset-1">
               Login Here
             </Link>
           </span>
