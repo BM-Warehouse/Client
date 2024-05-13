@@ -42,6 +42,7 @@
     "import/no-extraneous-dependencies": "off",
     "class-methods-use-this": "off",
     "no-underscore-dangle": "off",
+    "no-console": "off",
     "react-hooks/exhaustive-deps": "error",
     "jsx-a11y/label-has-associated-control": "off",
     "import/order": [

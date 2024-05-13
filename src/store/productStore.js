@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { create } from 'zustand';
 
-import getAllProducts from '@/fething/products';
+import { getAllProducts } from '@/fetching/product';
 
 const useProductStore = create((set) => ({
   productsData: [],
