@@ -7,7 +7,7 @@ import Sidebar from '@/components/parts/Sidebar';
 
 function ListCategories() {
   return (
-    <main className="category-page relative h-screen bg-bgg font-poppins">
+    <main className="category-page bg-bgg relative h-screen font-poppins">
       <Navbar />
       <Sidebar />
       <div className="category-title flex justify-center pt-24">
@@ -25,7 +25,7 @@ function ListCategories() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
               fill="currentColor"
-              className="w-4 h-4 opacity-70 text-tertiary"
+              className="h-4 w-4 text-tertiary opacity-70"
             >
               <path
                 fillRule="evenodd"
@@ -34,7 +34,7 @@ function ListCategories() {
               />
             </svg>
           </label>
-          <div className="btn-filter ml-5 cursor-pointer hover:bg-secondary p-1 rounded-lg">
+          <div className="btn-filter ml-5 cursor-pointer rounded-lg p-1 hover:bg-secondary">
             <IoFilterSharp className="text-3xl text-secondary hover:text-white" />
           </div>
         </div>

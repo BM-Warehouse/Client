@@ -7,7 +7,7 @@ import Sidebar from '@/components/parts/Sidebar';
 
 function ListProducts() {
   return (
-    <main className="product-page relative h-screen bg-bgg font-poppins ">
+    <main className="product-page bg-bgg relative h-screen font-poppins ">
       <Navbar />
       <Sidebar />
       <div className="title-page flex justify-center pt-24">
