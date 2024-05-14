@@ -1,7 +1,6 @@
-'use client';
-
 import React from 'react';
 
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FiLogIn } from 'react-icons/fi';
@@ -9,7 +8,12 @@ import { FiLogIn } from 'react-icons/fi';
 import BWMLogo from '@/assets/images/LogoBMW2.png';
 
 const Navbar = () => (
-  <div className="navbar fixed top-0 z-20 bg-primary py-3">
+  <motion.div
+    className="navbar top-0 z-20 bg-primary py-3"
+    initial={{ opacity: 0, y: -50 }} // Initial animation states
+    animate={{ opacity: 1, y: 0 }} // Animation to play when component mounts
+    transition={{ type: 'spring', stiffness: 120, duration: 0.5 }} // Animation transition
+  >
     <div className="navbar-start">
       <Link href="/" className="btn btn-ghost font-josefin text-xl">
         <Image src={BWMLogo} width={50} height={50} alt="Logo BM Warehouse" />
@@ -34,7 +38,7 @@ const Navbar = () => (
           </a>
         </li>
         <li>
-          <a href="#footer" className="hover:font-bold">
+          <a href="#contact-us" className="hover:font-bold">
             Contact Us
           </a>
         </li>
@@ -82,7 +86,7 @@ const Navbar = () => (
         </ul>
       </details>
     </div>
-  </div>
+  </motion.div>
 );
 
 export default Navbar;

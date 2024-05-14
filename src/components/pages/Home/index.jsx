@@ -11,11 +11,12 @@ import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Navbar from './components/Navbar';
+import Sidebar from './components/sidebar';
 import WhyChooseUs from './components/WhyChooseUs';
 
 function Home() {
   const fullpageOptions = {
-    anchors: ['Home', 'about-us', 'why-choose-us', 'faq', 'footer'],
+    anchors: ['Home', 'about-us', 'why-choose-us', 'faq', 'contact-us'],
     scrollingSpeed: 1000,
     licenseKey: 'gplv3-license',
     lockAnchors: false
@@ -23,6 +24,7 @@ function Home() {
 
   return (
     <div>
+      <Sidebar />
       <ReactFullpage
         {...fullpageOptions}
         render={({ state, fullpageApi }) => (

@@ -36,7 +36,3 @@ body {
   width: 100%;
   height: 100%;
 }
-
-.bg-primary-transparent {
-  background-color: rgba(26, 32, 44, 0.8); /* Primary color with transparency */
-}
