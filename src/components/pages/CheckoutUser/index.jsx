@@ -60,7 +60,7 @@ function CheckoutUser() {
               <option value="">Choose transfer method</option>
               <option value="BSI Admin 722391312">BSI</option>
               <option value="BCA Admin 120992311">BCA</option>
-              <option value="BNI Admin 909090909">BNI</option>
+              <option value="BNI Admin 909090908">BNI</option>
             </select>
           </div>
         </div>
