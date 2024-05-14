@@ -11,6 +11,13 @@ const nextConfig = {
   env: {
     BASE_URL: getHost()
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: 'images.unsplash.com'
+      }
+    ]
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
