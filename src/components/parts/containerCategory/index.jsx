@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import CardCategory from '@/parts/CardCategory';
+import CardCategory from '@/components/parts/CardCategory';
 import useCategryStore from '@/store/categoryStore';
 
 function ContainerCategory() {
