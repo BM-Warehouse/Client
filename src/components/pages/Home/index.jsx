@@ -7,6 +7,7 @@ import React from 'react';
 import ReactFullpage from '@fullpage/react-fullpage';
 
 import AboutUs from './components/AboutUs';
+import Chat from './components/chatBot.jsx';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
@@ -24,6 +25,7 @@ function Home() {
 
   return (
     <div>
+      <Chat />
       <Sidebar />
       <ReactFullpage
         {...fullpageOptions}

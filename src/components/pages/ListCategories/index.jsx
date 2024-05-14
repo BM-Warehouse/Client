@@ -1,7 +1,7 @@
 import { IoFilterSharp } from 'react-icons/io5';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
-import CardCategory from '@/components/parts/CardCategory';
+import ContainerCategory from '@/components/parts/containerCategory';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 
@@ -39,18 +39,9 @@ function ListCategories() {
           </div>
         </div>
       </div>
-      <div className="container-products mt-24 grid grid-cols-2 gap-4 p-4 md:ml-20 md:grid-cols-3 xl:grid-cols-5">
-        <CardCategory />
-        <CardCategory />
-        <CardCategory />
-        <CardCategory />
-        <CardCategory />
-        <CardCategory />
-        <CardCategory />
-        <CardCategory />
-        <CardCategory />
-        <CardCategory />
-      </div>
+      {/* <div className="container-products mt-24 grid grid-cols-2 gap-4 p-4 md:ml-20 md:grid-cols-3 xl:grid-cols-5"> */}
+      <ContainerCategory />
+      {/* </div> */}
       <div className="container-pagination flex items-center justify-center pb-10 ">
         <div className="button-pagination">
           <MdKeyboardArrowLeft className="text-2xl" />
