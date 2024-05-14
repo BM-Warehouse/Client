@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import CardProduct from '@/components/parts/CardProduct';
 import useProductStore from '@/store/productStore';
 
-function ContainerProducts() {
+function ContainerProductsUser() {
   const { productsData, asyncGetAll } = useProductStore((state) => ({
     productsData: state.productsData,
     asyncGetAll: state.asyncGetAll
@@ -20,7 +20,7 @@ function ContainerProducts() {
   }
 
   return (
-    <div className="container-products mt-24 grid grid-cols-2 gap-4 p-4 md:ml-20 md:grid-cols-3 xl:grid-cols-5">
+    <div className="container-products mt-4 grid grid-cols-2 gap-4 p-4 md:ml-20 md:grid-cols-3 xl:grid-cols-5">
       <CardProduct />
       {productsData.map((product) => (
         <CardProduct key={product.id} product={product} />
@@ -29,4 +29,4 @@ function ContainerProducts() {
   );
 }
 
-export default ContainerProducts;
+export default ContainerProductsUser;
