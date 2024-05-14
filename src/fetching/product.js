@@ -2,7 +2,7 @@ import BASE_URL from '@/lib/baseUrl';
 
 const getAllProducts = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/api/products`);
+    const response = await fetch(`${BASE_URL}/products`);
     const responseJson = await response.json();
     const { status, message } = responseJson;
     if (status !== 'success') {
