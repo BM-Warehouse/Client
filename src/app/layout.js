@@ -1,4 +1,7 @@
-// eslint-disable-next-line camelcase
+/* eslint-disable camelcase */
+
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Poppins, Josefin_Slab } from 'next/font/google';
 
 import './globals.css';
@@ -25,7 +28,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${josefinSlab.variable}`}>{children}</body>
+      <body className={`${poppins.variable} ${josefinSlab.variable}`}>
+        {children}
+        <Analytics />
+        <SpeedInsights />
+      </body>
     </html>
   );
 }
