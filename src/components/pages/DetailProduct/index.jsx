@@ -47,7 +47,7 @@ function DetailProduct() {
             <div className="description">
               <p className="text-sm leading-6">
                 PEDIASURE COMPLETE VANILLA merupakan nutrisi untuk mendukung pertumbuhan anak. Untuk
-                anak usia 1-10 tahun.
+                anak usia 1-12 tahun.
               </p>
             </div>
           </div>
