@@ -27,13 +27,16 @@ function ListProducts() {
       </div>
       <div className="container-btn-products mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
         <div className="btn-add-product">
-          <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
-            <span className="flex items-center justify-center">
-              <HiPlus className="mr-1" />
-              Add Product
-            </span>
-          </button>
-          {/* <div> </div> */}
+          {role === 'admin' ? (
+            <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
+              <span className="flex items-center justify-center">
+                <HiPlus className="mr-1" />
+                Add Product
+              </span>
+            </button>
+          ) : (
+            <div> </div>
+          )}
         </div>
         <div className="search-filter flex items-center justify-between">
           <label className="input input-bordered  flex h-8 items-center gap-2 border-tertiary ">
