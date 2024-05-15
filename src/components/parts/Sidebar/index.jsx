@@ -8,7 +8,6 @@ import { TbReceipt2 } from 'react-icons/tb';
 
 import SidebarElem, { SidebarItem } from '@/components/elements/SidebarElem';
 
-
 function Sidebar() {
   const routePath = usePathname();
   return (

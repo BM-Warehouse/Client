@@ -21,7 +21,7 @@ const LoginPage = () => {
     console.log(username, password);
     await asyncSetAuthUser({ username, password });
 
-    router.push('/products');
+    router.push('/categories');
   };
   return (
     <div className="w-full pt-10">
