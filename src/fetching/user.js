@@ -12,9 +12,10 @@ const getOwnProfile = async () => {
       throw new Error(message);
     }
     const {
-      data: { user }
+      data: { me }
     } = responseJson;
-    return user;
+    console.log(me);
+    return me;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error fetching data:', error.message);
