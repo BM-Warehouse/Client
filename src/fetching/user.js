@@ -53,7 +53,7 @@ const getOwnProfile = async () => {
     const {
       data: { me }
     } = responseJson;
-    console.log(me);
+    console.log(responseJson);
     return me;
   } catch (error) {
     // eslint-disable-next-line no-console
