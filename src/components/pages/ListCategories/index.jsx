@@ -7,17 +7,14 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import ContainerCategory from '@/components/parts/containerCategory';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
-// import useAuthUserStore from '@/store/authUserStore';
+import useAuthUserStore from '@/store/authUserStore';
 
 function ListCategories() {
-  // const { role, authUser } = useAuthUserStore((state) => ({
-  //   role: state.role,
-  //   authUser: state.authUser
-  // }));
+  const { role } = useAuthUserStore();
 
   // console.log(authUser);
 
-  const role = 'admin';
+  // const role = 'admin';
 
   if (!role) {
     return null;
