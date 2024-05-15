@@ -1,19 +1,69 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import Link from 'next/link';
 
-import Modal from '@/components/modal';
+import DeleteWarehouseForm from '@/components/forms/deleteWarehouseForm';
+import EditWarehouseForm from '@/components/forms/editWarehouseForm';
+import Modal from '@/components/modals/modal';
 import useModalStore from '@/hooks/useModalStore';
+import useWarehouseStore from '@/store/warehouseStore';
 
 const WarehousesPage = () => {
-  const isOpen = useModalStore((state) => state.isOpen);
-  const openModal = useModalStore((state) => state.openModal);
-  const bodyContent = (
-    <div>
-      <h1 className="text-2xl">Test Content</h1>
-      <h2>Second body content</h2>
-    </div>
-  );
+  const { warehouseData, getWarehouseData } = useWarehouseStore();
+
+  useEffect(() => {
+    getWarehouseData();
+  }, [getWarehouseData]);
+
+  const { isOpen, title, body, openModal, closeModal } = useModalStore();
+
+  const handleOpenModal = (action, warehouseName) => {
+    let modalTitle;
+    let modalBody;
+    let buttonLabel;
+
+    switch (action) {
+      case 'edit':
+        modalTitle = `Edit ${warehouseName}`;
+        modalBody = (
+          <div>
+            <EditWarehouseForm />
+          </div>
+        );
+
+        openModal(modalTitle, modalBody, buttonLabel);
+        break;
+      // case 'move':
+      //   modalTitle = `Move Stock from ${warehouseName}`;
+      //   modalBody = (
+      //     <div>
+      //       <h2>Move Stock</h2>
+      //       {/* Include your move stock form here */}
+      //     </div>
+      //   );
+
+      // openModal(modalTitle, modalBody, buttonLabel);
+      // break;
+      case 'delete':
+        modalTitle = `Delete ${warehouseName}`;
+        modalBody = (
+          <div>
+            <h2>Are you sure you want to delete {warehouseName}?</h2>
+            <h1>
+              This will delete <strong>All products in the warehouse too</strong>{' '}
+            </h1>
+            <DeleteWarehouseForm />
+          </div>
+        );
+
+        openModal(modalTitle, modalBody);
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <div>
@@ -24,75 +74,48 @@ const WarehousesPage = () => {
             <tr>
               <th>ID</th>
               <th>Warehouse Name</th>
-              <th>Location</th>
+              <th>City</th>
               <th>Address</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th>1</th>
-              <td>
-                <Link href="/warehouses/detail" className="cursor-pointer">
-                  Warehouse A
-                </Link>
-              </td>
-              <td>Jakarta</td>
-              <td>Jl Pattimura 20, Jakarta</td>
-              <td>
-                <button className="bg-secondary px-4 py-2 text-white" onClick={openModal}>
-                  Edit
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <th>2</th>
-              <td>Warehouse B</td>
-              <td>Jakarta</td>
-              <td>Jl Gedong Panjang 19</td>
-              <td>
-                <button className="bg-secondary px-4 py-2 text-white" onClick={openModal}>
-                  Edit
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <th>3</th>
-              <td>Warehouse C</td>
-              <td>Jakarta</td>
-              <td>Jl Kendangsari II/5</td>
-              <td>
-                <button className="bg-secondary px-4 py-2 text-white" onClick={openModal}>
-                  Edit
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <th>4</th>
-              <td>Warehouse D</td>
-              <td>Surabaya</td>
-              <td>Jl Jaksa Agung Suprapto, Jl Muncul</td>
-              <td>
-                <button className="bg-secondary px-4 py-2 text-white" onClick={openModal}>
-                  Edit
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <th>5</th>
-              <td>Warehouse E</td>
-              <td>DKI Jakarta</td>
-              <td>Jl Cipete Raya</td>
-              <td>
-                <button className="bg-secondary px-4 py-2 text-white" onClick={openModal}>
-                  Edit
-                </button>
-              </td>
-            </tr>
+            {warehouseData.map((warehouse) => (
+              <tr key={warehouse.id}>
+                <th>{warehouse.id}</th>
+                <td>
+                  <Link href={`/warehouses/${warehouse.id}`} className="cursor-pointer">
+                    {warehouse.name}
+                  </Link>
+                </td>
+                <td>{warehouse.city}</td>
+                <td>{warehouse.address}</td>
+                <td>
+                  <button
+                    className="bg-secondary px-4 py-2 text-white"
+                    onClick={() => handleOpenModal('edit', warehouse.name)}
+                  >
+                    Edit
+                  </button>
+                  {/* <button
+                    className="ml-2 bg-secondary px-4 py-2 text-white"
+                    onClick={() => handleOpenModal('move', warehouse.name)}
+                  >
+                    Move
+                  </button> */}
+                  <button
+                    className="ml-2 bg-secondary px-4 py-2 text-white"
+                    onClick={() => handleOpenModal('delete', warehouse.name)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
-      {isOpen && <Modal title="Test Modal" body={bodyContent} />}
+      {isOpen && <Modal title={title} body={body} closeModal={closeModal} />}
     </div>
   );
 };
