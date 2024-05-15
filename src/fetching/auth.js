@@ -2,6 +2,8 @@ import BASE_URL from '@/lib/baseUrl';
 
 const login = async ({ username, password }) => {
   try {
+    console.log(`usernamenya ${username}`);
+    console.log(`password ${password}`);
     const response = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
       headers: {
@@ -13,6 +15,7 @@ const login = async ({ username, password }) => {
       })
     });
     const responseJson = await response.json();
+    console.log(responseJson);
     const { accessToken } = responseJson;
 
     return accessToken;

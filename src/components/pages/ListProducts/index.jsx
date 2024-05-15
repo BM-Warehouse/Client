@@ -1,13 +1,23 @@
+'use client';
+
 import { HiPlus } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
-// import ContainerProductsUser from '@/components/parts/ContainerProductsUser';
 import ContainerProductsAdmin from '@/components/parts/ContainerProductsAdmin';
+import ContainerProductsUser from '@/components/parts/ContainerProductsUser';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
+import useAuthUserStore from '@/store/authUserStore';
 
 function ListProducts() {
+  const { role } = useAuthUserStore((state) => ({
+    role: state.role
+  }));
+
+  if (!role) {
+    return null;
+  }
   return (
     <main className="product-page bg-bgg relative h-screen font-poppins ">
       <Navbar />
@@ -51,8 +61,7 @@ function ListProducts() {
         </div>
       </div>
 
-      {/* <ContainerProductsUser /> */}
-      <ContainerProductsAdmin />
+      {role === 'admin' ? <ContainerProductsAdmin /> : <ContainerProductsUser />}
 
       <div className="container-pagination flex items-center justify-center pb-10 ">
         <div className="button-pagination">
