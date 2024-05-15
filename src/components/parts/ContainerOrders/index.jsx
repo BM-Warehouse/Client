@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 
+import Link from 'next/link';
 import { CgChevronRight } from 'react-icons/cg';
 
 import { getAllOrders } from '@/fetching/orders';
 import formatRupiah from '@/lib/formatRupiah';
 
 function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
-  function onDetailButtonClick() {
-    console.log('Here', id);
-  }
+  // function onDetailButtonClick() {
+  //   console.log('Here', id);
+  // }
 
   return (
     <tr>
@@ -19,15 +20,16 @@ function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
       <td>{totalPrice || '-'}</td>
       <td>{status || '-'}</td>
       <td>
-        <button
-          className="mr-2 min-w-10 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary relative"
-          title="Detail"
-          onClick={onDetailButtonClick}
-        >
-          <span className="flex items-center justify-center">
-            <CgChevronRight className="mr-1" />
-          </span>
-        </button>
+        <Link href={`/orders/${id}`}>
+          <button
+            className="relative mr-2 min-w-10 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
+            title="Detail"
+          >
+            <span className="flex items-center justify-center">
+              <CgChevronRight className="mr-1" />
+            </span>
+          </button>
+        </Link>
       </td>
     </tr>
   );
@@ -46,7 +48,7 @@ function ContainerOrders() {
       });
   }, []);
 
-  if (isLoading) return <span className="loading loading-bars loading-lg"> </span>;
+  if (isLoading) return <span className="loading loading-infinity loading-lg" />;
   if (!data) return <p>No Order data</p>;
 
   return (
