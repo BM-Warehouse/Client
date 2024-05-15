@@ -3,9 +3,10 @@ import { fetchWithToken } from '@/lib/fetchLib';
 
 const getAllUsers = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/users`);
+    const response = await fetchWithToken(`${BASE_URL}/users`);
     const responseJson = await response.json();
     const { status, message } = responseJson;
+    console.log(response);
     if (status !== 'success') {
       throw new Error(message);
     }

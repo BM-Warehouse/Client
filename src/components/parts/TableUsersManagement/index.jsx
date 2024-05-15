@@ -28,13 +28,8 @@ function TableUsersManagement() {
               <th>No</th>
               <th>Email</th>
               <th>Username</th>
-              <th>Password</th>
               <th>Full Name</th>
               <th>Phone</th>
-              <th>Address</th>
-              <th>gender</th>
-              <th>birthdate</th>
-              <th>avatar</th>
               <th>role</th>
               <th className="col-span-2 ">Actions</th>
             </tr>

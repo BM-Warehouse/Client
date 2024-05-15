@@ -7,13 +7,8 @@ function RowUser({ user, index }) {
       <td>{index}</td>
       <td>{user.email}</td>
       <td>{user.username}</td>
-      <td>{user.password} A</td>
       <td>{user.fullName}</td>
       <td>{user.phone}</td>
-      <td>{user.address}</td>
-      <td>{user.gender}</td>
-      <td>{user.birthdate} </td>
-      <td>{user.avatar}</td>
       <td>{user.role}</td>
       <td>
         <div className="buttons-action flex justify-between">
