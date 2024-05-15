@@ -11,9 +11,7 @@ const LoginPage = () => {
   const [username, onUsernameChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
 
-  const { asyncSetAuthUser } = useAuthUserStore((state) => ({
-    asyncSetAuthUser: state.asyncSetAuthUser
-  }));
+  const { asyncSetAuthUser } = useAuthUserStore();
 
   const router = useRouter();
 

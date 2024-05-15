@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { BiPlus, BiMinus } from 'react-icons/bi';
 
@@ -5,8 +7,12 @@ import SusuBayik from '@/assets/images/susu-bayik.png';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import formatRupiah from '@/lib/formatRupiah';
+import useProductStore from '@/store/productStore';
 
 function DetailProduct() {
+  const { detailProduct } = useProductStore();
+  console.log(detailProduct);
+
   return (
     <section className="datail-product-page relative min-h-screen bg-bgColor pb-20 font-poppins">
       <Navbar />
