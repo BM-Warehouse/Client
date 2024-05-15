@@ -6,7 +6,7 @@ import { showUserCart } from '@/fetching/cart';
 const useCartStore = create((set) => ({
   cart: null,
 
-  asyncGetAll: async () => {
+  asyncShowCart: async () => {
     try {
       const mycart = await showUserCart();
       set((_state) => ({
