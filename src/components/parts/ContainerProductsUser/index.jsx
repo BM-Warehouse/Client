@@ -6,10 +6,7 @@ import CardProduct from '@/components/parts/CardProduct';
 import useProductStore from '@/store/productStore';
 
 function ContainerProductsUser() {
-  const { productsData, asyncGetAll } = useProductStore((state) => ({
-    productsData: state.productsData,
-    asyncGetAll: state.asyncGetAll
-  }));
+  const { productsData, asyncGetAll } = useProductStore();
 
   useEffect(() => {
     asyncGetAll();

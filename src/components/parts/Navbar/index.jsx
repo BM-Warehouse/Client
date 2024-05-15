@@ -15,11 +15,7 @@ import CartIcon from '@/components/elements/CartIcon';
 import useAuthUserStore from '@/store/authUserStore';
 
 function Navbar() {
-  const { asyncUnsetAuthUser, role } = useAuthUserStore((state) => ({
-    asyncUnsetAuthUser: state.asyncUnsetAuthUser,
-    role: state.role
-  }));
-
+  const { asyncUnsetAuthUser, role } = useAuthUserStore();
   const router = useRouter();
 
   const onLogout = async () => {
@@ -27,6 +23,9 @@ function Navbar() {
 
     router.push('/login');
   };
+
+  // check role
+
   if (!role) {
     return null;
   }

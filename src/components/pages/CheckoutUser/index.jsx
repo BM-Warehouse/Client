@@ -1,9 +1,23 @@
+'use client';
+
+import { useEffect } from 'react';
+
 import Navbar from '@/components/parts/Navbar';
 import OrderSummary from '@/components/parts/OrderSummary';
 import ProductPurchase from '@/components/parts/ProductPurchase';
 import Sidebar from '@/components/parts/Sidebar';
+import useCartStore from '@/store/cartStore';
 
 function CheckoutUser() {
+  const { cart, asyncShowCart } = useCartStore();
+
+  useEffect(() => {
+    asyncShowCart();
+  }, [asyncShowCart]);
+
+  if (!cart) {
+    return null;
+  }
   return (
     <section className="checkout-page relative min-h-screen bg-bgColor pb-20 font-poppins">
       <Navbar />
@@ -18,8 +32,9 @@ function CheckoutUser() {
               Purchase Summary
             </h5>
             <div className="container-products-purchase">
-              <ProductPurchase />
-              <ProductPurchase />
+              {cart.ProductCart.map((prod) => (
+                <ProductPurchase key={prod.procudtId} product={prod} />
+              ))}
             </div>
           </div>
           <div className="purhcase-address flex w-full flex-col border-b border-tertiary py-5">
@@ -65,7 +80,7 @@ function CheckoutUser() {
           </div>
         </div>
 
-        <OrderSummary />
+        <OrderSummary cart={cart} />
       </div>
     </section>
   );

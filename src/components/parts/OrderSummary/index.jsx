@@ -1,6 +1,9 @@
 import formatRupiah from '@/lib/formatRupiah';
 
-function OrderSummary() {
+function OrderSummary({ cart }) {
+  if (!cart) {
+    return null;
+  }
   return (
     <div className="ckeckout-content-right mt-5 w-full border border-tertiary p-5 text-tertiary md:ml-8 md:mr-4 md:w-1/3">
       <div className="title-order-summary">
@@ -9,7 +12,7 @@ function OrderSummary() {
       <div className="total-order py-5">
         <div className="subtotal mb-3 flex justify-between">
           <p className="text-base">Subtotal</p>
-          <p className="font-bold">{formatRupiah(400000)}</p>
+          <p className="font-bold">{formatRupiah(cart.totalPrice)}</p>
         </div>
         <div className="shipping mb-3 flex justify-between">
           <p>Shipping</p>
@@ -17,7 +20,7 @@ function OrderSummary() {
         </div>
         <div className="total-pay flex justify-between">
           <p className="font-bold">Total to Pay</p>
-          <p className="font-bold">{formatRupiah(410000)}</p>
+          <p className="font-bold">{formatRupiah(cart.totalPrice)}</p>
         </div>
       </div>
       <div className="btn-order mb-10">
