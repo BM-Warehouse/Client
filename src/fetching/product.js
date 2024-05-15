@@ -1,8 +1,9 @@
 import BASE_URL from '@/lib/baseUrl';
+import { fetchWithToken } from '@/lib/fetchLib';
 
 const getAllProducts = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/products`);
+    const response = await fetchWithToken(`${BASE_URL}/products`);
     const responseJson = await response.json();
     const { status, message } = responseJson;
     if (status !== 'success') {
@@ -21,7 +22,7 @@ const getAllProducts = async () => {
 
 const getProductById = async (id) => {
   try {
-    const response = await fetch(`${BASE_URL}/products/${id}`);
+    const response = await fetchWithToken(`${BASE_URL}/products/${id}`);
     const responseJson = await response.json();
     const { status, message } = responseJson;
     if (status !== 'success') {

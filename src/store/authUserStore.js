@@ -7,13 +7,15 @@ import { setAccessToken } from '@/lib/fetchLib';
 
 const useAuthUserStore = create((set) => ({
   authUser: null,
-  asyncSetAuthUser: async ({ email, password }) => {
+  role: null,
+  asyncSetAuthUser: async ({ username, password }) => {
     try {
-      const token = await login({ email, password });
+      const token = await login({ username, password });
       setAccessToken(token);
       const user = await getOwnProfile();
       set((_state) => ({
-        authUser: user
+        authUser: user,
+        role: user.role
       }));
     } catch (error) {
       console.error('Error in asyncFunc:', error.message);
@@ -22,7 +24,8 @@ const useAuthUserStore = create((set) => ({
   asyncUnsetAuthUser: async () => {
     try {
       set((_state) => ({
-        authUser: null
+        authUser: null,
+        role: null
       }));
       setAccessToken('');
     } catch (error) {

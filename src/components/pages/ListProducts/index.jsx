@@ -1,13 +1,23 @@
+'use client';
+
 import { HiPlus } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
-// import ContainerProductsUser from '@/components/parts/ContainerProductsUser';
 import ContainerProductsAdmin from '@/components/parts/ContainerProductsAdmin';
+import ContainerProductsUser from '@/components/parts/ContainerProductsUser';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
+import useAuthUserStore from '@/store/authUserStore';
 
 function ListProducts() {
+  const { role } = useAuthUserStore((state) => ({
+    role: state.role
+  }));
+
+  if (!role) {
+    return null;
+  }
   return (
     <main className="product-page bg-bgg relative h-screen font-poppins ">
       <Navbar />
@@ -17,13 +27,16 @@ function ListProducts() {
       </div>
       <div className="container-btn-products mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
         <div className="btn-add-product">
-          <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
-            <span className="flex items-center justify-center">
-              <HiPlus className="mr-1" />
-              Add Product
-            </span>
-          </button>
-          {/* <div> </div> */}
+          {role === 'admin' ? (
+            <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
+              <span className="flex items-center justify-center">
+                <HiPlus className="mr-1" />
+                Add Product
+              </span>
+            </button>
+          ) : (
+            <div> </div>
+          )}
         </div>
         <div className="search-filter flex items-center justify-between">
           <label className="input input-bordered  flex h-8 items-center gap-2 border-tertiary ">
@@ -51,8 +64,7 @@ function ListProducts() {
         </div>
       </div>
 
-      {/* <ContainerProductsUser /> */}
-      <ContainerProductsAdmin />
+      {role === 'admin' ? <ContainerProductsAdmin /> : <ContainerProductsUser />}
 
       <div className="container-pagination flex items-center justify-center pb-10 ">
         <div className="button-pagination">

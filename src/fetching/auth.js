@@ -13,6 +13,7 @@ const login = async ({ username, password }) => {
       })
     });
     const responseJson = await response.json();
+
     const { accessToken } = responseJson;
 
     return accessToken;

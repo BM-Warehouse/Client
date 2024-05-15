@@ -18,7 +18,7 @@ function SidebarElem({ children }) {
         md:w-auto ${expanded ? 'w-7/12 md:w-5/12 xl:w-3/12' : 'w-1/5 md:w-1/12 xl:w-[5%]'
         }`}
     >
-      <nav className="flex h-full flex-col border-r bg-primary ">
+      <nav className="z-21 flex h-full flex-col border-r bg-primary ">
         <div className="hidden items-center justify-between p-4 pb-2 md:flex">
           {/* <img
             src="https://img.logoipsum.com/243.svg"
@@ -37,9 +37,11 @@ function SidebarElem({ children }) {
             )}
           </button>
         </div>
+
         <ul className=" grid grid-cols-6 px-3 md:flex-1 md:grid-cols-1 md:pb-[1000px]">
           {children}
         </ul>
+
 
         {/* <div className="flex border-t p-3">
           <img

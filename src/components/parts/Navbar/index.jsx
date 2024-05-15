@@ -1,14 +1,30 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
+
+'use client';
+
 import React from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import BWMLogo from '@/assets/images/LogoBMW2.png';
+import useAuthUserStore from '@/store/authUserStore';
 
 function Navbar() {
+  const { asyncUnsetAuthUser } = useAuthUserStore((state) => ({
+    asyncUnsetAuthUser: state.asyncUnsetAuthUser
+  }));
+
+  const router = useRouter();
+
+  const onLogout = async () => {
+    await asyncUnsetAuthUser();
+
+    router.push('/login');
+  };
   return (
     <div className="navbar fixed top-0 z-20 bg-primary py-3">
       <div className="flex-1">
@@ -71,7 +87,7 @@ function Navbar() {
             </li>
 
             <li>
-              <a>Logout</a>
+              <button onClick={() => onLogout()}>Logout</button>
             </li>
           </ul>
         </div>
