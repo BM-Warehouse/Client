@@ -1,17 +1,30 @@
+/* eslint-disable @next/next/no-img-element */
+
 'use client';
 
-import Image from 'next/image';
+import { useEffect } from 'react';
+
+// import Image from 'next/image';
 import { BiPlus, BiMinus } from 'react-icons/bi';
 
-import SusuBayik from '@/assets/images/susu-bayik.png';
+// import SusuBayik from '@/assets/images/susu-bayik.png';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import formatRupiah from '@/lib/formatRupiah';
 import useProductStore from '@/store/productStore';
 
-function DetailProduct() {
-  const { detailProduct } = useProductStore();
+function DetailProduct({ params }) {
+  const { detailProduct, asyncGetDetail } = useProductStore();
   console.log(detailProduct);
+  const id = +params.productId;
+
+  useEffect(() => {
+    asyncGetDetail(id);
+  }, [asyncGetDetail, id]);
+
+  if (!detailProduct) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <section className="datail-product-page relative min-h-screen bg-bgColor pb-20 font-poppins">
@@ -20,15 +33,24 @@ function DetailProduct() {
       <div className="detail-product-page-content flex w-full flex-col items-center px-2 py-10 text-tertiary md:px-10">
         <div className="detail-product-container mt-20 flex flex-col px-0 md:flex-row md:px-8 xl:px-24">
           <figure className="max-h-[30rem] w-full max-w-[30rem] p-2 md:w-2/4">
-            <Image src={SusuBayik} alt="Susu Bayi" />
+            <img src={detailProduct.imageUrl} alt={detailProduct.name} />
           </figure>
           <div className="detail-body w-full px-6 pt-4 md:ml-10 md:w-2/4 md:px-0">
             <div className="title-product">
-              <p className="mb-3 text-base">Foods & Grocery</p>
-              <h5 className="mb-3 text-3xl font-bold">PediaComplete Vanila</h5>
-              <p className="price mb-3 text-2xl">{formatRupiah(500000)}</p>
+              <p className="mb-3 text-base flex gap-2">
+                {detailProduct.productCategories.map((ctg) => (
+                  <span
+                    key={ctg.category.id}
+                    className="badge badge-outline text-[0.7rem] md:text-[0.8rem]"
+                  >
+                    {ctg.category.name}
+                  </span>
+                ))}
+              </p>
+              <h5 className="mb-3 text-3xl font-bold">{detailProduct.name}</h5>
+              <p className="price mb-3 text-2xl">{formatRupiah(detailProduct.price)}</p>
               <p className="price mb-6 text-base">
-                Tersisa <span>30</span> buah
+                Tersisa <span>{detailProduct.totalStock}</span> buah
               </p>
             </div>
             <div className="quantity">
@@ -51,10 +73,7 @@ function DetailProduct() {
               </button>
             </div>
             <div className="description">
-              <p className="text-sm leading-6">
-                PEDIASURE COMPLETE VANILLA merupakan nutrisi untuk mendukung pertumbuhan anak. Untuk
-                anak usia 1-12 tahun.
-              </p>
+              <p className="text-sm leading-6">{detailProduct.description}</p>
             </div>
           </div>
         </div>
