@@ -30,6 +30,7 @@ const getCategoryDetail = async (id) => {
       throw new Error(message);
     }
     const { data } = responseJson;
+    console.log(data);
     return data;
   } catch (error) {
     console.error('Error fetching data:', error.message);
