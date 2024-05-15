@@ -1,13 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import RegisterImage from '@/assets/images/RegisterImage.png';
-
 const RegisterPage = () => (
   <div className="w-full pt-10">
     <div className="flex h-[600px] justify-evenly bg-secondary">
       <div className="flex w-1/3 items-center">
-        <Image src={RegisterImage} alt="Login Image" />
+        <Image src="/register.svg" width={500} height={500} alt="Register Image by StorySet" />
       </div>
       <div className="h-[95%] border-r border-gray-300" />
       <div className=" mt-10  w-1/3  ">

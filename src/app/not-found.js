@@ -14,7 +14,7 @@ export default function NotFound() {
         />
         <p className="text-lg text-gray-700">Oops! The page you are looking for does not exist.</p>
         <p className="text-lg text-gray-700">
-          Credits :
+          Credits:
           <a href="https://github.com/SAWARATSUKI/KawaiiLogos/blob/main/ResponseCode/404%20NotFound.png">
             SAWARATSUKI
           </a>
