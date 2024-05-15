@@ -45,9 +45,9 @@ const Navbar = () => (
       </ul>
     </div>
     <div className="navbar-end">
-      <a className="btn hidden bg-secondary text-white hover:bg-tertiary lg:flex">
+      <Link className="btn hidden bg-secondary text-white hover:bg-tertiary lg:flex" href="/login">
         <FiLogIn /> <span>Log In</span>
-      </a>
+      </Link>
       <details className="menu dropdown dropdown-end menu-lg lg:hidden">
         <summary className="btn m-1 bg-primary">
           <svg

@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import LoginImage from '@/assets/images/LoginImage.png';
 import useInput from '@/hooks/useInput';
 import useAuthUserStore from '@/store/authUserStore';
 
@@ -22,13 +21,18 @@ const LoginPage = () => {
     console.log(username, password);
     await asyncSetAuthUser({ username, password });
 
-    router.push('/products');
+    router.push('/categories');
   };
   return (
     <div className="w-full pt-10">
       <div className="flex h-[600px] justify-evenly bg-secondary">
         <div className="flex w-1/3 items-center">
-          <Image src={LoginImage} alt="Login Image" />
+          <Image
+            src="/login.svg"
+            width={500}
+            height={500}
+            alt="Login Image User illustrations by Storyset"
+          />
         </div>
         <div className="h-[95%] border-r border-gray-300" />
         <div className=" mt-10  w-1/3  ">
