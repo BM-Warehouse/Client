@@ -8,8 +8,8 @@ import SidebarElem, { SidebarItem } from '@/components/elements/SidebarElem';
 function Sidebar() {
   return (
     <SidebarElem>
-      <SidebarItem icon={<MdOutlineDashboard />} text="Dashboard" active />
-      <SidebarItem icon={<LuBox />} text="Products" />
+      <SidebarItem icon={<MdOutlineDashboard />} text="Dashboard" href="/test" active />
+      <SidebarItem icon={<LuBox />} text="Products" href="/products" />
       <SidebarItem icon={<LuBoxes />} text="Categories" />
       <SidebarItem icon={<LuWarehouse />} text="Warehouses" />
       <SidebarItem icon={<TbReceipt2 />} text="Orders" alert />
