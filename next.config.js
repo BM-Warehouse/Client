@@ -25,6 +25,9 @@ const nextConfig = {
     });
 
     return config;
+  },
+  images: {
+    domains: ['res.cloudinary.com', 'down-id.img.susercontent.com']
   }
 };
 
