@@ -7,15 +7,16 @@ import { cloneElement, createContext, useContext, useState } from 'react';
 import Link from 'next/link';
 import { LuChevronFirst, LuChevronLast } from 'react-icons/lu';
 
+import useSidebarStore from '@/store/sidebarStore';
+
 const SidebarContext = createContext();
 function SidebarElem({ children }) {
-  const [expanded, setExpanded] = useState(false);
+  const { expanded, setExpanded } = useSidebarStore();
 
   return (
     <aside
-      className={` fixed bottom-0 z-10 w-full  md:top-16   md:h-screen  md:w-auto ${
-        expanded ? 'w-7/12 md:w-5/12 xl:w-3/12' : 'w-1/5 md:w-1/12 xl:w-[5%]'
-      }`}
+      className={` fixed bottom-0 z-10 w-full  md:top-16   md:h-screen  md:w-auto ${expanded ? 'w-7/12 md:w-5/12 xl:w-3/12' : 'w-1/5 md:w-1/12 xl:w-[5%]'
+        }`}
     >
       <nav className="flex h-full flex-col border-r bg-primary ">
         <div className="hidden items-center justify-between p-4 pb-2 md:flex">
@@ -26,7 +27,7 @@ function SidebarElem({ children }) {
           /> */}
           <p> </p>
           <button
-            onClick={() => setExpanded((curr) => !curr)}
+            onClick={() => setExpanded(!expanded)}
             className="rounded-lg bg-none p-1.5 text-secondary "
           >
             {expanded ? (
@@ -36,11 +37,9 @@ function SidebarElem({ children }) {
             )}
           </button>
         </div>
-        <SidebarContext.Provider value={{ expanded }}>
-          <ul className=" grid grid-cols-6 px-3 md:flex-1 md:grid-cols-1 md:pb-[1000px]">
-            {children}
-          </ul>
-        </SidebarContext.Provider>
+        <ul className=" grid grid-cols-6 px-3 md:flex-1 md:grid-cols-1 md:pb-[1000px]">
+          {children}
+        </ul>
 
         {/* <div className="flex border-t p-3">
           <img
@@ -68,7 +67,7 @@ function SidebarElem({ children }) {
 export default SidebarElem;
 
 export function SidebarItem({ icon, text, active, alert, href = '#' }) {
-  const { expanded } = useContext(SidebarContext);
+  const { expanded } = useSidebarStore();
   const dynamicIcon = cloneElement(icon, { className: `text-xl ${active ? 'text-primary' : ''}` });
   return (
     <Link href={href}>
