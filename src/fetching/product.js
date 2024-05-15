@@ -25,6 +25,7 @@ const getProductById = async (id) => {
     const response = await fetchWithToken(`${BASE_URL}/products/${id}`);
     const responseJson = await response.json();
     const { status, message } = responseJson;
+
     if (status !== 'success') {
       throw new Error(message);
     }
