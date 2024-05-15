@@ -1,8 +1,9 @@
 import BASE_URL from '@/lib/baseUrl';
+import { fetchWithToken } from '@/lib/fetchLib';
 
 const getAllCategories = async () => {
   try {
-    const respose = await fetch(`${BASE_URL}/categories`);
+    const respose = await fetchWithToken(`${BASE_URL}/categories`);
     const responseJson = await respose.json();
     const { status, message } = responseJson;
     if (status !== 'success') {
@@ -13,7 +14,6 @@ const getAllCategories = async () => {
         getAll: { categories }
       }
     } = responseJson;
-    console.log(responseJson);
     return categories;
   } catch (error) {
     console.error('Error fetching data:', error.message);
@@ -21,4 +21,21 @@ const getAllCategories = async () => {
   }
 };
 
-export { getAllCategories };
+const getCategoryDetail = async (id) => {
+  try {
+    const respose = await fetchWithToken(`${BASE_URL}/categories/${id}`);
+    const responseJson = await respose.json();
+    const { status, message } = responseJson;
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    const { data } = responseJson;
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
+export { getAllCategories, getCategoryDetail };

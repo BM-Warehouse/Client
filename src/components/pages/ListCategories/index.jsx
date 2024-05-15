@@ -1,11 +1,27 @@
+'use client';
+
+import { HiPlus } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
 import ContainerCategory from '@/components/parts/containerCategory';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
+// import useAuthUserStore from '@/store/authUserStore';
 
 function ListCategories() {
+  // const { role, authUser } = useAuthUserStore((state) => ({
+  //   role: state.role,
+  //   authUser: state.authUser
+  // }));
+
+  // console.log(authUser);
+
+  const role = 'admin';
+
+  if (!role) {
+    return null;
+  }
   return (
     <main className="category-page bg-bgg relative h-screen font-poppins">
       <Navbar />
@@ -13,7 +29,19 @@ function ListCategories() {
       <div className="category-title flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Categories</h1>
       </div>
-      <div className="container-btn-category absolute right-9 mt-10">
+      <div className="mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
+        <div className="btn-add-product">
+          {role === 'admin' ? (
+            <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
+              <span className="flex items-center justify-center">
+                <HiPlus className="mr-1" />
+                Add Category
+              </span>
+            </button>
+          ) : (
+            <div> </div>
+          )}
+        </div>
         <div className="button-categories flex items-center">
           <label className="input input-bordered  flex h-8 items-center gap-2 border-tertiary">
             <input

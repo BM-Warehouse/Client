@@ -22,8 +22,7 @@ function ContainerCategory() {
   }
 
   return (
-    <div className="container-products mt-24 grid grid-cols-2 gap-4 p-4 md:ml-20 md:grid-cols-3 xl:grid-cols-5">
-      <CardCategory />
+    <div className="container-products mt-4 grid grid-cols-2 gap-4 p-4 md:ml-20 md:grid-cols-3 xl:grid-cols-5">
       {categoriesData.map((category) => (
         <CardCategory key={category.id} category={category} />
       ))}
