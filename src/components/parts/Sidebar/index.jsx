@@ -8,16 +8,12 @@ import SidebarElem, { SidebarItem } from '@/components/elements/SidebarElem';
 function Sidebar() {
   return (
     <SidebarElem>
-      <SidebarItem
-        icon={<MdOutlineDashboard className="text-xl text-primary" />}
-        text="Dashboard"
-        active
-      />
-      <SidebarItem icon={<LuBox className="text-xl" />} text="Products" />
-      <SidebarItem icon={<LuBoxes className="text-xl" />} text="Categories" />
-      <SidebarItem icon={<LuWarehouse className="text-xl" />} text="Warehouses" />
-      <SidebarItem icon={<TbReceipt2 className="text-xl" />} text="Orders" alert />
-      <SidebarItem icon={<HiOutlineUsers className="text-xl" />} text="Management Users" />
+      <SidebarItem icon={<MdOutlineDashboard />} text="Dashboard" active />
+      <SidebarItem icon={<LuBox />} text="Products" />
+      <SidebarItem icon={<LuBoxes />} text="Categories" />
+      <SidebarItem icon={<LuWarehouse />} text="Warehouses" />
+      <SidebarItem icon={<TbReceipt2 />} text="Orders" alert />
+      <SidebarItem icon={<HiOutlineUsers />} text="Management Users" />
     </SidebarElem>
   );
 }

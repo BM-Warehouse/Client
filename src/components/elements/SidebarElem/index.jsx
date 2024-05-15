@@ -2,7 +2,7 @@
 
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { cloneElement, createContext, useContext, useState } from 'react';
 
 import { LuChevronFirst, LuChevronLast } from 'react-icons/lu';
 
@@ -68,6 +68,7 @@ export default SidebarElem;
 
 export function SidebarItem({ icon, text, active, alert }) {
   const { expanded } = useContext(SidebarContext);
+  const dynamicIcon = cloneElement(icon, { className: `text-xl ${active ? 'text-primary' : ''}` });
   return (
     <li
       className={`
@@ -77,7 +78,7 @@ export function SidebarItem({ icon, text, active, alert }) {
            ${active ? 'bg-secondary text-primary' : 'text-secondary hover:bg-indigo-50'}
         `}
     >
-      {icon}
+      {dynamicIcon}
       <span className={` overflow-hidden transition-all ${expanded ? 'ml-3 w-52' : 'w-0'}`}>
         {text}
       </span>
