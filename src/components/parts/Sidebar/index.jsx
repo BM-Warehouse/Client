@@ -16,8 +16,8 @@ function Sidebar() {
       <SidebarItem
         icon={<MdOutlineDashboard />}
         text="Dashboard"
-        href="/test"
-        {...(routePath === '/test' && { active: true })}
+        href="/dashboard"
+        {...(routePath === '/dashboard' && { active: true })}
       />
       <SidebarItem
         icon={<LuBox />}
@@ -25,9 +25,24 @@ function Sidebar() {
         href="/products"
         {...(routePath === '/products' && { active: true })}
       />
-      <SidebarItem icon={<LuBoxes />} text="Categories" />
-      <SidebarItem icon={<LuWarehouse />} text="Warehouses" />
-      <SidebarItem icon={<TbReceipt2 />} text="Orders" alert />
+      <SidebarItem
+        icon={<LuBoxes />}
+        text="Categories"
+        href="/categories"
+        {...(routePath === '/categories' && { active: true })}
+      />
+      <SidebarItem
+        icon={<LuWarehouse />}
+        text="Warehouses"
+        href="/warehouses"
+        {...(routePath === '/warehouses' && { active: true })}
+      />
+      <SidebarItem
+        icon={<TbReceipt2 />}
+        text="Orders"
+        href="/orders"
+        {...(routePath === '/orders' && { active: true })}
+      />
       <SidebarItem icon={<HiOutlineUsers />} text="Management Users" />
     </SidebarElem>
   );
