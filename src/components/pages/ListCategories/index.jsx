@@ -17,7 +17,7 @@ function ListCategories() {
 
   // console.log(authUser);
 
-  const role = 'user';
+  const role = 'admin';
 
   if (!role) {
     return null;
