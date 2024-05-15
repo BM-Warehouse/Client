@@ -1,11 +1,13 @@
 'use client';
+
+import { usePathname } from 'next/navigation';
 import { HiOutlineUsers } from 'react-icons/hi2';
 import { LuBox, LuWarehouse, LuBoxes } from 'react-icons/lu';
 import { MdOutlineDashboard } from 'react-icons/md';
 import { TbReceipt2 } from 'react-icons/tb';
 
 import SidebarElem, { SidebarItem } from '@/components/elements/SidebarElem';
-import { usePathname } from 'next/navigation';
+
 
 function Sidebar() {
   const routePath = usePathname();

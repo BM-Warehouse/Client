@@ -2,9 +2,9 @@
 
 'use client';
 
-import Link from 'next/link';
 import { cloneElement, createContext, useContext, useState } from 'react';
 
+import Link from 'next/link';
 import { LuChevronFirst, LuChevronLast } from 'react-icons/lu';
 
 const SidebarContext = createContext();
