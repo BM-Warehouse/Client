@@ -1,23 +1,19 @@
 'use client';
 
-import { HiPlus } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
 import ContainerCategory from '@/components/parts/containerCategory';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
-// import useAuthUserStore from '@/store/authUserStore';
+import useAuthUserStore from '@/store/authUserStore';
 
 function ListCategories() {
-  // const { role, authUser } = useAuthUserStore((state) => ({
-  //   role: state.role,
-  //   authUser: state.authUser
-  // }));
+  const { role } = useAuthUserStore();
 
   // console.log(authUser);
 
-  const role = 'admin';
+  // const role = 'admin';
 
   if (!role) {
     return null;
@@ -31,7 +27,7 @@ function ListCategories() {
       </div>
       <div className="mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
         <div className="btn-add-product">
-          {role === 'admin' ? (
+          {/* {role === 'admin' ? (
             <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
               <span className="flex items-center justify-center">
                 <HiPlus className="mr-1" />
@@ -40,7 +36,48 @@ function ListCategories() {
             </button>
           ) : (
             <div> </div>
-          )}
+          )} */}
+          {/* Open the modal using document.getElementById('ID').showModal() method */}
+          <button
+            className="btn bg-secondary text-white"
+            onClick={() => document.getElementById('my_modal_1').showModal()}
+          >
+            Add Category
+          </button>
+          <dialog id="my_modal_1" className="modal">
+            <div className="modal-box bg-primary">
+              <h3 className="font-bold text-lg text-secondary">Add New Category</h3>
+              <div className="input-container">
+                <label htmlFor="" className="text-secondary">
+                  Category name:
+                  <input
+                    type="text"
+                    placeholder="Enter new name..."
+                    className="input input-bordered w-full max-w-xs ml-3 h-8 mt-5 placeholder:text-secondary border-secondary"
+                  />
+                </label>
+                <label htmlFor="" className="text-secondary">
+                  Description:
+                  <input
+                    type="text"
+                    placeholder="Enter description..."
+                    className="input input-bordered w-full max-w-xs ml-3 h-8 mt-5 placeholder:text-secondary border-secondary"
+                  />
+                </label>
+                <input
+                  type="file"
+                  className="file-input file-input-bordered file-input-sm w-full max-w-xs mt-5 text-secondary file:bg-secondary file:border-secondary file:text-white"
+                />
+              </div>
+              <div className="modal-action">
+                <form method="dialog" className="flex flex-row-reverse justify-between">
+                  {/* if there is a button in form, it will close the modal */}
+                  <button className="btn bg-secondary text-white">Close</button>
+                  <button className="btn bg-secondary text-white">Submit</button>
+                </form>
+              </div>
+            </div>
+          </dialog>
         </div>
         <div className="button-categories flex items-center">
           <label className="input input-bordered  flex h-8 items-center gap-2 border-tertiary">
