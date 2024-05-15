@@ -2,19 +2,21 @@
 
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { cloneElement } from 'react';
 
+import Link from 'next/link';
 import { LuChevronFirst, LuChevronLast } from 'react-icons/lu';
 
-const SidebarContext = createContext();
+import useSidebarStore from '@/store/sidebarStore';
+
 function SidebarElem({ children }) {
-  const [expanded, setExpanded] = useState(false);
+  const { expanded, setExpanded } = useSidebarStore();
 
   return (
     <aside
-      className={` fixed bottom-0 z-20 w-full  md:top-[88px]   md:h-screen  md:w-auto ${
-        expanded ? 'w-7/12 md:w-5/12 xl:w-3/12' : 'w-1/5 md:w-1/12 xl:w-[5%]'
-      }`}
+      className={` fixed bottom-0 z-10 w-full  md:top-16   md:h-screen  
+        md:w-auto ${expanded ? 'w-7/12 md:w-5/12 xl:w-3/12' : 'w-1/5 md:w-1/12 xl:w-[5%]'
+        }`}
     >
       <nav className="z-21 flex h-full flex-col border-r bg-primary ">
         <div className="hidden items-center justify-between p-4 pb-2 md:flex">
@@ -25,7 +27,7 @@ function SidebarElem({ children }) {
           /> */}
           <p> </p>
           <button
-            onClick={() => setExpanded((curr) => !curr)}
+            onClick={() => setExpanded(!expanded)}
             className="rounded-lg bg-none p-1.5 text-secondary "
           >
             {expanded ? (
@@ -35,11 +37,11 @@ function SidebarElem({ children }) {
             )}
           </button>
         </div>
-        <SidebarContext.Provider value={{ expanded }}>
-          <ul className="grid grid-cols-6 px-3 md:flex-1 md:grid-cols-1 md:pb-[1000px]">
-            {children}
-          </ul>
-        </SidebarContext.Provider>
+
+        <ul className=" grid grid-cols-6 px-3 md:flex-1 md:grid-cols-1 md:pb-[1000px]">
+          {children}
+        </ul>
+
 
         {/* <div className="flex border-t p-3">
           <img
@@ -66,38 +68,41 @@ function SidebarElem({ children }) {
 
 export default SidebarElem;
 
-export function SidebarItem({ icon, text, active, alert }) {
-  const { expanded } = useContext(SidebarContext);
+export function SidebarItem({ icon, text, active, alert, href = '#' }) {
+  const { expanded } = useSidebarStore();
+  const dynamicIcon = cloneElement(icon, { className: `text-xl ${active ? 'text-primary' : ''}` });
   return (
-    <li
-      className={`
+    <Link href={href}>
+      <li
+        className={`
            group relative my-1 flex w-12 cursor-pointer items-center rounded-md
            px-3 py-2 font-medium
            transition-colors md:w-auto
            ${active ? 'bg-secondary text-primary' : 'text-secondary hover:bg-indigo-50'}
         `}
-    >
-      {icon}
-      <span className={` overflow-hidden transition-all ${expanded ? 'ml-3 w-52' : 'w-0'}`}>
-        {text}
-      </span>
-      {alert && (
-        <div
-          className={`absolute right-2 h-2 w-2 rounded bg-indigo-400 ${expanded ? '' : 'top-2'}`}
-        />
-      )}
-      {!expanded && (
-        <div
-          className={`
+      >
+        {dynamicIcon}
+        <span className={` overflow-hidden transition-all ${expanded ? 'ml-3 w-52' : 'w-0'}`}>
+          {text}
+        </span>
+        {alert && (
+          <div
+            className={`absolute right-2 h-2 w-2 rounded bg-indigo-400 ${expanded ? '' : 'top-2'}`}
+          />
+        )}
+        {!expanded && (
+          <div
+            className={`
           invisible absolute left-full ml-6 -translate-x-3 rounded-md
           bg-indigo-100 px-2 py-1
           text-sm text-indigo-800 opacity-20 transition-all
           md:group-hover:visible md:group-hover:translate-x-0 md:group-hover:opacity-100
       `}
-        >
-          {text}
-        </div>
-      )}
-    </li>
+          >
+            {text}
+          </div>
+        )}
+      </li>
+    </Link>
   );
 }
