@@ -11,7 +11,7 @@ function RowUser({ user, index }) {
       <td>{user.phone}</td>
       <td>{user.role}</td>
       <td>
-        <div className="buttons-action flex justify-between">
+        <div className="buttons-action flex justify-around">
           <button className="mr-2 min-w-24 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary">
             <span className="flex items-center justify-center">
               <FiArrowUpRight className="mr-1" />
