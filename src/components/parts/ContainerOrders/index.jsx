@@ -1,9 +1,6 @@
-import { useEffect, useState } from 'react';
-
 import Link from 'next/link';
 import { CgChevronRight } from 'react-icons/cg';
 
-import { getAllOrders } from '@/fetching/orders';
 import formatRupiah from '@/lib/formatRupiah';
 
 function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
@@ -35,7 +32,7 @@ function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
   );
 }
 
-function ContainerOrders({data}) {
+function ContainerOrders({ data }) {
   return (
     <div className="container-products mt-4  p-4 md:ml-20 ">
       <div className="overflow-x-auto rounded-xl border border-secondary px-7 py-5 ">

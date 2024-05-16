@@ -1,16 +1,17 @@
 'use client';
-const { createContext, useState } = require('react');
+
+const { createContext, useState, useCallback } = require('react');
 
 const DetailOrderContex = createContext();
 const DetailContexProvider = ({ children }) => {
   const [selectedWarehouses, setSelectedWarehouses] = useState({});
 
-  function updateSelectedWarehouse(productId, warehouseId) {
+  const updateSelectedWarehouse = useCallback((productId, warehouseId) => {
     setSelectedWarehouses((prevState) => ({
       ...prevState,
       [productId]: warehouseId
     }));
-  }
+  }, []);
 
   return (
     <DetailOrderContex.Provider value={{ selectedWarehouses, updateSelectedWarehouse }}>

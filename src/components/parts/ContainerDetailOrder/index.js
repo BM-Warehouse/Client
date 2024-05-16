@@ -2,11 +2,11 @@
 
 import { useContext, useEffect, useState } from 'react';
 
+import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { getAllWarehouses } from '@/fetching/warehouse';
 import formatRupiah from '@/lib/formatRupiah';
-import { DetailOrderContex } from '@/contexts/detailOrderContext';
 
-function Row({ productId, productName, amount, price, warehouses, onWarehouseChange }) {
+function Row({ productId, productName, amount, price, warehouses }) {
   const { updateSelectedWarehouse, selectedWarehouses } = useContext(DetailOrderContex);
   // function onDetailButtonClick() {
   //   console.log('Here', id);
@@ -21,8 +21,8 @@ function Row({ productId, productName, amount, price, warehouses, onWarehouseCha
       {/* <td>{warehouse || '-'}</td> */}
       <td>
         <select
-          value={selectedWarehouses[productId] || ""}
-          id="fruitSelect"
+          value={selectedWarehouses[productId] || ''}
+          id="warehouseSelect"
           onChange={(e) => {
             updateSelectedWarehouse(productId, e.target.value);
           }}

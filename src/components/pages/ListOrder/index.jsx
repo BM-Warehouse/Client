@@ -1,10 +1,11 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import ContainerOrders from '@/components/parts/ContainerOrders';
 import Navbar from '@/components/parts/Navbar';
+import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
-import Pagination from '../Home/components/Pagination';
-import { useEffect, useState } from 'react';
 import { getAllOrders } from '@/fetching/orders';
 
 function ListOrders() {
@@ -26,27 +27,31 @@ function ListOrders() {
         setData(res.data.checkouts);
         setLoading(false);
         setPagination(res.data.pagination);
-      }).catch((e) => {
-        console.log(e)
+      })
+      .catch((e) => {
+        console.log(e);
       });
   }, []);
 
-  function onPaginationClick(setPage) {
+  const onPaginationClick = (setPage) => {
     getAllOrders(setPage)
       .then((res) => res.json())
       .then((res) => {
         setData(res.data.checkouts);
         setLoading(false);
         setPagination(res.data.pagination);
-      }).catch((e) => {
-        console.log(e)
+      })
+      .catch((e) => {
+        console.log(e);
       });
-  }
+  };
 
-  if (isLoading) return (
-    <div className="flex justify-center items-center h-screen">
-      <span className="loading loading-bars loading-lg text-tertiary"> </span>;
-    </div>)
+  if (isLoading)
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <span className="loading loading-bars loading-lg text-tertiary"> </span>;
+      </div>
+    );
   if (!data) return <p className="ml-36">No Detail Order</p>;
 
   return (
@@ -78,7 +83,11 @@ function ListOrders() {
 
       <ContainerOrders data={data} />
 
-      <Pagination currentPage={pagination.currentPage} totalPage={pagination.totalPage} onClick={onPaginationClick} />
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPage={pagination.totalPage}
+        onClick={onPaginationClick}
+      />
     </main>
   );
 }

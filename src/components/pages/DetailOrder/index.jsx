@@ -1,17 +1,16 @@
 'use client';
-import React, { useEffect, useState, createContext, useContext } from 'react';
 
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+import React, { useEffect, useState, useContext } from 'react';
+
+import { useRouter } from 'next/navigation';
 import { TbTruckDelivery } from 'react-icons/tb';
 
 import ContainerOrderDetail from '@/components/parts/ContainerDetailOrder';
 import Navbar from '@/components/parts/Navbar';
+import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
-import { sendOrder } from '@/fetching/orders';
-import { useRouter } from 'next/navigation';
-import { getDetailOrder } from '@/fetching/orders';
-import Pagination from '../Home/components/Pagination';
+import { sendOrder, getDetailOrder } from '@/fetching/orders';
 
 const DetailOrder = ({ id }) => {
   const [data, setData] = useState(null);
@@ -24,8 +23,8 @@ const DetailOrder = ({ id }) => {
     limit: null
   });
   const [isLoading, setLoading] = useState(true);
-  const [status, setStatus] = useState("");
-  const router = useRouter()
+  const [status, setStatus] = useState('');
+  const router = useRouter();
   const { selectedWarehouses } = useContext(DetailOrderContex);
 
   function handleSend() {
@@ -36,16 +35,17 @@ const DetailOrder = ({ id }) => {
     // console.log(warehouseSelections);
     sendOrder(id, warehouseSelections)
       .then((res) => {
-        console.log(res)
-        router.push("/orders");
-      }).catch((e) => {
-        console.log(e);
+        console.log(res);
+        router.push('/orders');
       })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
-  useEffect(()=>{
-    console.log(selectedWarehouses)
-  }, [selectedWarehouses])
+  useEffect(() => {
+    console.log(selectedWarehouses);
+  }, [selectedWarehouses]);
 
   useEffect(() => {
     getDetailOrder(id)
@@ -57,8 +57,8 @@ const DetailOrder = ({ id }) => {
       })
       .then((detailOrderData) => {
         setData(detailOrderData.data.checkout.productCheckout);
-        setStatus(detailOrderData.data.checkout.status)
-        setPagination(detailOrderData.data.pagination)
+        setStatus(detailOrderData.data.checkout.status);
+        setPagination(detailOrderData.data.pagination);
         setLoading(false);
       })
       .catch((error) => {
@@ -67,16 +67,18 @@ const DetailOrder = ({ id }) => {
   }, [id]);
 
   useEffect(() => {
-    console.log("pagination---", pagination);
-  }, [pagination])
+    console.log('pagination---', pagination);
+  }, [pagination]);
 
-  if (isLoading) return (
-    <div className="flex justify-center items-center h-screen">
-      <span className="loading loading-bars loading-lg text-tertiary"> </span>;
-    </div>)
+  if (isLoading)
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <span className="loading loading-bars loading-lg text-tertiary"> </span>;
+      </div>
+    );
   if (!data) return <p className="ml-36">No Detail Order</p>;
 
-  function onPaginationClick(setPage) {
+  const onPaginationClick = (setPage) => {
     console.log(setPage);
     getDetailOrder(id, setPage)
       .then((res) => {
@@ -87,14 +89,14 @@ const DetailOrder = ({ id }) => {
       })
       .then((detailOrderData) => {
         setData(detailOrderData.data.checkout.productCheckout);
-        setStatus(detailOrderData.data.checkout.status)
-        setPagination(detailOrderData.data.pagination)
+        setStatus(detailOrderData.data.checkout.status);
+        setPagination(detailOrderData.data.pagination);
         setLoading(false);
       })
       .catch((error) => {
         console.log('Error:', error);
       });
-  }
+  };
 
   return (
     <main className="product-page bg-bgg relative h-screen font-poppins">
@@ -106,13 +108,15 @@ const DetailOrder = ({ id }) => {
       <div className="container-btn-products mt-20 flex flex-col-reverse items-center justify-between px-5 md:ml-20 md:flex-row">
         <div className="btn-add-product">
           <button
-            className={`mt-5 min-w-28 rounded-md  px-3 py-2 text-primary  md:mt-0 ${status === 'SENT' ? 'bg-grey' : 'hover:bg-secondary bg-tertiary'}`}
+            className={`mt-5 min-w-28 rounded-md  px-3 py-2 text-primary  md:mt-0 ${
+              status === 'SENT' ? 'bg-grey' : 'bg-tertiary hover:bg-secondary'
+            }`}
             onClick={handleSend}
             disabled={status === 'SENT'}
           >
             <span className="flex items-center justify-center">
               <TbTruckDelivery className="mr-1" />
-              {(status === 'SENT' ? "Sent" : "Send")}
+              {status === 'SENT' ? 'Sent' : 'Send'}
             </span>
           </button>
         </div>
@@ -140,7 +144,11 @@ const DetailOrder = ({ id }) => {
 
       <ContainerOrderDetail checkoutId={id} data={data} />
 
-      <Pagination currentPage={pagination.currentPage} totalPage={pagination.totalPage} onClick={onPaginationClick} />
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPage={pagination.totalPage}
+        onClick={onPaginationClick}
+      />
     </main>
   );
 };
