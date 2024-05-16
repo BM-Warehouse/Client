@@ -21,9 +21,9 @@ const getAllUsers = async () => {
   }
 };
 
-const getUserById = async (id) => {
+const getUserDetail = async (id) => {
   try {
-    const response = await fetch(`${BASE_URL}/users/${id}`);
+    const response = await fetchWithToken(`${BASE_URL}/users/${id}`);
     const responseJson = await response.json();
     const { status, message } = responseJson;
     if (status !== 'success') {
@@ -62,4 +62,4 @@ const getOwnProfile = async () => {
   }
 };
 
-export { getOwnProfile, getUserById, getAllUsers };
+export { getOwnProfile, getUserDetail, getAllUsers };

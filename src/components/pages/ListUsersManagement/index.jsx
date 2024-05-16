@@ -5,8 +5,14 @@ import Pagination from '@/components/pages/Home/components/Pagination';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import TableUsersManagement from '@/components/parts/TableUsersManagement';
+import useAuthUserStore from '@/store/authUserStore';
 
 function ListUsersManagement() {
+  const { role } = useAuthUserStore();
+
+  if (!role) {
+    return null;
+  }
   return (
     <main className="user-page bg-bgg relative h-screen font-poppins ">
       <Navbar />
