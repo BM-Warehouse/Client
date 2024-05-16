@@ -2,7 +2,6 @@
 
 import { useContext, useEffect, useState } from 'react';
 
-import { getDetailOrder } from '@/fetching/orders';
 import { getAllWarehouses } from '@/fetching/warehouse';
 import formatRupiah from '@/lib/formatRupiah';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
@@ -39,27 +38,10 @@ function Row({ productId, productName, amount, price, warehouses, onWarehouseCha
   );
 }
 
-function ContainerOrderDetail({ checkoutId, onWarehouseChange }) {
-  const [data, setData] = useState(null);
+function ContainerOrderDetail({ checkoutId, data }) {
   const [warehouses, setWarehouses] = useState(null);
-  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    getDetailOrder(checkoutId)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Failed to fetch detail order');
-        }
-        return res.json();
-      })
-      .then((detailOrderData) => {
-        setData(detailOrderData.data.productCheckout);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log('Error:', error);
-      });
-
     getAllWarehouses()
       .then((res) => {
         // console.log('>>>', res.warehouses);
@@ -69,13 +51,6 @@ function ContainerOrderDetail({ checkoutId, onWarehouseChange }) {
         console.log('Error:', error);
       });
   }, [checkoutId]);
-
-  // if(data && warehouses){
-  //     setLoading(false);
-  // }
-
-  if (isLoading) return <p className="ml-36">Loading...</p>;
-  if (!data) return <p className="ml-36">No Detail Order</p>;
 
   return (
     <div className="container-detail-order mt-4  p-4 md:ml-20 ">
