@@ -8,12 +8,26 @@ import ContainerOrderDetail from '@/components/parts/ContainerDetailOrder';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
+import { sendOrder } from '@/fetching/orders';
+import { useRouter } from 'next/navigation';
 
 const DetailOrder = ({ id }) => {
+  const router = useRouter()
   const { selectedWarehouses } = useContext(DetailOrderContex);
 
   function handleSend() {
-    console.log(selectedWarehouses);
+    // console.log(selectedWarehouses);
+    const warehouseSelections = Object.entries(selectedWarehouses).map(([key, val]) => ({
+      productId: +key,
+      warehouseId: +val
+    }));
+    sendOrder(id, warehouseSelections)
+      .then((res) => {
+        console.log(res)
+        router.push("/orders");
+      }).catch((e) => {
+        console.log(e);
+      })
   }
 
   useEffect(() => {

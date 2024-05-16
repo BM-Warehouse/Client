@@ -10,9 +10,25 @@ async function getDetailOrder(id) {
   return response;
 }
 
-async function getAllWarehouses() {
-  const response = await fetchWithToken(`${BASE_URL}/warehouses`);
-  return response;
+async function sendOrder(checkoutId, warehouseSelections) {
+  const data = {
+    checkoutId: +checkoutId,
+    warehouseSelections
+  }
+  const response = await fetchWithToken(`${BASE_URL}/checkout/send`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  if(response.status !== 200) {
+    const resJson = await response.json();
+    throw new Error(JSON.stringify(resJson));
+  }
+  const resJson = await response.json();
+  return resJson;
 }
 
-export { getAllOrders, getDetailOrder, getAllWarehouses };
+export { getAllOrders, getDetailOrder, sendOrder };
