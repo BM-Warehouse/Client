@@ -14,6 +14,7 @@ import useAuthUserStore from '@/store/authUserStore';
 const LoginPage = () => {
   const [username, onUsernameChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
+  const { role } = useAuthUserStore();
 
   const { asyncSetAuthUser } = useAuthUserStore();
 
@@ -25,7 +26,12 @@ const LoginPage = () => {
     console.log(username, password);
     try {
       await asyncSetAuthUser({ username, password });
-      router.push('/products');
+      if (role === 'admin') {
+        router.push('/dashboard');
+      }
+      if (role === 'user') {
+        router.push('/products');
+      }
     } catch (error) {
       console.error('Login failed:', error);
     } finally {
