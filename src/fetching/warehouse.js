@@ -1,10 +1,11 @@
 import BASE_URL from '@/lib/baseUrl';
+import { fetchWithToken } from '@/lib/fetchLib';
 
 const getAllWarehouses = async () => {
-  const response = await fetch(`${BASE_URL}/warehouses`);
+  const response = await fetchWithToken(`${BASE_URL}/warehouses`);
   const data = await response.json();
 
-  const warehouseData = data.warehouses.warehouses;
+  const warehouseData = data.data.warehouses;
 
   return warehouseData;
 };
