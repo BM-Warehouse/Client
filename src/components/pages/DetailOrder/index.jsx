@@ -94,7 +94,6 @@ const DetailOrder = ({ id }) => {
       .catch((error) => {
         console.log('Error:', error);
       });
-
   }
 
   return (

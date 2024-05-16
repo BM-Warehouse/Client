@@ -1,19 +1,54 @@
 'use client';
 
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
-
 import ContainerOrders from '@/components/parts/ContainerOrders';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
+import Pagination from '../Home/components/Pagination';
+import { useEffect, useState } from 'react';
+import { getAllOrders } from '@/fetching/orders';
 
 function ListOrders() {
-  // const { role } = useAuthUserStore((state) => ({
-  //   role: state.role
-  // }));
+  const [data, setData] = useState(null);
+  const [pagination, setPagination] = useState({
+    totalPage: null,
+    totalData: null,
+    nextPage: null,
+    prevPage: null,
+    currentPage: 1,
+    limit: null
+  });
+  const [isLoading, setLoading] = useState(true);
 
-  // if (!role) {
-  //   return null;
-  // }
+  useEffect(() => {
+    getAllOrders()
+      .then((res) => res.json())
+      .then((res) => {
+        setData(res.data.checkouts);
+        setLoading(false);
+        setPagination(res.data.pagination);
+      }).catch((e) => {
+        console.log(e)
+      });
+  }, []);
+
+  function onPaginationClick(setPage) {
+    getAllOrders(setPage)
+      .then((res) => res.json())
+      .then((res) => {
+        setData(res.data.checkouts);
+        setLoading(false);
+        setPagination(res.data.pagination);
+      }).catch((e) => {
+        console.log(e)
+      });
+  }
+
+  if (isLoading) return (
+    <div className="flex justify-center items-center h-screen">
+      <span className="loading loading-bars loading-lg text-tertiary"> </span>;
+    </div>)
+  if (!data) return <p className="ml-36">No Detail Order</p>;
+
   return (
     <main className="product-page bg-bgg relative h-screen font-poppins">
       <Navbar />
@@ -38,28 +73,12 @@ function ListOrders() {
               />
             </svg>
           </label>
-          {/* <div className="btn-filter ml-5 cursor-pointer rounded-lg p-1  hover:bg-secondary">
-            <IoFilterSharp className="text-3xl text-secondary hover:text-white " />
-          </div> */}
         </div>
       </div>
 
-      <ContainerOrders />
+      <ContainerOrders data={data} />
 
-      <div className="container-pagination flex items-center justify-center pb-10 ">
-        <div className="button-pagination">
-          <MdKeyboardArrowLeft className="text-2xl" />
-        </div>
-        <div className="join">
-          <button className="btn join-item">1</button>
-          <button className="btn join-item btn-active">2</button>
-          <button className="btn join-item">3</button>
-          <button className="btn join-item">4</button>
-        </div>
-        <div className="button-pagination">
-          <MdKeyboardArrowRight className="text-2xl" />
-        </div>
-      </div>
+      <Pagination currentPage={pagination.currentPage} totalPage={pagination.totalPage} onClick={onPaginationClick} />
     </main>
   );
 }

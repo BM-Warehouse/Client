@@ -35,24 +35,7 @@ function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
   );
 }
 
-function ContainerOrders() {
-  const [data, setData] = useState({ checkouts: [], count: 0 });
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    console.log('Fetching');
-    getAllOrders()
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res.data.checkouts);
-        setLoading(false);
-        console.log('Done Fetching');
-      });
-  }, []);
-
-  if (isLoading) return <span className="loading loading-infinity loading-lg" />;
-  if (!data) return <p>No Order data</p>;
-
+function ContainerOrders({data}) {
   return (
     <div className="container-products mt-4  p-4 md:ml-20 ">
       <div className="overflow-x-auto rounded-xl border border-secondary px-7 py-5 ">

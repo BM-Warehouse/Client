@@ -1,8 +1,12 @@
 import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
-async function getAllOrders() {
-  const response = await fetchWithToken(`${BASE_URL}/checkout`);
+async function getAllOrders(page = 1, limit = 5) {
+  const url = `${BASE_URL}/checkout?` + new URLSearchParams({
+    page,
+    limit
+  })
+  const response = await fetchWithToken(url);
   return response;
 }
 async function getDetailOrder(id, page = 1, limit = 5) {
