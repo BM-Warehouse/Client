@@ -11,12 +11,7 @@ import Sidebar from '@/components/parts/Sidebar';
 import useAuthUserStore from '@/store/authUserStore';
 
 function ListProducts() {
-  const { role, authUser } = useAuthUserStore((state) => ({
-    role: state.role,
-    authUser: state.authUser
-  }));
-
-  console.log(authUser);
+  const { role } = useAuthUserStore();
 
   if (!role) {
     return null;

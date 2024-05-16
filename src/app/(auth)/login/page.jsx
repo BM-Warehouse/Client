@@ -11,9 +11,7 @@ const LoginPage = () => {
   const [username, onUsernameChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
 
-  const { asyncSetAuthUser } = useAuthUserStore((state) => ({
-    asyncSetAuthUser: state.asyncSetAuthUser
-  }));
+  const { asyncSetAuthUser } = useAuthUserStore();
 
   const router = useRouter();
 
@@ -21,7 +19,7 @@ const LoginPage = () => {
     console.log(username, password);
     await asyncSetAuthUser({ username, password });
 
-    router.push('/categories');
+    router.push('/products');
   };
   return (
     <div className="w-full pt-10">

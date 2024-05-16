@@ -1,7 +1,7 @@
 import DetailProduct from '@/components/pages/DetailProduct';
 
-function page() {
-  return <DetailProduct />;
+function DetailProductPage({ params }) {
+  return <DetailProduct params={params} />;
 }
 
-export default page;
+export default DetailProductPage;

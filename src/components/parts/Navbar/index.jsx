@@ -15,11 +15,7 @@ import CartIcon from '@/components/elements/CartIcon';
 import useAuthUserStore from '@/store/authUserStore';
 
 function Navbar() {
-  const { asyncUnsetAuthUser, role } = useAuthUserStore((state) => ({
-    asyncUnsetAuthUser: state.asyncUnsetAuthUser,
-    role: state.role
-  }));
-
+  const { asyncUnsetAuthUser, role, authUser } = useAuthUserStore();
   const router = useRouter();
 
   const onLogout = async () => {
@@ -27,6 +23,9 @@ function Navbar() {
 
     router.push('/login');
   };
+
+  // check role
+
   if (!role) {
     return null;
   }
@@ -43,10 +42,7 @@ function Navbar() {
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="avatar btn btn-circle btn-ghost">
             <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              />
+              <img alt="Tailwind CSS Navbar component" src={authUser.avatar} />
             </div>
           </div>
           <ul
