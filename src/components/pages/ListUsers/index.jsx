@@ -30,7 +30,7 @@ function ListUsers() {
           </button>
         </div>
         <div className="search-filter flex items-center justify-between">
-          <label className="input input-bordered  flex h-8 items-center gap-2 border-tertiary ">
+          <label className="input input-bordered  flex h-8 items-center gap-2 ">
             <input
               type="text"
               className="grow text-sm text-tertiary transition-none placeholder:text-secondary"
