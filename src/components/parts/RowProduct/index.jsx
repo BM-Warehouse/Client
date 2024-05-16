@@ -1,14 +1,20 @@
+import Link from 'next/link';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
 
-function RowProduct() {
+function RowProduct({ product, index }) {
+  if (!product) {
+    return null;
+  }
   return (
     <tr>
-      <th>1</th>
-      <td>PediaComplete Vanila</td>
-      <td>Food & Grocery</td>
-      <td>Warehouse A</td>
-      <td>1100</td>
+      <th>{index + 1}</th>
+      <td>
+        <Link href={`/products/${product.id}`}>{product.name}</Link>
+      </td>
+      <td>{product.productCategories[0].category.name}</td>
+      <td>{product.productWarehouses[0].warehouse.name}</td>
+      <td>{product.totalStock}</td>
       <td>
         <div className="buttons-action flex justify-between">
           <button className="mr-2 min-w-28 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary">

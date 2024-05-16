@@ -31,7 +31,9 @@ module.exports = {
         lightblue: 'var(--lightblue)',
         darkblue: 'var(--darkblue)',
         txt: 'var(--txt)',
-        bgColor: 'var(--bgColor)'
+        bgColor: 'var(--bgColor)',
+        danger: 'var(--danger)',
+        ligtDanger: 'var(--ligtDanger)'
       },
       borderWidth: {
         DEFAULT: '1px',

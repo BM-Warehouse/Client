@@ -1,6 +1,19 @@
+import { useEffect } from 'react';
+
 import RowProduct from '@/components/parts/RowProduct';
+import useProductStore from '@/store/productStore';
 
 function ContainerProductsAdmin() {
+  const { productsData, asyncGetAll } = useProductStore();
+
+  useEffect(() => {
+    asyncGetAll();
+  }, [asyncGetAll]);
+
+  if (!productsData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="container-products mt-4  p-4 md:ml-20 ">
       <div className="overflow-x-auto rounded-xl border border-secondary px-7 py-5 ">
@@ -17,16 +30,9 @@ function ContainerProductsAdmin() {
             </tr>
           </thead>
           <tbody className=" text-tertiary">
-            <RowProduct />
-            <RowProduct />
-            <RowProduct />
-            <RowProduct />
-            <RowProduct />
-            <RowProduct />
-            <RowProduct />
-            <RowProduct />
-            <RowProduct />
-            <RowProduct />
+            {productsData.map((product, index) => (
+              <RowProduct key={product.id} product={product} index={index} />
+            ))}
           </tbody>
         </table>
       </div>
