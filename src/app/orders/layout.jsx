@@ -1,11 +1,13 @@
 'use client';
 
-import Navbar from '@/components/navbar-admin';
-import Container from '@/components/parts/container';
+import Container from '@/components/container';
+import Navbar from '@/components/parts/Navbar';
+import Sidebar from '@/components/parts/Sidebar';
 
 const OrdersPageLayout = ({ children }) => (
   <div>
     <Navbar />
+    <Sidebar />
     <Container>
       <div>{children}</div>
     </Container>
