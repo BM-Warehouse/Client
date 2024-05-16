@@ -15,11 +15,18 @@ import Pagination from '../Home/components/Pagination';
 
 const DetailOrder = ({ id }) => {
   const [data, setData] = useState(null);
+  const [pagination, setPagination] = useState({
+    totalPage: null,
+    totalData: null,
+    nextPage: null,
+    prevPage: null,
+    currentPage: 1,
+    limit: null
+  });
   const [isLoading, setLoading] = useState(true);
   const [status, setStatus] = useState("");
   const router = useRouter()
   const { selectedWarehouses } = useContext(DetailOrderContex);
-  const [currentPage, setCurrentPage] = useState(1);
 
   function handleSend() {
     console.log(selectedWarehouses);
@@ -45,8 +52,9 @@ const DetailOrder = ({ id }) => {
         return res.json();
       })
       .then((detailOrderData) => {
-        setData(detailOrderData.data.productCheckout);
-        setStatus(detailOrderData.data.status)
+        setData(detailOrderData.data.checkout.productCheckout);
+        setStatus(detailOrderData.data.checkout.status)
+        setPagination(detailOrderData.data.pagination)
         setLoading(false);
       })
       .catch((error) => {
@@ -55,19 +63,34 @@ const DetailOrder = ({ id }) => {
   }, [id]);
 
   useEffect(() => {
-    console.log("status---", status);
-    console.log("disabled---", status === 'SENT');
-  }, [status])
+    console.log("pagination---", pagination);
+  }, [pagination])
 
-  if (isLoading) return(
-  <div className="flex justify-center items-center h-screen">
-    <span className="loading loading-bars loading-lg text-tertiary"> </span>;
-  </div>)
+  if (isLoading) return (
+    <div className="flex justify-center items-center h-screen">
+      <span className="loading loading-bars loading-lg text-tertiary"> </span>;
+    </div>)
   if (!data) return <p className="ml-36">No Detail Order</p>;
 
-  function onPaginationClick(setPage){
+  function onPaginationClick(setPage) {
     console.log(setPage);
-    setCurrentPage(setPage);
+    getDetailOrder(id, setPage)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Failed to fetch detail order');
+        }
+        return res.json();
+      })
+      .then((detailOrderData) => {
+        setData(detailOrderData.data.checkout.productCheckout);
+        setStatus(detailOrderData.data.checkout.status)
+        setPagination(detailOrderData.data.pagination)
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+      });
+
   }
 
   return (
@@ -114,7 +137,7 @@ const DetailOrder = ({ id }) => {
 
       <ContainerOrderDetail checkoutId={id} data={data} />
 
-      <Pagination currentPage={currentPage} totalPage={2} onClick={onPaginationClick}/>
+      <Pagination currentPage={pagination.currentPage} totalPage={pagination.totalPage} onClick={onPaginationClick} />
     </main>
   );
 };

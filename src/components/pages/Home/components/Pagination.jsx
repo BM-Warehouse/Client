@@ -14,13 +14,15 @@ function Pagination({ totalPage, currentPage, onClick }) {
     pages.push(i);
   }
 
+  if(!totalPage || !currentPage ) return null;
+
   return (
     <div className="container-pagination flex items-center justify-center pb-10 ">
       {startPage !== 1 ? <div className="button-pagination">
         <MdKeyboardArrowLeft className="text-2xl" />
       </div> : ""}
       <div className="join">
-        {pages.map((i) => <button className={`btn join-item ${i === currentPage ? "btn-active" : ""}`}
+        {pages.map((i) => <button key={i} className={`btn join-item ${i === currentPage ? "btn-active" : ""}`}
           onClick={() => { onClick(i) }}>{i}</button>)}
       </div>
       {endPage !== totalPage ? <div className="button-pagination">
