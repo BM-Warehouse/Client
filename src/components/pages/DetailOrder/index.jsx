@@ -11,6 +11,7 @@ import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { sendOrder } from '@/fetching/orders';
 import { useRouter } from 'next/navigation';
 import { getDetailOrder } from '@/fetching/orders';
+import Pagination from '../Home/components/Pagination';
 
 const DetailOrder = ({ id }) => {
   const [data, setData] = useState(null);
@@ -18,6 +19,7 @@ const DetailOrder = ({ id }) => {
   const [status, setStatus] = useState("");
   const router = useRouter()
   const { selectedWarehouses } = useContext(DetailOrderContex);
+  const [currentPage, setCurrentPage] = useState(1);
 
   function handleSend() {
     console.log(selectedWarehouses);
@@ -63,6 +65,11 @@ const DetailOrder = ({ id }) => {
   </div>)
   if (!data) return <p className="ml-36">No Detail Order</p>;
 
+  function onPaginationClick(setPage){
+    console.log(setPage);
+    setCurrentPage(setPage);
+  }
+
   return (
     <main className="product-page bg-bgg relative h-screen font-poppins">
       <Navbar />
@@ -107,20 +114,7 @@ const DetailOrder = ({ id }) => {
 
       <ContainerOrderDetail checkoutId={id} data={data} />
 
-      <div className="container-pagination flex items-center justify-center pb-10 ">
-        <div className="button-pagination">
-          <MdKeyboardArrowLeft className="text-2xl" />
-        </div>
-        <div className="join">
-          <button className="btn join-item">1</button>
-          <button className="btn join-item btn-active">2</button>
-          <button className="btn join-item">3</button>
-          <button className="btn join-item">4</button>
-        </div>
-        <div className="button-pagination">
-          <MdKeyboardArrowRight className="text-2xl" />
-        </div>
-      </div>
+      <Pagination currentPage={currentPage} totalPage={15} onClick={onPaginationClick}/>
     </main>
   );
 };
