@@ -40,11 +40,13 @@ function ContainerOrders() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('Fetching');
     getAllOrders()
       .then((res) => res.json())
       .then((res) => {
         setData(res.data.checkouts);
         setLoading(false);
+        console.log('Done Fetching');
       });
   }, []);
 
