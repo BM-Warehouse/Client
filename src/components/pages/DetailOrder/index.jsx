@@ -29,19 +29,23 @@ const DetailOrder = ({ id }) => {
   const { selectedWarehouses } = useContext(DetailOrderContex);
 
   function handleSend() {
-    console.log(selectedWarehouses);
-    // const warehouseSelections = Object.entries(selectedWarehouses).map(([key, val]) => ({
-    //   productId: +key,
-    //   warehouseId: +val
-    // }));
-    // sendOrder(id, warehouseSelections)
-    //   .then((res) => {
-    //     console.log(res)
-    //     router.push("/orders");
-    //   }).catch((e) => {
-    //     console.log(e);
-    //   })
+    const warehouseSelections = Object.entries(selectedWarehouses).map(([key, val]) => ({
+      productId: +key,
+      warehouseId: +val
+    }));
+    // console.log(warehouseSelections);
+    sendOrder(id, warehouseSelections)
+      .then((res) => {
+        console.log(res)
+        router.push("/orders");
+      }).catch((e) => {
+        console.log(e);
+      })
   }
+
+  useEffect(()=>{
+    console.log(selectedWarehouses)
+  }, [selectedWarehouses])
 
   useEffect(() => {
     getDetailOrder(id)

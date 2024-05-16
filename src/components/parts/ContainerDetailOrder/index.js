@@ -7,7 +7,7 @@ import formatRupiah from '@/lib/formatRupiah';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 
 function Row({ productId, productName, amount, price, warehouses, onWarehouseChange }) {
-  const { updateSelectedWarehouse } = useContext(DetailOrderContex);
+  const { updateSelectedWarehouse, selectedWarehouses } = useContext(DetailOrderContex);
   // function onDetailButtonClick() {
   //   console.log('Here', id);
   // }
@@ -21,6 +21,7 @@ function Row({ productId, productName, amount, price, warehouses, onWarehouseCha
       {/* <td>{warehouse || '-'}</td> */}
       <td>
         <select
+          value={selectedWarehouses[productId] || ""}
           id="fruitSelect"
           onChange={(e) => {
             updateSelectedWarehouse(productId, e.target.value);
