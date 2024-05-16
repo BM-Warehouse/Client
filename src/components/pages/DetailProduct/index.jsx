@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable @next/next/no-img-element */
 
 'use client';
@@ -11,10 +12,12 @@ import { BiPlus, BiMinus } from 'react-icons/bi';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import formatRupiah from '@/lib/formatRupiah';
+import useCartStore from '@/store/cartStore';
 import useProductStore from '@/store/productStore';
 
 function DetailProduct({ params }) {
   const { detailProduct, asyncGetDetail } = useProductStore();
+  const { asyncAddProductToCart } = useCartStore();
   const [quantity, setQuantity] = useState(1);
 
   const id = +params.productId;
@@ -34,6 +37,24 @@ function DetailProduct({ params }) {
       setQuantity(quantity + 1);
     }
   };
+
+  const handleAddToCart = async () => {
+    const payload = {
+      product: {
+        productId: detailProduct.id,
+        quantity
+      }
+    };
+    try {
+      await asyncAddProductToCart(payload);
+      alert('Product added to cart successfully!');
+      setQuantity(1);
+    } catch (error) {
+      console.error('Error adding product to cart:', error.message);
+      alert('Failed to add product to cart.');
+    }
+  };
+  // const
 
   if (!detailProduct) {
     return <div>Loading...</div>;
@@ -87,7 +108,10 @@ function DetailProduct({ params }) {
               </div>
             </div>
             <div className="btn-add mb-10">
-              <button className="w-full bg-tertiary px-8 py-4 font-bold text-white hover:bg-secondary">
+              <button
+                onClick={handleAddToCart}
+                className="w-full bg-tertiary px-8 py-4 font-bold text-white hover:bg-secondary"
+              >
                 ADD TO CHART
               </button>
             </div>

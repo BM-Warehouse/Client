@@ -92,7 +92,7 @@ const addProductToCart = async (payload) => {
 const deleteCartProduct = async (id) => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/cart/${id}`, {
-      method: 'PUT',
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       }
