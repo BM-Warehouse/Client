@@ -7,17 +7,21 @@ import { MdOutlineDashboard } from 'react-icons/md';
 import { TbReceipt2 } from 'react-icons/tb';
 
 import SidebarElem, { SidebarItem } from '@/components/elements/SidebarElem';
+import useAuthUserStore from '@/store/authUserStore';
 
 function Sidebar() {
+  const { role } = useAuthUserStore();
   const routePath = usePathname();
   return (
     <SidebarElem>
-      <SidebarItem
-        icon={<MdOutlineDashboard />}
-        text="Dashboard"
-        href="/dashboard"
-        {...(routePath === '/dashboard' && { active: true })}
-      />
+      {role === 'admin' && (
+        <SidebarItem
+          icon={<MdOutlineDashboard />}
+          text="Dashboard"
+          href="/dashboard"
+          {...(routePath === '/dashboard' && { active: true })}
+        />
+      )}
       <SidebarItem
         icon={<LuBox />}
         text="Products"
@@ -30,19 +34,31 @@ function Sidebar() {
         href="/categories"
         {...(routePath === '/categories' && { active: true })}
       />
-      <SidebarItem
-        icon={<LuWarehouse />}
-        text="Warehouses"
-        href="/warehouses"
-        {...(routePath === '/warehouses' && { active: true })}
-      />
-      <SidebarItem
-        icon={<TbReceipt2 />}
-        text="Orders"
-        href="/orders"
-        {...(routePath === '/orders' && { active: true })}
-      />
-      <SidebarItem icon={<HiOutlineUsers />} text="Management Users" />
+      {role === 'admin' && (
+        <>
+          <SidebarItem
+            icon={<LuWarehouse />}
+            text="Warehouses"
+            href="/warehouses"
+            {...(routePath === '/warehouses' && { active: true })}
+          />
+          <SidebarItem
+            icon={<TbReceipt2 />}
+            text="Orders"
+            href="/orders"
+            {...(routePath === '/orders' && { active: true })}
+          />
+          <SidebarItem icon={<HiOutlineUsers />} text="Management Users" />
+        </>
+      )}
+      {role === 'user' && (
+        <SidebarItem
+          icon={<TbReceipt2 />}
+          text="Checkout History"
+          href="/checkout-history"
+          {...(routePath === '/checkout-history' && { active: true })}
+        />
+      )}
     </SidebarElem>
   );
 }

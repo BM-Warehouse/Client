@@ -37,7 +37,11 @@ function SidebarElem({ children }) {
           </button>
         </div>
 
-        <ul className=" grid grid-cols-6 px-3 md:flex-1 md:grid-cols-1 md:pb-[1000px]">
+        {/* <ul className=" grid grid-cols-6 px-3 md:flex-1 md:grid-cols-1 md:pb-[1000px]">
+          {children}
+        </ul> */}
+
+        <ul className=" flex flex-row items-center justify-evenly px-3 md:grid md:grid-cols-1 md:flex-col md:pb-[1000px]">
           {children}
         </ul>
 
