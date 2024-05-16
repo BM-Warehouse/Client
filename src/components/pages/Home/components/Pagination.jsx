@@ -8,7 +8,7 @@ function Pagination({ totalPage, currentPage, onClick }) {
   let startPage = Math.max(1, currentPage - HALF + 1);
   const endPage = Math.min(totalPage, startPage + MAX_BUTTON - 1);
 
-  if (endPage - startPage + 1 < MAX_BUTTON) startPage = endPage - MAX_BUTTON + 1;
+  if (endPage - startPage + 1 < MAX_BUTTON) startPage = Math.max(1, endPage - MAX_BUTTON + 1);
 
   for (let i = startPage; i <= endPage; i++) {
     pages.push(i);

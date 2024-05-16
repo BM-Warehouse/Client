@@ -114,7 +114,7 @@ const DetailOrder = ({ id }) => {
 
       <ContainerOrderDetail checkoutId={id} data={data} />
 
-      <Pagination currentPage={currentPage} totalPage={15} onClick={onPaginationClick}/>
+      <Pagination currentPage={currentPage} totalPage={2} onClick={onPaginationClick}/>
     </main>
   );
 };
