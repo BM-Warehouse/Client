@@ -2,7 +2,7 @@ import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
 const getAllWarehouses = async () => {
-  try{
+  try {
     const response = await fetchWithToken(`${BASE_URL}/warehouses`);
     const responseJson = await response.json();
     const { status, message } = responseJson;
@@ -17,7 +17,7 @@ const getAllWarehouses = async () => {
 
     return warehouses;
   } catch (error) {
-      // eslint-disable-next-line no-console
+    // eslint-disable-next-line no-console
     console.error('Error fetching data:', error.message);
     throw error;
   }
@@ -25,14 +25,16 @@ const getAllWarehouses = async () => {
 
 const getWarehouseDetails = async (id) => {
   const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`);
-    const responseJson = await response.json();
-    const { status, message } = responseJson;
-    if (status !== 'success') {
-      throw new Error(message);
-    }
-    const { data: {warehouse} } = responseJson;
-    console.log(warehouse);
-    return warehouse;
+  const responseJson = await response.json();
+  const { status, message } = responseJson;
+  if (status !== 'success') {
+    throw new Error(message);
+  }
+  const {
+    data: { warehouse }
+  } = responseJson;
+  console.log(warehouse);
+  return warehouse;
 };
 
 const addWarehouse = async (params) => {
@@ -52,10 +54,10 @@ const addWarehouse = async (params) => {
 };
 
 const editWarehouse = async (id, params) => {
-  try{
+  try {
     const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
       method: 'POST',
-      headers:{
+      headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(params)
@@ -68,11 +70,11 @@ const editWarehouse = async (id, params) => {
 };
 
 const deleteWarehouse = async (id) => {
-  try{
+  try {
     const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type' : 'application/json'
+        'Content-Type': 'application/json'
       }
     });
 
@@ -84,7 +86,6 @@ const deleteWarehouse = async (id) => {
     }
     const { data } = responseJson;
     return data;
-
   } catch (error) {
     throw new Error(error);
   }
