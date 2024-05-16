@@ -1,25 +1,32 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { getDetailOrder } from '@/fetching/orders';
 import { getAllWarehouses } from '@/fetching/warehouse';
 import formatRupiah from '@/lib/formatRupiah';
+import { DetailOrderContex } from '@/contexts/detailOrderContext';
 
-function Row({ no, productName, amount, price, warehouses }) {
+function Row({ productId, productName, amount, price, warehouses, onWarehouseChange }) {
+  const { updateSelectedWarehouse } = useContext(DetailOrderContex);
   // function onDetailButtonClick() {
   //   console.log('Here', id);
   // }
 
   return (
     <tr>
-      <td>{no || '-'}</td>
+      <td>{productId || '-'}</td>
       <td>{productName || '-'}</td>
       <td>{amount || '-'}</td>
       <td>{price || '-'}</td>
       {/* <td>{warehouse || '-'}</td> */}
       <td>
-        <select id="fruitSelect">
+        <select
+          id="fruitSelect"
+          onChange={(e) => {
+            updateSelectedWarehouse(productId, e.target.value);
+          }}
+        >
           <option value="-1"> - </option>
           {warehouses?.map((w) => (
             <option key={w.id} value={w.id}>
@@ -32,7 +39,7 @@ function Row({ no, productName, amount, price, warehouses }) {
   );
 }
 
-function ContainerOrderDetail({ checkoutId }) {
+function ContainerOrderDetail({ checkoutId, onWarehouseChange }) {
   const [data, setData] = useState(null);
   const [warehouses, setWarehouses] = useState(null);
   const [isLoading, setLoading] = useState(true);
@@ -88,7 +95,7 @@ function ContainerOrderDetail({ checkoutId }) {
             {data.map((d) => (
               <Row
                 key={d.productId}
-                no={d.productId}
+                productId={d.productId}
                 productName={d.product.name}
                 amount={d.quantityItem}
                 price={formatRupiah(d.productPrice)}

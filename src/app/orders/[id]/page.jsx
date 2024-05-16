@@ -1,10 +1,13 @@
 import React from 'react';
 
 import DetailOrder from '@/components/pages/DetailOrder';
+import DetailContexProvider from '@/contexts/detailOrderContext';
 
 const OrderDetailPage = ({ params }) => (
   <div>
-    <DetailOrder id={params.id} />
+    <DetailContexProvider>
+      <DetailOrder id={params.id} />
+    </DetailContexProvider>
   </div>
 );
 
