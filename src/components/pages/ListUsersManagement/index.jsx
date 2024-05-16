@@ -4,10 +4,10 @@ import { IoFilterSharp } from 'react-icons/io5';
 import Pagination from '@/components/pages/Home/components/Pagination';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
-import TableUsersManagement from '@/components/parts/TableUsersManagement';
+import TableUsers from '@/components/parts/TableUsers';
 import useAuthUserStore from '@/store/authUserStore';
 
-function ListUsersManagement() {
+function ListUsers() {
   const { role } = useAuthUserStore();
 
   if (!role) {
@@ -30,7 +30,7 @@ function ListUsersManagement() {
           </button>
         </div>
         <div className="search-filter flex items-center justify-between">
-          <label className="input input-bordered  flex h-8 items-center gap-2 border-tertiary ">
+          <label className="input input-bordered  flex h-8 items-center gap-2 ">
             <input
               type="text"
               className="grow text-sm text-tertiary transition-none placeholder:text-secondary"
@@ -55,10 +55,10 @@ function ListUsersManagement() {
         </div>
       </div>
 
-      <TableUsersManagement />
+      <TableUsers />
       <Pagination />
     </main>
   );
 }
 
-export default ListUsersManagement;
+export default ListUsers;
