@@ -4,6 +4,7 @@ import { HiPlus } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
+import ToggleTheme from '@/components/elements/ToggleTheme';
 import ContainerProductsAdmin from '@/components/parts/ContainerProductsAdmin';
 import ContainerProductsUser from '@/components/parts/ContainerProductsUser';
 import Navbar from '@/components/parts/Navbar';
@@ -17,13 +18,14 @@ function ListProducts() {
     return null;
   }
   return (
-    <main className="product-page bg-bgg relative h-screen font-poppins ">
+    <main className="product-page relative h-screen bg-bgColor font-poppins ">
       <Navbar />
       <Sidebar />
+      <ToggleTheme />
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Products</h1>
       </div>
-      <div className="container-btn-products mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
+      <div className="container-btn-products  mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
         <div className="btn-add-product">
           {role === 'admin' ? (
             <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
@@ -37,7 +39,7 @@ function ListProducts() {
           )}
         </div>
         <div className="search-filter flex items-center justify-between">
-          <label className="input input-bordered  flex h-8 items-center gap-2 border-tertiary ">
+          <label className="input  flex h-8 items-center gap-2 border-tertiary ">
             <input
               type="text"
               className="grow text-sm text-tertiary transition-none placeholder:text-secondary"
@@ -64,7 +66,7 @@ function ListProducts() {
 
       {role === 'admin' ? <ContainerProductsAdmin /> : <ContainerProductsUser />}
 
-      <div className="container-pagination flex items-center justify-center pb-10 ">
+      <div className="container-pagination flex  items-center justify-center bg-bgColor pb-10 ">
         <div className="button-pagination">
           <MdKeyboardArrowLeft className="text-2xl" />
         </div>
