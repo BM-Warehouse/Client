@@ -1,51 +1,85 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { HiOutlineTrash } from 'react-icons/hi';
 
-// import { useUsersStore } from '@/store/userStore';
+import useAuthUserStore from '@/store/authUserStore';
+import useUsersStore from '@/store/userStore';
 
 function RowUser({ user, index }) {
-  // const { asyncDestroy } = useUsersStore((state) => ({
-  //   asyncDestroy: state.asyncDestroy
-  // }));
+  const router = useRouter();
+  const { role } = useAuthUserStore();
+  const { asyncDestroyUser } = useUsersStore((state) => ({
+    asyncDestroyUser: state.asyncDestroyUser
+  }));
 
-  // const handleDelete = async () => {
-  //   try {
-  //     await asyncDestroy(user.id);
-  //     console.log(`User with id ${user.id} deleted successfully`);
-  //   } catch (error) {
-  //     console.error('Failed to delete user:', error);
-  //   }
+  if (!role) {
+    return null;
+  }
+
+  const handleDestroy = async () => {
+    await asyncDestroyUser(user.id);
+    router.push('/users');
+  };
+
+  // const handleEdit = () => {
+  // router.push(`/users/${user.id}/edit`);
   // };
+
   return (
-    <tr className="cursor-pointer text-center hover:underline">
-      <td>{index}</td>
-      <td>{user.email}</td>
-      <td>{user.username}</td>
-      <td>{user.fullName}</td>
-      <td>{user.phone}</td>
-      <td>{user.role}</td>
-      <td>
-        <div className="buttons-action flex justify-around">
-          <button className="mr-2 min-w-24 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary">
-            <span className="flex items-center justify-center">
-              <FiArrowUpRight className="mr-1" />
-              Edit
-            </span>
-          </button>
-          <button
-            className="mr-2 min-w-24 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
-            // onClick={handleDelete}
-          >
-            <span className="flex items-center justify-center">
-              <HiOutlineTrash className="mr-1" />
+    <>
+      <tr className="hover:underline cursor-pointer text-center">
+        <td>{index}</td>
+        <td>{user.email}</td>
+        <td>{user.username}</td>
+        <td>{user.fullName}</td>
+        <td>{user.phone}</td>
+        <td>{user.role}</td>
+        <td>
+          <div className="buttons-action flex justify-around">
+            <button
+              // onClick={handleEdit}
+              className="mr-2 min-w-24 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
+            >
+              <span className="flex items-center justify-center">
+                <FiArrowUpRight className="mr-1" />
+                Edit
+              </span>
+            </button>
+            <button
+              className="mr-2 min-w-24 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
+              onClick={() => document.getElementById('my_modal_1').showModal()}
+            >
+              <span className="flex items-center justify-center">
+                <HiOutlineTrash className="mr-1" />
+                Delete
+              </span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box bg-primary rounded-lg shadow-lg p-6">
+          <h2 className="text-lg font-bold mb-4">Confirm Action</h2>
+          <p className="mb-4">Are you sure you want to delete this user?</p>
+          <div className="flex justify-end space-x-4">
+            <button
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+              onClick={() => document.getElementById('my_modal_1').close()}
+            >
+              Cancel
+            </button>
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+              onClick={handleDestroy}
+            >
               Delete
-            </span>
-          </button>
+            </button>
+          </div>
         </div>
-      </td>
-    </tr>
+      </dialog>
+    </>
   );
 }
 
