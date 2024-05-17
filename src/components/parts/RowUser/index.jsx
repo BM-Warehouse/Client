@@ -3,21 +3,21 @@
 import { FiArrowUpRight } from 'react-icons/fi';
 import { HiOutlineTrash } from 'react-icons/hi';
 
-import { useUsersStore } from '@/store/userStore';
+// import { useUsersStore } from '@/store/userStore';
 
 function RowUser({ user, index }) {
-  const { asyncDestroy } = useUsersStore((state) => ({
-    asyncDestroy: state.asyncDestroy
-  }));
+  // const { asyncDestroy } = useUsersStore((state) => ({
+  //   asyncDestroy: state.asyncDestroy
+  // }));
 
-  const handleDelete = async () => {
-    try {
-      await asyncDestroy(user.id);
-      console.log(`User with id ${user.id} deleted successfully`);
-    } catch (error) {
-      console.error('Failed to delete user:', error);
-    }
-  };
+  // const handleDelete = async () => {
+  //   try {
+  //     await asyncDestroy(user.id);
+  //     console.log(`User with id ${user.id} deleted successfully`);
+  //   } catch (error) {
+  //     console.error('Failed to delete user:', error);
+  //   }
+  // };
   return (
     <tr className="hover:underline cursor-pointer text-center">
       <td>{index}</td>
@@ -36,7 +36,7 @@ function RowUser({ user, index }) {
           </button>
           <button
             className="mr-2 min-w-24 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
-            onClick={handleDelete}
+            // onClick={handleDelete}
           >
             <span className="flex items-center justify-center">
               <HiOutlineTrash className="mr-1" />

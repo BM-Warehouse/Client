@@ -1,66 +1,80 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
+import useInput from '@/hooks/useInput';
+import useAuthUserStore from '@/store/authUserStore';
+import useUsersStore from '@/store/userStore';
 
-const AddUser = ({ user, onSave }) => {
+const AddUser = () => {
+  const { role } = useAuthUserStore();
+
+  const [fullName, onfullNameChange] = useInput('');
+  const [email, onEmailChange] = useInput('');
+  const [username, onUsernameChange] = useInput('');
+  const [password, onPasswordChange] = useInput('');
+  const [phone, onPhoneChange] = useInput('');
+  const [address, onAddressChange] = useInput('');
+  const [gender, onGenderChange] = useInput('');
+  const [birthdate, onBirthdateChange] = useInput('');
+  const [roleUser, onRoleChange] = useInput('');
+  const [file, setFile] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [fullName, setfullName] = useState('');
-  const [email, setemail] = useState('');
-  const [username, setusername] = useState('');
-  const [password, setpassword] = useState('');
-  const [phone, setphone] = useState('');
-  const [address, setaddress] = useState('');
-  const [gender, setgender] = useState('');
-  const [birthdate, setbirthdate] = useState('');
-  const [role, setrole] = useState('');
-  const [avatar, setavatar] = useState('');
+  const { asyncAddUser } = useUsersStore();
 
-  useEffect(() => {
-    if (user) {
-      setfullName(user.fullName);
-      setemail(user.email);
-      setusername(user.username);
-      setpassword(user.password);
-      setphone(user.phone);
-      setaddress(user.address);
-      setgender(user.gender);
-      setbirthdate(user.birthdate);
-      setrole(user.role);
-      setavatar(user.avatar);
-    }
-  }, [user]);
+  if (!role) {
+    return null;
+  }
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
   };
 
-  // const handleChangeAvatar = (e) => {
-  //   const { files } = e.target;
-  //   setavatar({
-  //     [avatar]: files ? files[0] : value
-  //   });
-  // };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave({
-      ...user,
-      fullName,
-      email,
-      username,
-      password,
-      phone,
-      address,
-      gender,
-      birthdate,
-      role,
-      avatar
-    });
+
+    if (!file) {
+      alert('Please select a file to upload.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'rwheysjo');
+
+    try {
+      const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      const { secureUrl } = await response.json();
+
+      const imageUrl = secureUrl;
+      console.log(imageUrl);
+
+      await asyncAddUser({
+        fullName,
+        email,
+        username,
+        password,
+        phone,
+        address,
+        gender,
+        birthdate,
+        role: roleUser,
+        avatar: imageUrl
+      });
+    } catch (error) {
+      console.log(`User added failed: ${error}`);
+    }
+  };
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
   return (
@@ -78,7 +92,7 @@ const AddUser = ({ user, onSave }) => {
                   type="text"
                   name="fullName"
                   value={fullName}
-                  onChange={(e) => setfullName(e.target.value)}
+                  onChange={onfullNameChange}
                   placeholder="Full Name"
                   className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
                 />
@@ -89,7 +103,7 @@ const AddUser = ({ user, onSave }) => {
                   type="text"
                   name="email"
                   value={email}
-                  onChange={(e) => setemail(e.target.value)}
+                  onChange={onEmailChange}
                   placeholder="Email"
                   className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
                 />
@@ -100,7 +114,7 @@ const AddUser = ({ user, onSave }) => {
                   type="text"
                   name="username"
                   value={username}
-                  onChange={(e) => setusername(e.target.value)}
+                  onChange={onUsernameChange}
                   placeholder="Username"
                   className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
                 />
@@ -112,7 +126,7 @@ const AddUser = ({ user, onSave }) => {
                     type={passwordVisible ? 'text' : 'password'}
                     name="password"
                     value={password}
-                    onChange={(e) => setpassword(e.target.value)}
+                    onChange={onPasswordChange}
                     placeholder="Password"
                     className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3 pr-10"
                   />
@@ -131,7 +145,7 @@ const AddUser = ({ user, onSave }) => {
                   type="text"
                   name="phone"
                   value={phone}
-                  onChange={(e) => setphone(e.target.value)}
+                  onChange={onPhoneChange}
                   placeholder="Phone"
                   className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
                 />
@@ -142,7 +156,7 @@ const AddUser = ({ user, onSave }) => {
                   type="text"
                   name="address"
                   value={address}
-                  onChange={(e) => setaddress(e.target.value)}
+                  onChange={onAddressChange}
                   placeholder="Address"
                   className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
                 />
@@ -152,11 +166,16 @@ const AddUser = ({ user, onSave }) => {
                 <select
                   name="gender"
                   value={gender}
-                  onChange={(e) => setgender(e.target.value)}
+                  onChange={onGenderChange}
                   className="input input-bordered w-full h-10 mt-2 rounded-md px-3 text-secondary bg-white"
                 >
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+                  <option value="">Select Gender</option>
+                  <option value="male" selected={gender === 'male'}>
+                    Male
+                  </option>
+                  <option value="female" selected={gender === 'female'}>
+                    Female
+                  </option>
                 </select>
               </label>
               <label className="text-secondary w-full">
@@ -165,7 +184,7 @@ const AddUser = ({ user, onSave }) => {
                   type="date"
                   name="birthdate"
                   value={birthdate}
-                  onChange={(e) => setbirthdate(e.target.value)}
+                  onChange={onBirthdateChange}
                   className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
                 />
               </label>
@@ -173,12 +192,17 @@ const AddUser = ({ user, onSave }) => {
                 Role:
                 <select
                   name="role"
-                  value={role}
-                  onChange={(e) => setrole(e.target.value)}
+                  value={roleUser}
+                  onChange={onRoleChange}
                   className="input input-bordered w-full h-10 mt-2 rounded-md px-3 text-secondary bg-white"
                 >
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
+                  <option value="">Select Role</option>
+                  <option value="user" selected={roleUser === 'user'}>
+                    User
+                  </option>
+                  <option value="admin" selected={roleUser === 'admin'}>
+                    Admin
+                  </option>
                 </select>
               </label>
               <label className="text-secondary w-full">
@@ -186,7 +210,7 @@ const AddUser = ({ user, onSave }) => {
                 <input
                   type="file"
                   name="avatar"
-                  // onChange={handleChangeAvatar}
+                  onChange={handleFileChange}
                   className="file-input file-input-bordered file-input-sm w-full mt-2 text-secondary file:bg-secondary file:border-secondary file:text-white rounded-md px-3"
                 />
               </label>
@@ -195,7 +219,11 @@ const AddUser = ({ user, onSave }) => {
               <button type="button" className="btn bg-secondary text-white rounded-md px-4 py-2">
                 Close
               </button>
-              <button type="submit" className="btn bg-secondary text-white rounded-md px-4 py-2">
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                className="btn bg-secondary text-white rounded-md px-4 py-2"
+              >
                 Submit
               </button>
             </div>

@@ -40,26 +40,43 @@ const getUserDetail = async (id) => {
   }
 };
 
-// const addUser = async (data) => {
-//   try {
-//     const response = await fetchWithToken(`${BASE_URL}/users/`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(data)
-//     });
-//     const responseJson = await response.json();
-//     const { status, message } = responseJson;
-//     if (status !== 'success') {
-//       throw new Error(message);
-//     }
-//     return data;
-//   } catch (error) {
-//     console.error('Error fetching data:', error.message);
-//     throw error;
-//   }
-// };
+const addUser = async (
+  fullName,
+  email,
+  username,
+  password,
+  phone,
+  address,
+  gender,
+  birthdate,
+  role,
+  avatar
+) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/users/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        fullName,
+        email,
+        username,
+        password,
+        phone,
+        address,
+        gender,
+        birthdate,
+        role,
+        avatar
+      )
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
 
 const updateUser = async (id) => {
   try {
@@ -116,4 +133,4 @@ const getOwnProfile = async () => {
   }
 };
 
-export { getOwnProfile, getUserDetail, getAllUsers, updateUser, destroyUser };
+export { getOwnProfile, getUserDetail, getAllUsers, addUser, updateUser, destroyUser };
