@@ -70,12 +70,18 @@ const deleteProductById = async (id) => {
 
 const addProductToWarehouse = async (productId, warehouseId, quantity) => {
   try {
+    const requestBody = {
+      productId,
+      warehouseId,
+      quantity
+    };
+    // console.log(productId, warehouseId, quantity);
     const response = await fetchWithToken(`${BASE_URL}/products/warehouse/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(productId, warehouseId, quantity)
+      body: JSON.stringify(requestBody)
     });
     const responseJson = await response.json();
     const { status, message } = responseJson;
