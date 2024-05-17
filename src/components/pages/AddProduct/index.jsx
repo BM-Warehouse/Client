@@ -7,15 +7,15 @@ import Sidebar from '@/components/parts/Sidebar';
 
 function AddProduct() {
   return (
-    <section className="add-product-page relative min-h-screen bg-bgColor pb-20 md:pb-12 font-poppins">
+    <section className="add-product-page relative min-h-screen bg-bgColor pb-20 font-poppins md:pb-12">
       <Navbar />
       <Sidebar />
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Add Product</h1>
       </div>
-      <div className="body-page md:ml-40 px-2 mt-10 flex">
+      <div className="body-page mt-10 flex px-2 md:ml-40">
         <form action="" className="w-full bg-white xl:w-2/4 ">
-          <label className="max-w-lg  form-control w-full">
+          <label className="form-control  w-full max-w-lg">
             <div className="label">
               <span className="label-text text-txt">Product Name</span>
             </div>
@@ -27,7 +27,7 @@ function AddProduct() {
               required
             />
           </label>
-          <label className="max-w-lg form-control w-full">
+          <label className="form-control w-full max-w-lg">
             <div className="label">
               <span className="label-text text-txt">Price</span>
             </div>
@@ -39,7 +39,7 @@ function AddProduct() {
               required
             />
           </label>
-          <label className="max-w-lg form-control w-full">
+          <label className="form-control w-full max-w-lg">
             <div className="label">
               <span className="label-text text-txt">Stock</span>
             </div>
@@ -51,7 +51,7 @@ function AddProduct() {
               required
             />
           </label>
-          <label className="max-w-lg  form-control w-full">
+          <label className="form-control  w-full max-w-lg">
             <div className="label">
               <span className="label-text text-txt">Warehouse</span>
             </div>
@@ -63,7 +63,7 @@ function AddProduct() {
               <option>Greedo</option>
             </select>
           </label>
-          <label className="max-w-lg  form-control w-full">
+          <label className="form-control  w-full max-w-lg">
             <div className="label">
               <span className="label-text text-txt">Description</span>
             </div>
@@ -75,7 +75,7 @@ function AddProduct() {
               required
             />
           </label>
-          <label className="max-w-lg form-control w-full">
+          <label className="form-control w-full max-w-lg">
             <div className="label">
               <span className="label-text text-txt">Image</span>
             </div>
@@ -102,7 +102,7 @@ function AddProduct() {
           <Image
             src={AdminWarehouse}
             alt="Admin Warehouse Image"
-            className="rounded-[100px] saturate-200 max-h-screen w-auto"
+            className="max-h-screen w-auto rounded-[100px] saturate-200"
           />
         </div>
       </div>
