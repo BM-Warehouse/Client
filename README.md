@@ -6,4 +6,4 @@
 4. Duplicate `.env.example` file into `.env` and make changes accordingly
 5. Run `pnpm install` in project directory to install all the dependencies
 6. Run `pnpm prepare:husky`
-7. Run `pnpm dev` to start the website in your local machine with development mode or `yarn start` to start the website in your local machine with production mode
+7. Run `pnpm dev` to start the website in your local machine with development mode or `pnpm start` to start the website in your local machine with production mode
