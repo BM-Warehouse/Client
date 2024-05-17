@@ -11,7 +11,6 @@ import Sidebar from '@/components/parts/Sidebar';
 import useInput from '@/hooks/useInput';
 import useAuthUserStore from '@/store/authUserStore';
 import useCategryStore from '@/store/categoryStore';
-// import uploadImage from '@/lib/upload';
 
 function ListCategories() {
   const { role } = useAuthUserStore();
@@ -28,7 +27,6 @@ function ListCategories() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('submit diklik');
 
     if (!file) {
       // eslint-disable-next-line no-alert
@@ -52,6 +50,7 @@ function ListCategories() {
       const imageUrl = secureUrl;
 
       await asyncAddCategory({ name, description, imageUrl });
+      alert('Category added successfully!');
     } catch (error) {
       console.log(`category added failed: ${error}`);
     }

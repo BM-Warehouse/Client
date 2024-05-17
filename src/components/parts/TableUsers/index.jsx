@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import RowUser from '@/components/parts/RowUser';
 import useUsersStore from '@/store/userStore';
 
-function TableUsersManagement() {
+function TableUsers() {
   const { usersData, asyncGetAll } = useUsersStore((state) => ({
     usersData: state.usersData,
     asyncGetAll: state.asyncGetAll
@@ -45,4 +45,4 @@ function TableUsersManagement() {
   );
 }
 
-export default TableUsersManagement;
+export default TableUsers;
