@@ -4,6 +4,10 @@ import useWarehouseStore from '@/store/warehouseStore';
 
 function ModalAddStockProduct({ product, onClose }) {
   const { warehouseData, getWarehouseData } = useWarehouseStore();
+  const { asyncAddProductToWarehouse } = useProductStore();
+
+  const [selectedWarehouse, setSelectedWarehouse] = useState('');
+  const [stock, setStock] = useState('');
 
   useEffect(() => {
     getWarehouseData();

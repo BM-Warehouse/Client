@@ -68,4 +68,67 @@ const deleteProductById = async (id) => {
   }
 };
 
-export { getAllProducts, getProductById, deleteProductById };
+const addProductToWarehouse = async (productId, warehouseId, quantity) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/products/warehouse/add`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(productId, warehouseId, quantity)
+    });
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    return responseJson;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
+const moveProductWarehouse = async (productId, fromWarehouseId, toWarehouseId, quantity) => {
+  try {
+    const requestBody = {
+      productId,
+      warehouseId: {
+        from: fromWarehouseId,
+        to: toWarehouseId
+      },
+      quantity
+    };
+
+    const response = await fetchWithToken(`${BASE_URL}/products/warehouse/move`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    // const { data } = responseJson;
+    return responseJson;
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
+export {
+  getAllProducts,
+  getProductById,
+  deleteProductById,
+  addProductToWarehouse,
+  moveProductWarehouse
+};

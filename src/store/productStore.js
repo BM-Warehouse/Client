@@ -1,7 +1,12 @@
-/* eslint-disable no-console */
 import { create } from 'zustand';
 
-import { getAllProducts, getProductById, deleteProductById } from '@/fetching/product';
+import {
+  getAllProducts,
+  getProductById,
+  deleteProductById,
+  addProductToWarehouse,
+  moveProductWarehouse
+} from '@/fetching/product';
 
 const useProductStore = create((set) => ({
   productsData: [],
@@ -43,6 +48,25 @@ const useProductStore = create((set) => ({
       }));
     } catch (error) {
       console.error('Error in asyncDeleteProduct:', error.message);
+    }
+  },
+  async asyncAddProductToWarehouse(productId, warehouseId, quantity) {
+    try {
+      await addProductToWarehouse(productId, warehouseId, quantity);
+      set((state) => ({
+        productsData: state.productsData.map((product) =>
+          product.id === productId ? { ...product, stock: product.stock + quantity } : product
+        )
+      }));
+    } catch (error) {
+      console.error('Error in asyncAddProductToWarehouse:', error.message);
+    }
+  },
+  async asyncMoveProductWarehouse(productId, fromWarehouseId, toWarehouseId, quantity) {
+    try {
+      await moveProductWarehouse(productId, fromWarehouseId, toWarehouseId, quantity);
+    } catch (error) {
+      console.error('Error in asyncMoveProductWarehouse:', error.message);
     }
   }
 }));
