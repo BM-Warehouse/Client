@@ -38,14 +38,14 @@ const getCategoryDetail = async (id) => {
   }
 };
 
-const addCategory = async (name, description) => {
+const addCategory = async (name, description, imageUrl) => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/categories/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(name, description)
+      body: JSON.stringify(name, description, imageUrl)
     });
     return response;
   } catch (error) {

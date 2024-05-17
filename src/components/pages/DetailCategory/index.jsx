@@ -64,7 +64,7 @@ function DetailCategory({ params }) {
                           <input
                             type="text"
                             value={categoryDetail.name}
-                            className="input input-bordered w-full max-w-xs ml-3 h-8 mt-5 text-secondary border-secondary"
+                            className="input w-full max-w-xs ml-3 h-8 mt-5 text-secondary border-secondary"
                           />
                         </label>
                         <label htmlFor="" className="text-secondary">
@@ -72,7 +72,7 @@ function DetailCategory({ params }) {
                           <input
                             type="text"
                             value={categoryDetail.description}
-                            className="input input-bordered w-full max-w-xs ml-3 h-8 mt-5 text-secondary border-secondary"
+                            className="input w-full max-w-xs ml-3 h-8 mt-5 text-secondary border-secondary"
                           />
                         </label>
                         <input
