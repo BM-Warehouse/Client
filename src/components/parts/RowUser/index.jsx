@@ -19,7 +19,7 @@ function RowUser({ user, index }) {
   //   }
   // };
   return (
-    <tr className="hover:underline cursor-pointer text-center">
+    <tr className="cursor-pointer text-center hover:underline">
       <td>{index}</td>
       <td>{user.email}</td>
       <td>{user.username}</td>

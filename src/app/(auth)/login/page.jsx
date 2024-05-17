@@ -40,22 +40,22 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="w-full pt-10">
-      <div className="flex h-[600px] justify-evenly bg-secondary">
-        <div className="flex w-1/3 items-center">
-          <Image
-            src="/login.svg"
-            width={500}
-            height={500}
-            alt="Login Image User illustrations by Storyset"
-          />
-        </div>
-        <div className="h-[95%] border-r border-gray-300" />
-        <div className=" mt-10  w-1/3  ">
+    <div className=" md:pb-20 md:pt-10">
+      <div className="grid h-[1000px] grid-cols-1 place-items-center justify-items-center bg-secondary pb-10 md:flex md:h-[600px] md:grid-cols-3 md:justify-evenly">
+        <Image
+          src="/login.svg"
+          width={500}
+          height={500}
+          alt="Login Image User illustrations by Storyset"
+          className="justify-self-center"
+        />
+
+        <div className="hidden h-[95%] border-r border-gray-300 md:block" />
+        <div>
           <h1 className="mb-10 pt-10 text-center font-poppins text-3xl font-bold text-white">
             Login
           </h1>
-          <div className="flex flex-col  justify-center">
+          <div className="flex flex-col justify-center">
             <input
               type="text"
               placeholder="Enter your username..."
