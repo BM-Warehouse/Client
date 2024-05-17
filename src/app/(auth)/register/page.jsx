@@ -12,6 +12,7 @@ import { register } from '@/fetching/auth';
 import useInput from '@/hooks/useInput';
 
 const RegisterPage = () => {
+  const [step, setStep] = useState(1);
   const [email, onEmailChange] = useInput('');
   const [username, onUsernameChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
@@ -43,7 +44,6 @@ const RegisterPage = () => {
         address,
         gender,
         birthdate,
-        avatar,
         role: 'User'
       });
       alert('Registration successful! Please log in.');
@@ -56,9 +56,108 @@ const RegisterPage = () => {
     }
   };
 
+  const renderStepOne = () => (
+    <>
+      <input
+        type="email"
+        placeholder="Enter your email..."
+        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        value={email}
+        onChange={onEmailChange}
+        required
+        disabled={loading}
+      />
+      <input
+        type="text"
+        placeholder="Enter your username..."
+        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        value={username}
+        onChange={onUsernameChange}
+        required
+        disabled={loading}
+      />
+      <input
+        type="password"
+        placeholder="Enter your password..."
+        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        value={password}
+        onChange={onPasswordChange}
+        required
+        disabled={loading}
+      />
+      <input
+        type="password"
+        placeholder="Confirm password..."
+        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        value={confirmPassword}
+        onChange={onConfirmPasswordChange}
+        required
+        disabled={loading}
+      />
+    </>
+  );
+
+  const renderStepTwo = () => (
+    <>
+      <input
+        type="text"
+        placeholder="Enter your full name..."
+        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        value={fullName}
+        onChange={onFullNameChange}
+        required
+        disabled={loading}
+      />
+      <input
+        type="text"
+        placeholder="Enter your phone number..."
+        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        value={phone}
+        onChange={onPhoneChange}
+        required
+        disabled={loading}
+      />
+      <input
+        type="text"
+        placeholder="Enter your address..."
+        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        value={address}
+        onChange={onAddressChange}
+        required
+        disabled={loading}
+      />
+      <input
+        type="text"
+        placeholder="Enter your gender..."
+        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        value={gender}
+        onChange={onGenderChange}
+        required
+        disabled={loading}
+      />
+      <input
+        type="date"
+        placeholder="Enter your birthdate..."
+        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        value={birthdate}
+        onChange={onBirthdateChange}
+        required
+        disabled={loading}
+      />
+      <input
+        type="text"
+        placeholder="Enter your avatar URL..."
+        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        value={avatar}
+        onChange={onAvatarChange}
+        disabled={loading}
+      />
+    </>
+  );
+
   return (
-    <div className="w-full lg:pt-10">
-      <div className="flex h-full flex-col justify-evenly bg-secondary pb-10 md:h-[600px] md:flex-row">
+    <div className="w-full lg:pb-20 lg:pt-10">
+      <div className="flex h-full flex-col justify-evenly bg-secondary pb-10 md:h-[700px] md:flex-row">
         <div className="flex w-full items-center justify-center md:w-1/3 md:justify-start">
           <Image src="/register.svg" width={500} height={500} alt="Register Image by StorySet" />
         </div>
@@ -68,114 +167,53 @@ const RegisterPage = () => {
             Register
           </h1>
           <div className="flex flex-col justify-center">
-            <input
-              type="email"
-              placeholder="Enter your email..."
-              className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-              value={email}
-              onChange={onEmailChange}
-              required
-              disabled={loading}
-            />
-            <input
-              type="text"
-              placeholder="Enter your username..."
-              className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-              value={username}
-              onChange={onUsernameChange}
-              required
-              disabled={loading}
-            />
-            <input
-              type="password"
-              placeholder="Enter your password..."
-              className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-              value={password}
-              onChange={onPasswordChange}
-              required
-              disabled={loading}
-            />
-            <input
-              type="password"
-              placeholder="Confirm password..."
-              className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-              value={confirmPassword}
-              onChange={onConfirmPasswordChange}
-              required
-              disabled={loading}
-            />
-            <input
-              type="text"
-              placeholder="Enter your full name..."
-              className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-              value={fullName}
-              onChange={onFullNameChange}
-              required
-              disabled={loading}
-            />
-            <input
-              type="text"
-              placeholder="Enter your phone number..."
-              className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-              value={phone}
-              onChange={onPhoneChange}
-              required
-              disabled={loading}
-            />
-            <input
-              type="text"
-              placeholder="Enter your address..."
-              className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-              value={address}
-              onChange={onAddressChange}
-              required
-              disabled={loading}
-            />
-            <input
-              type="text"
-              placeholder="Enter your gender..."
-              className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-              value={gender}
-              onChange={onGenderChange}
-              required
-              disabled={loading}
-            />
-            <input
-              type="date"
-              placeholder="Enter your birthdate..."
-              className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-              value={birthdate}
-              onChange={onBirthdateChange}
-              required
-              disabled={loading}
-            />
-            <input
-              type="text"
-              placeholder="Enter your avatar URL..."
-              className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-              value={avatar}
-              onChange={onAvatarChange}
-              disabled={loading}
-            />
+            {step === 1 ? renderStepOne() : renderStepTwo()}
           </div>
-          <div className="flex flex-col gap-y-4 text-white">
-            <button
-              type="submit"
-              className={`my-5 w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
-                loading ? 'cursor-not-allowed opacity-50' : ''
-              }`}
-              onClick={onRegister}
-              disabled={loading}
-            >
-              {loading ? 'Registering...' : 'Register'}
-            </button>
-            <span>
+          <div className="flex justify-center gap-10 text-white">
+            {step === 1 ? (
+              <button
+                type="button"
+                className={` w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
+                  loading ? 'cursor-not-allowed opacity-50' : ''
+                }`}
+                onClick={() => setStep(2)}
+                disabled={loading}
+              >
+                Next
+              </button>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className={` w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
+                    loading ? 'cursor-not-allowed opacity-50' : ''
+                  }`}
+                  onClick={() => setStep(1)}
+                  disabled={loading}
+                >
+                  Back
+                </button>
+                <button
+                  type="submit"
+                  className={`my-5 w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
+                    loading ? 'cursor-not-allowed opacity-50' : ''
+                  }`}
+                  onClick={onRegister}
+                  disabled={loading}
+                >
+                  {loading ? 'Registering...' : 'Register'}
+                </button>
+              </>
+            )}
+          </div>
+          <div className="flex flex-col text-white">
+            <span className="mt-10">
               Already have an account?{' '}
               <Link href="/login" className="font-semibold underline underline-offset-1">
                 Login Here
               </Link>
             </span>
-            <Link href="/" className="mt-10 text-center">
+            <Link href="/" className="mt-20 text-center">
               Back To Home
             </Link>
           </div>
