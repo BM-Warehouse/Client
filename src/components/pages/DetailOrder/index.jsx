@@ -4,6 +4,7 @@ import React, { useEffect, useState, useContext } from 'react';
 
 import { useRouter } from 'next/navigation';
 import { TbTruckDelivery } from 'react-icons/tb';
+import { IoMdAdd } from "react-icons/io";
 
 import ContainerOrderDetail from '@/components/parts/ContainerDetailOrder';
 import Navbar from '@/components/parts/Navbar';
@@ -11,6 +12,7 @@ import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { sendOrder, getDetailOrder } from '@/fetching/orders';
+import ModalAddProduct from '@/components/parts/ModalAddProduct';
 
 const DetailOrder = ({ id }) => {
   const [data, setData] = useState(null);
@@ -26,6 +28,7 @@ const DetailOrder = ({ id }) => {
   const [status, setStatus] = useState('');
   const router = useRouter();
   const { selectedWarehouses } = useContext(DetailOrderContex);
+  const [isProductSelectOpen, setIsProductSelectOpen] = useState(false);
 
   function handleSend() {
     const warehouseSelections = Object.entries(selectedWarehouses).map(([key, val]) => ({
@@ -41,6 +44,14 @@ const DetailOrder = ({ id }) => {
       .catch((e) => {
         console.log(e);
       });
+  }
+
+  const closeProductSelectionDialog = () => {
+    setIsProductSelectOpen(false);
+  }
+  
+  const openProductSelectionDialog = () => {
+    setIsProductSelectOpen(true);
   }
 
   useEffect(() => {
@@ -102,24 +113,33 @@ const DetailOrder = ({ id }) => {
     <main className="product-page bg-bgg relative h-screen font-poppins">
       <Navbar />
       <Sidebar />
+      
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Order Detail</h1>
       </div>
-      <div className="container-btn-products mt-20 flex flex-col-reverse items-center justify-between px-5 md:ml-20 md:flex-row">
-        <div className="btn-add-product">
-          <button
-            className={`mt-5 min-w-28 rounded-md  px-3 py-2 text-primary  md:mt-0 ${
-              status === 'SENT' ? 'bg-grey' : 'bg-tertiary hover:bg-secondary'
+      <div className="container-btn-products mt-20 flex items-center justify-between gap-3 px-5 md:ml-20 md:flex-row">
+        <button
+          className={`mt-5 min-w-28 rounded-md  px-3 py-2 text-primary  md:mt-0 ${status === 'SENT' ? 'bg-grey' : 'bg-tertiary hover:bg-secondary'
             }`}
-            onClick={handleSend}
-            disabled={status === 'SENT'}
-          >
-            <span className="flex items-center justify-center">
-              <TbTruckDelivery className="mr-1" />
-              {status === 'SENT' ? 'Sent' : 'Send'}
-            </span>
-          </button>
-        </div>
+          onClick={handleSend}
+          disabled={status === 'SENT'}
+        >
+          <span className="flex items-center justify-center">
+            <TbTruckDelivery className="mr-1" />
+            {status === 'SENT' ? 'Sent' : 'Send'}
+          </span>
+        </button>
+        {status === 'PACKING' && <button
+          className={`mt-5 min-w-28 rounded-md  px-3 py-2 text-primary  md:mt-0 bg-tertiary hover:bg-secondary`}
+          onClick={openProductSelectionDialog}
+        >
+          <span className="flex items-center justify-center">
+            <IoMdAdd className="mr-1" />
+            Add Product
+          </span>
+        </button>}
+        
+        <div className='flex-grow'> </div>
         <div className="search-filter flex items-center justify-center">
           <label className="input input-bordered flex items-center gap-2">
             <input type="text" className="grow" placeholder="Search" />
@@ -143,7 +163,7 @@ const DetailOrder = ({ id }) => {
       </div>
 
       <ContainerOrderDetail checkoutId={id} data={data} />
-
+      <ModalAddProduct onClose={closeProductSelectionDialog} show={isProductSelectOpen}/>
       <Pagination
         currentPage={pagination.currentPage}
         totalPage={pagination.totalPage}

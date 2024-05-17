@@ -6,7 +6,7 @@ import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { getAllWarehouses } from '@/fetching/warehouse';
 import formatRupiah from '@/lib/formatRupiah';
 
-function Row({ productId, productName, amount, price, warehouses }) {
+function Row({ productId, no, productName, amount, price, warehouses }) {
   const { updateSelectedWarehouse, selectedWarehouses } = useContext(DetailOrderContex);
   // function onDetailButtonClick() {
   //   console.log('Here', id);
@@ -14,13 +14,12 @@ function Row({ productId, productName, amount, price, warehouses }) {
 
   return (
     <tr>
-      <td>{productId || '-'}</td>
+      <td>{no || '-'}</td>
       <td>{productName || '-'}</td>
       <td>{amount || '-'}</td>
       <td>{price || '-'}</td>
-      {/* <td>{warehouse || '-'}</td> */}
       <td>
-        <select
+        <select className='select select-bordered min-h-9 h-9 min-w-48'
           value={selectedWarehouses[productId] || ''}
           id="warehouseSelect"
           onChange={(e) => {
@@ -45,13 +44,17 @@ function ContainerOrderDetail({ checkoutId, data }) {
   useEffect(() => {
     getAllWarehouses()
       .then((res) => {
-        // console.log('>>>', res.warehouses);
+        // console.log('>>>', res);
         setWarehouses(res);
       })
       .catch((error) => {
         console.log('Error:', error);
       });
   }, [checkoutId]);
+
+  useEffect(()=> {
+    console.log("===========", warehouses);
+  }, [warehouses]);
 
   return (
     <div className="container-detail-order mt-4  p-4 md:ml-20 ">
@@ -68,14 +71,15 @@ function ContainerOrderDetail({ checkoutId, data }) {
             </tr>
           </thead>
           <tbody className=" text-tertiary">
-            {data.map((d) => (
+            {data.map((d, i) => (
               <Row
                 key={d.productId}
+                no={i+1}
                 productId={d.productId}
                 productName={d.product.name}
                 amount={d.quantityItem}
                 price={formatRupiah(d.productPrice)}
-                warehouses={warehouses?.warehouses}
+                warehouses={warehouses}
               />
             ))}
           </tbody>
