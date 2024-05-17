@@ -79,6 +79,21 @@ const updateUser = async (id) => {
   }
 };
 
+const destroyUser = async (id) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/users/${id}`, { method: 'DELETE' });
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    return id;
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
 const getOwnProfile = async () => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/users/me`);
@@ -101,4 +116,4 @@ const getOwnProfile = async () => {
   }
 };
 
-export { getOwnProfile, getUserDetail, getAllUsers, updateUser };
+export { getOwnProfile, getUserDetail, getAllUsers, updateUser, destroyUser };

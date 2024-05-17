@@ -8,7 +8,7 @@ import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import useUsersStore from '@/store/userStore';
 
-function DetailUser({ params }) {
+function UpdateUser({ params }) {
   const { userDetail, asyncGetDetail } = useUsersStore((state) => ({
     userDetail: state.userDetail,
     asyncGetDetail: state.asyncGetDetail
@@ -24,17 +24,18 @@ function DetailUser({ params }) {
   if (!userDetail) {
     return <div>Loading...</div>;
   }
-
+  console.log(userDetail.birthdate);
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
   return (
-    <section className="detail-user-page relative min-h-screen bg-bgColor pb-20 font-poppins">
+    <section className="update-user-page relative min-h-screen bg-bgColor pb-20 font-poppins">
       <Navbar />
       <Sidebar />
-      <div className="detail-user-page-content flex w-full flex-col items-center px-4 md:px-10 py-10 text-primary">
-        <div className="detail-user-container mt-10 md:mt-20 flex flex-col items-center bg-tertiary px-4 md:px-8 xl:px-24 rounded-lg shadow-lg py-10 w-full max-w-2xl">
+      <div className="update-user-page-content flex w-full flex-col items-center px-4 md:px-10 py-10 text-primary">
+        <div className="update-user-container mt-10 md:mt-20 flex flex-col items-center bg-tertiary px-4 md:px-8 xl:px-24 rounded-lg shadow-lg py-10 w-full max-w-2xl">
+          <h1 className="text-3xl font-bold mb-6">Update User</h1>
           <form className="flex flex-col w-full">
             <div className="input-container space-y-4">
               <label className="text-secondary w-full">
@@ -147,4 +148,4 @@ function DetailUser({ params }) {
   );
 }
 
-export default DetailUser;
+export default UpdateUser;

@@ -25,6 +25,16 @@ const useUsersStore = create((set) => ({
       console.error('Error in asyncFunc:', error);
     }
   }
+  // asyncDestroy: async (id) => {
+  //   try {
+  //     await destroyUser(id);
+  //     set((_state) => ({
+  //       usersData: state.usersData.filter((user) => user.id !== id)
+  //     }));
+  //   } catch (error) {
+  //     console.error('Error in asyncFunc:', error);
+  //   }
+  // }
 }));
 
 export default useUsersStore;
