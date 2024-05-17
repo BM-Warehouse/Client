@@ -1,8 +1,10 @@
+'use client';
+
 import { HiUserAdd } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 
-import Pagination from '@/components/pages/Home/components/Pagination';
 import Navbar from '@/components/parts/Navbar';
+import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
 import TableUsers from '@/components/parts/TableUsers';
 import useAuthUserStore from '@/store/authUserStore';

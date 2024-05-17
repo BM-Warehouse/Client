@@ -40,6 +40,45 @@ const getUserDetail = async (id) => {
   }
 };
 
+// const addUser = async (data) => {
+//   try {
+//     const response = await fetchWithToken(`${BASE_URL}/users/`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(data)
+//     });
+//     const responseJson = await response.json();
+//     const { status, message } = responseJson;
+//     if (status !== 'success') {
+//       throw new Error(message);
+//     }
+//     return data;
+//   } catch (error) {
+//     console.error('Error fetching data:', error.message);
+//     throw error;
+//   }
+// };
+
+const updateUser = async (id) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/users/${id}`);
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    const {
+      data: { updateUser }
+    } = responseJson;
+    return updateUser;
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
 const getOwnProfile = async () => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/users/me`);
@@ -62,4 +101,4 @@ const getOwnProfile = async () => {
   }
 };
 
-export { getOwnProfile, getUserDetail, getAllUsers };
+export { getOwnProfile, getUserDetail, getAllUsers, updateUser };
