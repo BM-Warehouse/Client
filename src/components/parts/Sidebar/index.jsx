@@ -48,7 +48,7 @@ function Sidebar() {
             href="/orders"
             {...(routePath === '/orders' && { active: true })}
           />
-          <SidebarItem icon={<HiOutlineUsers />} text="Management Users" />
+          <SidebarItem icon={<HiOutlineUsers />} text="Management Users" href="/users" />
         </>
       )}
       {role === 'user' && (
