@@ -2,13 +2,13 @@ import Link from 'next/link';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
 
-function RowProduct({ product, index }) {
+function RowProduct({ product }) {
   if (!product) {
     return null;
   }
   return (
     <tr>
-      <th>{index + 1}</th>
+      <th>{product.id}</th>
       <td>
         <Link href={`/products/${product.id}`}>{product.name}</Link>
       </td>

@@ -12,7 +12,7 @@ function ContainerProductsAdmin({ productsData }) {
           {/* head */}
           <thead className="text-tertiary">
             <tr className="text-base ">
-              <th>No</th>
+              <th>ID</th>
               <th>Name</th>
               <th>Category</th>
               <th>Total Stock</th>
@@ -20,8 +20,8 @@ function ContainerProductsAdmin({ productsData }) {
             </tr>
           </thead>
           <tbody className=" text-tertiary">
-            {productsData.map((product, index) => (
-              <RowProduct key={product.id} product={product} index={index} />
+            {productsData.map((product) => (
+              <RowProduct key={product.id} product={product} />
             ))}
           </tbody>
         </table>
