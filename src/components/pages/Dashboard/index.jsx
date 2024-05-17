@@ -13,7 +13,9 @@ function Dashboard() {
       <div className="admin-title flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Dashboard</h1>
       </div>
-      <QuantitiesChart />
+      <div className="container mx-auto py-10">
+        <QuantitiesChart />
+      </div>
     </main>
   );
 }
