@@ -12,9 +12,11 @@ const AboutUs = () => (
     <div className="about-us-content mt-10 flex flex-col items-center xl:flex-row">
       <div className="about-us-left px-5 text-tertiary md:px-10 xl:w-1/2 xl:px-20">
         <p>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-          tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit
+          BM WAREHOUSE is an organization created as the final project assignment for Rakamin
+          Academy. We aim to revolutionize the warehousing industry by integrating cutting-edge
+          technology with efficient logistics solutions. We strive to provide seamless warehousing
+          services that optimize storage, streamline operations, and enhance overall supply chain
+          management
         </p>
         <br />
         <p>

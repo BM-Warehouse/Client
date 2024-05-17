@@ -1,4 +1,8 @@
+/* eslint-disable react/no-unescaped-entities */
+
 'use client';
+
+import { useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,17 +14,31 @@ import useAuthUserStore from '@/store/authUserStore';
 const LoginPage = () => {
   const [username, onUsernameChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
+  const { role } = useAuthUserStore();
 
   const { asyncSetAuthUser } = useAuthUserStore();
 
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const onLogin = async () => {
+    setLoading(true);
     console.log(username, password);
-    await asyncSetAuthUser({ username, password });
-
-    router.push('/products');
+    try {
+      await asyncSetAuthUser({ username, password });
+      if (role === 'admin') {
+        router.push('/dashboard');
+      }
+      if (role === 'user') {
+        router.push('/products');
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <div className="w-full pt-10">
       <div className="flex h-[600px] justify-evenly bg-secondary">
@@ -46,6 +64,7 @@ const LoginPage = () => {
               value={username}
               onChange={onUsernameChange}
               required
+              disabled={loading}
             />
             <input
               type="password"
@@ -55,6 +74,7 @@ const LoginPage = () => {
               value={password}
               onChange={onPasswordChange}
               required
+              disabled={loading}
             />
           </div>
           <div className="flex flex-col gap-y-4 text-white">
@@ -67,13 +87,16 @@ const LoginPage = () => {
             <button
               onClick={() => onLogin()}
               type="button"
-              className="my-5 w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary"
+              className={`my-5 w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
+                loading ? 'cursor-not-allowed opacity-50' : ''
+              }`}
+              disabled={loading}
             >
-              Login
+              {loading ? 'Logging in...' : 'Login'}
             </button>
 
             <span>
-              Dont have an account yet?{' '}
+              Don't have an account yet?{' '}
               <Link href="/register" className=" font-semibold underline underline-offset-1">
                 Register Here
               </Link>
