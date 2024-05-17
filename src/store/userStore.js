@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { getAllUsers, getUserDetail, addUser } from '@/fetching/user';
+import { getAllUsers, getUserDetail, addUser, updateUser, destroyUser } from '@/fetching/user';
 
 const useUsersStore = create((set) => ({
   usersData: [],
@@ -25,6 +25,7 @@ const useUsersStore = create((set) => ({
       console.error('Error in asyncFunc:', error);
     }
   },
+
   asyncAddUser: async (
     fullName,
     email,
@@ -56,17 +57,53 @@ const useUsersStore = create((set) => ({
     } catch (error) {
       console.error('Error in asyncFunc:', error);
     }
+  },
+
+  asyncUpdateUser: async (
+    id,
+    fullName,
+    email,
+    username,
+    password,
+    phone,
+    address,
+    gender,
+    birthdate,
+    role,
+    avatar
+  ) => {
+    try {
+      const updatedUser = await updateUser(
+        id,
+        fullName,
+        email,
+        username,
+        password,
+        phone,
+        address,
+        gender,
+        birthdate,
+        role,
+        avatar
+      );
+      set((_state) => ({
+        updatedUser
+      }));
+    } catch (error) {
+      console.error('Error in asyncFunc:', error);
+    }
+  },
+
+  asyncDestroyUser: async (id) => {
+    try {
+      const destroyedUser = await destroyUser(id);
+      set((_state) => ({
+        destroyedUser
+      }));
+    } catch (error) {
+      console.error('Error in asyncFunc:', error);
+    }
   }
-  // asyncDestroy: async (id) => {
-  //   try {
-  //     await destroyUser(id);
-  //     set((_state) => ({
-  //       usersData: state.usersData.filter((user) => user.id !== id)
-  //     }));
-  //   } catch (error) {
-  //     console.error('Error in asyncFunc:', error);
-  //   }
-  // }
 }));
 
 export default useUsersStore;

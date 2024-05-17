@@ -78,18 +78,39 @@ const addUser = async (
   }
 };
 
-const updateUser = async (id) => {
+const updateUser = async (
+  id,
+  fullName,
+  email,
+  username,
+  password,
+  phone,
+  address,
+  gender,
+  birthdate,
+  role,
+  avatar
+) => {
   try {
-    const response = await fetchWithToken(`${BASE_URL}/users/${id}`);
-    const responseJson = await response.json();
-    const { status, message } = responseJson;
-    if (status !== 'success') {
-      throw new Error(message);
-    }
-    const {
-      data: { updateUser }
-    } = responseJson;
-    return updateUser;
+    const response = await fetchWithToken(`${BASE_URL}/users/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        fullName,
+        email,
+        username,
+        password,
+        phone,
+        address,
+        gender,
+        birthdate,
+        role,
+        avatar
+      )
+    });
+    return response;
   } catch (error) {
     console.error('Error fetching data:', error.message);
     throw error;
@@ -98,16 +119,11 @@ const updateUser = async (id) => {
 
 const destroyUser = async (id) => {
   try {
-    const response = await fetchWithToken(`${BASE_URL}/users/${id}`, { method: 'DELETE' });
-    const responseJson = await response.json();
-    const { status, message } = responseJson;
-    if (status !== 'success') {
-      throw new Error(message);
-    }
-    return id;
+    await fetchWithToken(`${BASE_URL}/users/${id}`, {
+      method: 'DELETE'
+    });
   } catch (error) {
     console.error('Error fetching data:', error.message);
-    throw error;
   }
 };
 
