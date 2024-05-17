@@ -1,8 +1,8 @@
 import { HiUserAdd } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 
-// import Pagination from '@/components/pages//Pagination';
 import Navbar from '@/components/parts/Navbar';
+import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
 import TableUsersManagement from '@/components/parts/TableUsersManagement';
 
@@ -24,7 +24,7 @@ function ListUsersManagement() {
           </button>
         </div>
         <div className="search-filter flex items-center justify-between">
-          <label className="input input-bordered  flex h-8 items-center gap-2 border-tertiary ">
+          <label className="input flex h-8 items-center gap-2 border-tertiary ">
             <input
               type="text"
               className="grow text-sm text-tertiary transition-none placeholder:text-secondary"
@@ -50,7 +50,7 @@ function ListUsersManagement() {
       </div>
 
       <TableUsersManagement />
-      {/* <Pagination /> */}
+      <Pagination />
     </main>
   );
 }

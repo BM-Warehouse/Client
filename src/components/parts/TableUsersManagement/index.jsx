@@ -24,7 +24,7 @@ function TableUsersManagement() {
       <div className="overflow-x-auto rounded-xl border border-secondary px-7 py-5 ">
         <table className="table table-zebra ">
           <thead className="text-tertiary ">
-            <tr className="text-base text-center overflow-hidden">
+            <tr className="overflow-hidden text-center text-base">
               <th>No</th>
               <th>Email</th>
               <th>Username</th>

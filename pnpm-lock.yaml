@@ -13,6 +13,12 @@ importers:
       '@vercel/analytics':
         specifier: ^1.2.2
         version: 1.2.2(next@14.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      chart.js:
+        specifier: ^4.4.2
+        version: 4.4.2
+      cloudinary:
+        specifier: ^2.2.0
+        version: 2.2.0
       framer-motion:
         specifier: ^11.1.9
         version: 11.1.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -28,6 +34,9 @@ importers:
       react:
         specifier: ^18
         version: 18.3.1
+      react-chartjs-2:
+        specifier: ^5.2.0
+        version: 5.2.0(chart.js@4.4.2)(react@18.3.1)
       react-dom:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
@@ -444,6 +453,12 @@ packages:
     resolution:
       {
         integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==
+      }
+
+  '@kurkle/color@0.3.2':
+    resolution:
+      {
+        integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==
       }
 
   '@next/env@14.2.3':
@@ -930,6 +945,13 @@ packages:
       }
     engines: { node: ^12.17.0 || ^14.13 || >=16.0.0 }
 
+  chart.js@4.4.2:
+    resolution:
+      {
+        integrity: sha512-6GD7iKwFpP5kbSD4MeRRRlTnQvxfQREy36uEtm1hzHzcOqwWx0YEHuspuoNlslu+nciLIB7fjjsHkUv/FzFcOg==
+      }
+    engines: { pnpm: '>=8' }
+
   chokidar@3.6.0:
     resolution:
       {
@@ -956,6 +978,13 @@ packages:
       {
         integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==
       }
+
+  cloudinary@2.2.0:
+    resolution:
+      {
+        integrity: sha512-akbLTZcNegGSkl07Frnt9fyiK9KZ2zPS+a+j7uLrjNYxVhDpDdIBz9G6snPCYqgk+WLVMRPfXTObalLr5L6g0Q==
+      }
+    engines: { node: '>=9' }
 
   color-convert@2.0.1:
     resolution:
@@ -2274,6 +2303,12 @@ packages:
         integrity: sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==
       }
 
+  lodash@4.17.21:
+    resolution:
+      {
+        integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+      }
+
   log-update@5.0.1:
     resolution:
       {
@@ -2761,11 +2796,27 @@ packages:
       }
     engines: { node: '>=6' }
 
+  q@1.5.1:
+    resolution:
+      {
+        integrity: sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==
+      }
+    engines: { node: '>=0.6.0', teleport: '>=0.2.0' }
+
   queue-microtask@1.2.3:
     resolution:
       {
         integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
       }
+
+  react-chartjs-2@5.2.0:
+    resolution:
+      {
+        integrity: sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA==
+      }
+    peerDependencies:
+      chart.js: ^4.1.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   react-dom@18.3.1:
     resolution:
@@ -3578,6 +3629,8 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
+  '@kurkle/color@0.3.2': {}
+
   '@next/env@14.2.3': {}
 
   '@next/eslint-plugin-next@14.2.3':
@@ -3859,6 +3912,10 @@ snapshots:
 
   chalk@5.3.0: {}
 
+  chart.js@4.4.2:
+    dependencies:
+      '@kurkle/color': 0.3.2
+
   chokidar@3.6.0:
     dependencies:
       anymatch: 3.1.3
@@ -3881,6 +3938,11 @@ snapshots:
       string-width: 5.1.2
 
   client-only@0.0.1: {}
+
+  cloudinary@2.2.0:
+    dependencies:
+      lodash: 4.17.21
+      q: 1.5.1
 
   color-convert@2.0.1:
     dependencies:
@@ -4789,6 +4851,8 @@ snapshots:
 
   lodash.once@4.1.1: {}
 
+  lodash@4.17.21: {}
+
   log-update@5.0.1:
     dependencies:
       ansi-escapes: 5.0.0
@@ -5052,7 +5116,14 @@ snapshots:
 
   punycode@2.3.1: {}
 
+  q@1.5.1: {}
+
   queue-microtask@1.2.3: {}
+
+  react-chartjs-2@5.2.0(chart.js@4.4.2)(react@18.3.1):
+    dependencies:
+      chart.js: 4.4.2
+      react: 18.3.1
 
   react-dom@18.3.1(react@18.3.1):
     dependencies:

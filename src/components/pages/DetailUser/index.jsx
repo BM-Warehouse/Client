@@ -15,7 +15,7 @@ function DetailUser() {
             <Image src={SusuBayik} alt="Susu Bayi" />
           </figure>
           <div className="detail-body w-full px-6 pt-4 md:ml-10 md:w-4/5 md:px-0">
-            <div className="title-user bg-tertiary rounded-lg shadow-lg">
+            <div className="title-user rounded-lg bg-tertiary shadow-lg">
               <p className="mb-3 text-base">Nama : </p>
               <p className="price mb-6 text-base">email:</p>
               <p className="mb-3 text-base">username : </p>
