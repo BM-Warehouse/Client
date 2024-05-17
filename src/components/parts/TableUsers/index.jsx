@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import RowUser from '@/components/parts/RowUser';
 import useUsersStore from '@/store/userStore';
 
-function TableUsersManagement() {
+function TableUsers() {
   const { usersData, asyncGetAll } = useUsersStore((state) => ({
     usersData: state.usersData,
     asyncGetAll: state.asyncGetAll
@@ -24,7 +24,7 @@ function TableUsersManagement() {
       <div className="overflow-x-auto rounded-xl border border-secondary px-7 py-5 ">
         <table className="table table-zebra ">
           <thead className="text-tertiary ">
-            <tr className="text-base text-center overflow-hidden">
+            <tr className="overflow-hidden text-center text-base">
               <th>No</th>
               <th>Email</th>
               <th>Username</th>
@@ -45,4 +45,4 @@ function TableUsersManagement() {
   );
 }
 
-export default TableUsersManagement;
+export default TableUsers;

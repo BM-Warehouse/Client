@@ -1,7 +1,7 @@
-import ListUsersManagement from '@/components/pages/ListUsersManagement';
+import ListUsers from '@/components/pages/ListUsers';
 
 function Users() {
-  return <ListUsersManagement />;
+  return <ListUsers />;
 }
 
 export default Users;

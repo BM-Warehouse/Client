@@ -11,7 +11,6 @@ import Sidebar from '@/components/parts/Sidebar';
 import useInput from '@/hooks/useInput';
 import useAuthUserStore from '@/store/authUserStore';
 import useCategryStore from '@/store/categoryStore';
-// import uploadImage from '@/lib/upload';
 
 function ListCategories() {
   const { role } = useAuthUserStore();
@@ -28,9 +27,9 @@ function ListCategories() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('submit diklik');
 
     if (!file) {
+      // eslint-disable-next-line no-alert
       alert('Please select a file to upload.');
       return;
     }
@@ -51,6 +50,7 @@ function ListCategories() {
       const imageUrl = secureUrl;
 
       await asyncAddCategory({ name, description, imageUrl });
+      alert('Category added successfully!');
     } catch (error) {
       console.log(`category added failed: ${error}`);
     }
@@ -78,7 +78,7 @@ function ListCategories() {
               </button>
               <dialog id="my_modal_1" className="modal">
                 <div className="modal-box bg-primary">
-                  <h3 className="font-bold text-lg text-secondary">Add New Category</h3>
+                  <h3 className="text-lg font-bold text-secondary">Add New Category</h3>
                   <div className="input-container">
                     <label htmlFor="" className="text-secondary">
                       Category name:
@@ -88,7 +88,7 @@ function ListCategories() {
                         onChange={onNameChange}
                         value={name}
                         name="name"
-                        className="input w-full max-w-xs ml-3 h-8 mt-5 placeholder:text-secondary border-secondary"
+                        className="input ml-3 mt-5 h-8 w-full max-w-xs border-secondary placeholder:text-secondary"
                       />
                     </label>
                     <label htmlFor="" className="text-secondary">
@@ -99,13 +99,13 @@ function ListCategories() {
                         onChange={onDescriptionChange}
                         value={description}
                         name="description"
-                        className="input w-full max-w-xs ml-3 h-8 mt-5 placeholder:text-secondary border-secondary"
+                        className="input ml-3 mt-5 h-8 w-full max-w-xs border-secondary placeholder:text-secondary"
                       />
                     </label>
                     <input
                       type="file"
                       onChange={handleFileChange}
-                      className="file-input file-input-bordered file-input-sm w-full max-w-xs mt-5 text-secondary file:bg-secondary file:border-secondary file:text-white"
+                      className="file-input file-input-bordered file-input-sm mt-5 w-full max-w-xs text-secondary file:border-secondary file:bg-secondary file:text-white"
                     />
                   </div>
                   <div className="container-btn-action flex items-center justify-between">
