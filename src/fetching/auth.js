@@ -57,7 +57,7 @@ const login = async ({ username, password }) => {
       })
     });
     const responseJson = await response.json();
-    console.log(BASE_URL);
+    // console.log(BASE_URL);
     const { accessToken } = responseJson;
 
     return accessToken;
