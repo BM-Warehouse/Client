@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { create } from 'zustand';
 
-import { getAllProducts, getProductById } from '@/fetching/product';
+import { getAllProducts, getProductById, deleteProductById } from '@/fetching/product';
 
 const useProductStore = create((set) => ({
   productsData: [],
@@ -33,6 +33,16 @@ const useProductStore = create((set) => ({
       }));
     } catch (error) {
       console.error('Error in asyncGetDetail:', error.message);
+    }
+  },
+  async asyncDeleteProduct(id) {
+    try {
+      await deleteProductById(id);
+      set((state) => ({
+        productsData: state.productsData.filter((product) => product.id !== id)
+      }));
+    } catch (error) {
+      console.error('Error in asyncDeleteProduct:', error.message);
     }
   }
 }));

@@ -43,4 +43,29 @@ const getProductById = async (id) => {
   }
 };
 
-export { getAllProducts, getProductById };
+const deleteProductById = async (id) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/products/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    const {
+      data: { product }
+    } = responseJson;
+    return product;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
+export { getAllProducts, getProductById, deleteProductById };
