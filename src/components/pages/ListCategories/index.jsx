@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import { IoFilterSharp } from 'react-icons/io5';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
@@ -9,19 +11,46 @@ import Sidebar from '@/components/parts/Sidebar';
 import useInput from '@/hooks/useInput';
 import useAuthUserStore from '@/store/authUserStore';
 import useCategryStore from '@/store/categoryStore';
+// import uploadImage from '@/lib/upload';
 
 function ListCategories() {
   const { role } = useAuthUserStore();
 
   const [name, onNameChange] = useInput('');
   const [description, onDescriptionChange] = useInput('');
+  const [file, setFile] = useState(null);
 
   const { asyncAddCategory } = useCategryStore();
 
-  const handleAdd = async () => {
-    console.log(`kategori: ${name} \ndescription: ${description}`);
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('submit diklik');
+
+    if (!file) {
+      alert('Please select a file to upload.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'rwheysjo');
+
     try {
-      await asyncAddCategory({ name, description });
+      const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      // secureUrl ganti dulu jadi secure_url
+      const { secureUrl } = await response.json();
+
+      const imageUrl = secureUrl;
+
+      await asyncAddCategory({ name, description, imageUrl });
     } catch (error) {
       console.log(`category added failed: ${error}`);
     }
@@ -59,7 +88,7 @@ function ListCategories() {
                         onChange={onNameChange}
                         value={name}
                         name="name"
-                        className="input input-bordered w-full max-w-xs ml-3 h-8 mt-5 placeholder:text-secondary border-secondary"
+                        className="input w-full max-w-xs ml-3 h-8 mt-5 placeholder:text-secondary border-secondary"
                       />
                     </label>
                     <label htmlFor="" className="text-secondary">
@@ -70,11 +99,12 @@ function ListCategories() {
                         onChange={onDescriptionChange}
                         value={description}
                         name="description"
-                        className="input input-bordered w-full max-w-xs ml-3 h-8 mt-5 placeholder:text-secondary border-secondary"
+                        className="input w-full max-w-xs ml-3 h-8 mt-5 placeholder:text-secondary border-secondary"
                       />
                     </label>
                     <input
                       type="file"
+                      onChange={handleFileChange}
                       className="file-input file-input-bordered file-input-sm w-full max-w-xs mt-5 text-secondary file:bg-secondary file:border-secondary file:text-white"
                     />
                   </div>
@@ -82,7 +112,7 @@ function ListCategories() {
                     <div className="container-btn-submit mt-7">
                       <button
                         type="submit"
-                        onClick={handleAdd}
+                        onClick={handleSubmit}
                         className="btn bg-secondary text-white"
                       >
                         Submit
@@ -102,7 +132,7 @@ function ListCategories() {
           )}
         </div>
         <div className="button-categories flex items-center">
-          <label className="input input-bordered  flex h-8 items-center gap-2 border-tertiary">
+          <label className="input flex h-8 items-center gap-2 border-tertiary">
             <input
               type="text"
               className="grow text-sm text-secondary placeholder:text-secondary"

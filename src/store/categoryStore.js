@@ -29,9 +29,9 @@ const useCategryStore = create((set) => ({
       console.error('Error in asyncFunc:', error);
     }
   },
-  asyncAddCategory: async (name, description) => {
+  asyncAddCategory: async (name, description, imageUrl) => {
     try {
-      const newCategory = await addCategory(name, description);
+      const newCategory = await addCategory(name, description, imageUrl);
       set((_state) => ({
         newCategory
       }));
