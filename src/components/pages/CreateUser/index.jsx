@@ -39,12 +39,12 @@ const AddUser = ({ user, onSave }) => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const handleChangeAvatar = (e) => {
-    // const { files } = e.target;
-    setavatar({
-      // [avatar]: files ? files[0] : value
-    });
-  };
+  // const handleChangeAvatar = (e) => {
+  //   const { files } = e.target;
+  //   setavatar({
+  //     [avatar]: files ? files[0] : value
+  //   });
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -186,7 +186,7 @@ const AddUser = ({ user, onSave }) => {
                 <input
                   type="file"
                   name="avatar"
-                  onChange={handleChangeAvatar}
+                  // onChange={handleChangeAvatar}
                   className="file-input file-input-bordered file-input-sm w-full mt-2 text-secondary file:bg-secondary file:border-secondary file:text-white rounded-md px-3"
                 />
               </label>
