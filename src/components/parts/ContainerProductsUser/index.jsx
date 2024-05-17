@@ -1,17 +1,8 @@
 'use client';
 
-import React, { useEffect } from 'react';
-
 import CardProduct from '@/components/parts/CardProduct';
-import useProductStore from '@/store/productStore';
 
-function ContainerProductsUser() {
-  const { productsData, asyncGetAll } = useProductStore();
-
-  useEffect(() => {
-    asyncGetAll();
-  }, [asyncGetAll]);
-
+function ContainerProductsUser({ productsData }) {
   if (!productsData) {
     return <div>Loading...</div>;
   }

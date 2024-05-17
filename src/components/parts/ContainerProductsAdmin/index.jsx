@@ -1,15 +1,6 @@
-import { useEffect } from 'react';
-
 import RowProduct from '@/components/parts/RowProduct';
-import useProductStore from '@/store/productStore';
 
-function ContainerProductsAdmin() {
-  const { productsData, asyncGetAll } = useProductStore();
-
-  useEffect(() => {
-    asyncGetAll();
-  }, [asyncGetAll]);
-
+function ContainerProductsAdmin({ productsData }) {
   if (!productsData) {
     return <div>Loading...</div>;
   }

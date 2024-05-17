@@ -20,14 +20,15 @@ function CardProduct({ product }) {
           <h2 className="card-title text-sm md:text-base">{product.name}</h2>
           <p className="m-0 text-xs md:text-sm">{formatRupiah(product.price)}</p>
           <div className="card-actions mt-2 justify-center">
-            {product.productCategories.map((ctg) => (
-              <div
-                key={ctg.category.id}
-                className="badge badge-outline text-[0.6rem] md:text-[0.7rem]"
-              >
-                {ctg.category.name}
-              </div>
-            ))}
+            {product.productCategories &&
+              product.productCategories.map((ctg) => (
+                <div
+                  key={ctg.category.id}
+                  className="badge badge-outline text-[0.6rem] md:text-[0.7rem]"
+                >
+                  {ctg.category.name}
+                </div>
+              ))}
           </div>
         </div>
       </div>

@@ -6,24 +6,33 @@ import { getAllProducts, getProductById } from '@/fetching/product';
 const useProductStore = create((set) => ({
   productsData: [],
   detailProduct: null,
-  asyncGetAll: async () => {
+  pagination: {
+    totalPage: null,
+    totalData: null,
+    nextPage: null,
+    prevPage: null,
+    currentPage: 1,
+    limit: null
+  },
+  async asyncGetAll(page = 1) {
     try {
-      const products = await getAllProducts();
+      const data = await getAllProducts(page);
       set((_state) => ({
-        productsData: products
+        productsData: data.products,
+        pagination: data.pagination
       }));
     } catch (error) {
-      console.error('Error in asyncFunc:', error.message);
+      console.error('Error in asyncGetAll:', error.message);
     }
   },
-  asyncGetDetail: async (id) => {
+  async asyncGetDetail(id) {
     try {
       const detail = await getProductById(id);
       set((_state) => ({
         detailProduct: detail
       }));
     } catch (error) {
-      console.error('Error in asyncFunc:', error.message);
+      console.error('Error in asyncGetDetail:', error.message);
     }
   }
 }));
