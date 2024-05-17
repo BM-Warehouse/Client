@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 
+import Link from 'next/link';
 import { HiPlus } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 
@@ -40,12 +41,14 @@ function ListProducts() {
       <div className="container-btn-products  mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
         <div className="btn-add-product">
           {role === 'admin' ? (
-            <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
-              <span className="flex items-center justify-center">
-                <HiPlus className="mr-1" />
-                Add Product
-              </span>
-            </button>
+            <Link href="/add-product">
+              <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
+                <span className="flex items-center justify-center">
+                  <HiPlus className="mr-1" />
+                  Add Product
+                </span>
+              </button>
+            </Link>
           ) : (
             <div> </div>
           )}

@@ -15,7 +15,6 @@ function ContainerProductsAdmin({ productsData }) {
               <th>No</th>
               <th>Name</th>
               <th>Category</th>
-              <th>Warehouse</th>
               <th>Total Stock</th>
               <th className="">Actions</th>
             </tr>

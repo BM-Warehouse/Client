@@ -12,8 +12,7 @@ function RowProduct({ product, index }) {
       <td>
         <Link href={`/products/${product.id}`}>{product.name}</Link>
       </td>
-      <td>{product.productCategories[0].category.name}</td>
-      <td>{product.productWarehouses[0].warehouse.name}</td>
+      <td>{product.productCategories[0] ? product.productCategories[0].category.name : '-'}</td>
       <td>{product.totalStock}</td>
       <td>
         <div className="buttons-action flex justify-between">

@@ -12,7 +12,7 @@ function CardProduct({ product }) {
   }
   return (
     <Link href={`/products/${product.id}`}>
-      <div className="w-30 card mb-10 cursor-pointer bg-base-100 shadow-xl hover:drop-shadow-2xl xl:w-60">
+      <div className="w-30 card mb-10 h-64 cursor-pointer bg-base-100 shadow-xl hover:drop-shadow-2xl md:h-80 xl:w-60">
         <figure>
           <img src={product.imageUrl} alt={product.name} />
         </figure>
@@ -24,7 +24,7 @@ function CardProduct({ product }) {
               product.productCategories.map((ctg) => (
                 <div
                   key={ctg.category.id}
-                  className="badge badge-outline text-[0.6rem] md:text-[0.7rem]"
+                  className="badge badge-outline text-[0.5rem] md:text-[0.7rem]"
                 >
                   {ctg.category.name}
                 </div>
