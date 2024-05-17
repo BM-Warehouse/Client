@@ -5,7 +5,9 @@ const getAllWarehouses = async () => {
   const response = await fetchWithToken(`${BASE_URL}/warehouses`);
   const data = await response.json();
 
+  
   const warehouseData = data.data.warehouses.warehouses;
+
 
   return warehouseData;
 };

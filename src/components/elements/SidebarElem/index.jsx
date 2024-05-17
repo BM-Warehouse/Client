@@ -17,7 +17,7 @@ function SidebarElem({ children }) {
       className={` fixed bottom-0 z-10 w-full  md:top-16   md:h-screen  
         md:w-auto ${expanded ? 'w-7/12 md:w-5/12 xl:w-3/12' : 'w-1/5 md:w-1/12 xl:w-[5%]'}`}
     >
-      <nav className="z-21 flex h-full flex-col border-r bg-primary ">
+      <nav className="z-21 flex h-full flex-col bg-primary ">
         <div className="hidden items-center justify-between p-4 pb-2 md:flex">
           {/* <img
             src="https://img.logoipsum.com/243.svg"

@@ -45,6 +45,7 @@
     "no-console": "off",
     "react-hooks/exhaustive-deps": "error",
     "jsx-a11y/label-has-associated-control": "off",
+    "react/jsx-no-constructed-context-values": "off",
     "import/order": [
       "error",
       {
