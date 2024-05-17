@@ -30,7 +30,7 @@ const getCategoryDetail = async (id) => {
       throw new Error(message);
     }
     const { data } = responseJson;
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     console.error('Error fetching data:', error.message);
@@ -38,18 +38,16 @@ const getCategoryDetail = async (id) => {
   }
 };
 
-const addCategory = async () => {
+const addCategory = async (name, description, imageUrl) => {
   try {
-    const respose = await fetchWithToken(`${BASE_URL}/categories/`);
-    const responseJson = await respose.json();
-    const { status, message } = responseJson;
-    if (status !== 'success') {
-      throw new Error(message);
-    }
-    const {
-      data: { newCategory }
-    } = responseJson;
-    return newCategory;
+    const response = await fetchWithToken(`${BASE_URL}/categories/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(name, description, imageUrl)
+    });
+    return response;
   } catch (error) {
     console.error('Error fetching data:', error.message);
     throw error;
