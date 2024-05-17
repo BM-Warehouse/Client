@@ -13,9 +13,10 @@ import Sidebar from '@/components/parts/Sidebar';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { sendOrder, getDetailOrder } from '@/fetching/orders';
 import ModalAddProduct from '@/components/parts/ModalAddProduct';
+import { getAllProducts } from '@/fetching/product';
 
 const DetailOrder = ({ id }) => {
-  const [data, setData] = useState(null);
+  const {data, setData} = useContext(DetailOrderContex);
   const [pagination, setPagination] = useState({
     totalPage: null,
     totalData: null,
@@ -27,8 +28,9 @@ const DetailOrder = ({ id }) => {
   const [isLoading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
   const router = useRouter();
-  const { selectedWarehouses } = useContext(DetailOrderContex);
+  const { selectedWarehouses, setCurrentCheckoutId, currentCheckoutId } = useContext(DetailOrderContex);
   const [isProductSelectOpen, setIsProductSelectOpen] = useState(false);
+  const [productList, setProductList] = useState(null);
 
   function handleSend() {
     const warehouseSelections = Object.entries(selectedWarehouses).map(([key, val]) => ({
@@ -51,14 +53,23 @@ const DetailOrder = ({ id }) => {
   }
   
   const openProductSelectionDialog = () => {
-    setIsProductSelectOpen(true);
+    getAllProducts().then((res) => {
+      // console.log(">>", res);
+      setProductList(res);
+      setIsProductSelectOpen(true);
+    })
   }
 
-  useEffect(() => {
-    console.log(selectedWarehouses);
-  }, [selectedWarehouses]);
+  // useEffect(() => {
+  //   console.log(">>>>", selectedWarehouses);
+  // }, [selectedWarehouses]);
+
+  // useEffect(() => {
+  //   console.log(">>>>", currentCheckoutId);
+  // }, [currentCheckoutId]);
 
   useEffect(() => {
+    setCurrentCheckoutId(id);
     getDetailOrder(id)
       .then((res) => {
         if (!res.ok) {
@@ -77,9 +88,9 @@ const DetailOrder = ({ id }) => {
       });
   }, [id]);
 
-  useEffect(() => {
-    console.log('pagination---', pagination);
-  }, [pagination]);
+  // useEffect(() => {
+  //   console.log('pagination---', pagination);
+  // }, [pagination]);
 
   if (isLoading)
     return (
@@ -111,8 +122,8 @@ const DetailOrder = ({ id }) => {
 
   return (
     <main className="product-page bg-bgg relative h-screen font-poppins">
-      <Navbar />
-      <Sidebar />
+      {/* <Navbar /> */}
+      {/* <Sidebar /> */}
       
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Order Detail</h1>
@@ -163,7 +174,7 @@ const DetailOrder = ({ id }) => {
       </div>
 
       <ContainerOrderDetail checkoutId={id} data={data} />
-      <ModalAddProduct onClose={closeProductSelectionDialog} show={isProductSelectOpen}/>
+      <ModalAddProduct onClose={closeProductSelectionDialog} show={isProductSelectOpen} products={productList}/>
       <Pagination
         currentPage={pagination.currentPage}
         totalPage={pagination.totalPage}

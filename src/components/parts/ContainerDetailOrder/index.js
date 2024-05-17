@@ -52,9 +52,9 @@ function ContainerOrderDetail({ checkoutId, data }) {
       });
   }, [checkoutId]);
 
-  useEffect(()=> {
-    console.log("===========", warehouses);
-  }, [warehouses]);
+  // useEffect(()=> {
+  //   console.log("===========", warehouses);
+  // }, [warehouses]);
 
   return (
     <div className="container-detail-order mt-4  p-4 md:ml-20 ">
