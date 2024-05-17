@@ -102,7 +102,7 @@ function ControlProductForm({ product }) {
         </div>
         <select className="select  w-full max-w-lg  border border-tertiary bg-bgColor">
           <option disabled selected>
-            Who shot first?
+            Who shot firsts?
           </option>
           {/* {console.log(categoriesData)} */}
           {categoriesData.map((ctg) => (

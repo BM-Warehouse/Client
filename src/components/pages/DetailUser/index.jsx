@@ -49,14 +49,6 @@ function DetailUser({ params }) {
               className="w-full h-full object-cover"
             />
           </figure>
-<<<<<<< HEAD
-          <div className="detail-body w-full px-6 pt-4 md:ml-10 md:w-4/5 md:px-0">
-            <div className="title-user rounded-lg bg-tertiary shadow-lg">
-              <p className="mb-3 text-base">Nama : </p>
-              <p className="price mb-6 text-base">email:</p>
-              <p className="mb-3 text-base">username : </p>
-              <p className="price mb-3 text-base">password: </p>
-=======
           <div className="detail-body w-full px-6 pt-4">
             <div className="detail-description bg-tertiary border border-primary rounded-lg shadow-lg p-6">
               <p className="mb-3 text-base">Name : {userDetail.fullName}</p>
@@ -68,7 +60,6 @@ function DetailUser({ params }) {
               <p className="mb-3 text-base">Gender : {userDetail.gender}</p>
               <p className="mb-3 text-base">Birthdate: {formatDate(userDetail.birthdate)}</p>
               <p className="mb-3 text-base">Role: {userDetail.role}</p>
->>>>>>> 8c97dc01fa3a3af2e0131edf8f2aa834e58adf72
             </div>
             <div className="btn-edit mt-5">
               <button className="btn bg-tertiary hover:bg-secondary text-white w-full">
