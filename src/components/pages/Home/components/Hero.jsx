@@ -6,6 +6,7 @@ import React from 'react';
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import Ellipse from '@/assets/images/Ellipse.png';
 import HumanTalk from '@/assets/images/HumanTalk.png';
@@ -26,13 +27,17 @@ const Hero = () => (
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1 }}
         >
-          <h1 className="text-2xl font-bold md:text-4xl">Lorem Ipsum</h1>
+          <h1 className="text-2xl font-bold md:text-4xl">Baby & Mom Warehouse</h1>
           <p className="mt-3 text-sm md:mt-10 md:text-base">
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-            tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit
+            BM WAREHOUSE is an organization created as the final project assignment for Rakamin
+            Academy. We aim to revolutionize the warehousing industry by integrating cutting-edge
+            technology with efficient logistics solutions. We strive to provide seamless warehousing
+            services that optimize storage, streamline operations, and enhance overall supply chain
+            management
           </p>
-          <button className="btn btn-outline mt-3 w-40 text-white md:mt-10">Get Started</button>
+          <Link href="/register">
+            <button className="btn btn-outline mt-3 w-40 text-white md:mt-10">Get Started</button>
+          </Link>
         </motion.div>
       </motion.div>
       <motion.div
