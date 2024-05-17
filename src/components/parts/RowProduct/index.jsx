@@ -5,21 +5,27 @@ import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
 
 import useProductStore from '@/store/productStore';
 
-function RowProduct({ product }) {
+function RowProduct({ product, onOpenModal }) {
   const { asyncDeleteProduct } = useProductStore();
+
   const handleDelete = async () => {
     try {
       await asyncDeleteProduct(product.id);
-      alert('Product removed from cart successfully!');
+      alert('Product removed successfully!');
     } catch (error) {
-      console.error('Error deleting product from cart:', error.message);
-      alert('Failed to remove product from cart.');
+      console.error('Error deleting product:', error.message);
+      alert('Failed to remove product.');
     }
+  };
+
+  const handleAddStock = () => {
+    onOpenModal(product);
   };
 
   if (!product) {
     return null;
   }
+
   return (
     <tr>
       <th>{product.id}</th>
@@ -30,7 +36,10 @@ function RowProduct({ product }) {
       <td>{product.totalStock}</td>
       <td>
         <div className="buttons-action flex justify-between">
-          <button className="mr-2 min-w-28 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary">
+          <button
+            onClick={handleAddStock}
+            className="mr-2 min-w-28 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
+          >
             <span className="flex items-center justify-center">
               <FiArrowUpRight className="mr-1" />
               Add Stock

@@ -104,7 +104,7 @@ function ControlProductForm({ product }) {
           <option disabled selected>
             Who shot first?
           </option>
-          {console.log(categoriesData)}
+          {/* {console.log(categoriesData)} */}
           {categoriesData.map((ctg) => (
             <option key={ctg.id}>{ctg.name}</option>
           ))}
