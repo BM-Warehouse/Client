@@ -17,6 +17,13 @@ const getWarehouseDetails = async (id) => {
   return warehouseDetails;
 };
 
+const getWarehouseName = async (id) => {
+  const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`);
+  const warehouseDetails = await response.json();
+
+  return warehouseDetails.data.warehouse.name;
+};
+
 const addWarehouse = async (params) => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/warehouses`, {
@@ -51,4 +58,10 @@ const getWarehouseQuantities = async () => {
   }
 };
 
-export { getAllWarehouses, getWarehouseDetails, addWarehouse, getWarehouseQuantities };
+export {
+  getAllWarehouses,
+  getWarehouseDetails,
+  addWarehouse,
+  getWarehouseQuantities,
+  getWarehouseName
+};

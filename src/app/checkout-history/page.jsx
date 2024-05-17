@@ -1,5 +1,5 @@
 const CheckoutHistoryPage = () => (
-  <div>
+  <div className="py-20">
     <h1 className="mb-10 text-center text-2xl">Checkout History</h1>
     <div className="overflow-x-auto">
       <table className="table">

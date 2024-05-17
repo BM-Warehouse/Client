@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Chart as ChartJS,
@@ -11,18 +11,48 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
+import { getWarehouseName } from '@/fetching/warehouse';
 import useWarehouseStore from '@/store/warehouseStore';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const QuantitiesChart = () => {
   const { warehouseQuantities, getWarehouseQuantities } = useWarehouseStore();
+  const [warehouseNames, setWarehouseNames] = useState([]);
+
+  useEffect(() => {
+    const fetchWarehouseNames = async () => {
+      try {
+        const names = await Promise.all(
+          warehouseQuantities.map(async (item) => {
+            const name = await getWarehouseName(item.warehouseId);
+            return name;
+          })
+        );
+        setWarehouseNames(names);
+      } catch (error) {
+        console.error('Error fetching warehouse details:', error);
+      }
+    };
+
+    if (warehouseQuantities.length > 0) {
+      fetchWarehouseNames();
+    }
+  }, [warehouseQuantities]);
 
   useEffect(() => {
     getWarehouseQuantities();
   }, [getWarehouseQuantities]);
 
-  const labels = warehouseQuantities.map((item) => `Warehouse ${item.warehouseId}`);
+  useEffect(() => {
+    console.log('Warehouse Quantities:', warehouseQuantities);
+    console.log('Warehouse Names:', warehouseNames);
+  }, [warehouseQuantities, warehouseNames]);
+
+  const labels =
+    warehouseNames.length > 0
+      ? warehouseNames
+      : warehouseQuantities.map((item) => `Warehouse ${item.warehouseId}`);
   const data = warehouseQuantities.map((item) => item.totalQuantity);
 
   const chartData = {
