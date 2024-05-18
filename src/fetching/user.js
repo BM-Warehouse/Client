@@ -1,19 +1,24 @@
 import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
-const getAllUsers = async () => {
+const getAllUsers = async (page = 1, limit = 10) => {
   try {
-    const response = await fetchWithToken(`${BASE_URL}/users`);
+    const url = `${BASE_URL}/users?${new URLSearchParams({
+      page,
+      limit
+    })}`;
+
+    const response = await fetchWithToken(url);
     const responseJson = await response.json();
     const { status, message } = responseJson;
-    console.log(response);
+    // console.log(response);
     if (status !== 'success') {
       throw new Error(message);
     }
     const {
       data: { users }
     } = responseJson;
-    console.log(response);
+    // console.log(response);
     return users;
   } catch (error) {
     console.error('Error fetching data:', error.message);

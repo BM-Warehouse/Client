@@ -1,14 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
+import toast from 'react-hot-toast';
+
+import { ButtonPrimary } from '@/components/parts/Button';
 import ContainerOrders from '@/components/parts/ContainerOrders';
-import Navbar from '@/components/parts/Navbar';
 import Pagination from '@/components/parts/Pagination';
-import Sidebar from '@/components/parts/Sidebar';
 import { getAllOrders } from '@/fetching/orders';
+import { getAllUsers } from '@/fetching/user';
 
-function ListOrders() {
+import ListOrderContextProvider, { ListOrderContext } from './context';
+import ModalAddOrder, { openModalAddOrder } from './ModalAddOrder';
+
+function Main() {
   const [data, setData] = useState(null);
   const [pagination, setPagination] = useState({
     totalPage: null,
@@ -19,6 +24,7 @@ function ListOrders() {
     limit: null
   });
   const [isLoading, setLoading] = useState(true);
+  const { setUsers } = useContext(ListOrderContext);
 
   useEffect(() => {
     getAllOrders()
@@ -46,6 +52,21 @@ function ListOrders() {
       });
   };
 
+  const handleAddOrderClick = () => {
+    getAllUsers(1, 10000)
+      .then((r) => {
+        setUsers(r);
+      })
+      .catch((e) => {
+        toast.error(`fail to fet user: ${e}`);
+      });
+    openModalAddOrder();
+  };
+
+  // useEffect((e)=>{
+  //   console.log(users)
+  // }, [users])
+
   if (isLoading)
     return (
       <div className="flex h-screen items-center justify-center">
@@ -56,12 +77,13 @@ function ListOrders() {
 
   return (
     <main className="product-page bg-bgg relative h-screen font-poppins">
-      <Navbar />
-      <Sidebar />
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Orders</h1>
       </div>
-      <div className="container-btn-products mt-20 flex flex-col-reverse justify-center px-5 md:ml-20 md:flex-row">
+      <div className="container-btn-products mt-20 flex flex-col-reverse items-center justify-between px-5 md:ml-20 md:flex-row">
+        <ButtonPrimary icon="add" onClick={handleAddOrderClick}>
+          Add Order
+        </ButtonPrimary>
         <div className="search-filter flex items-center justify-center">
           <label className="input input-bordered flex items-center gap-2">
             <input type="text" className="grow" placeholder="Search" />
@@ -82,6 +104,7 @@ function ListOrders() {
       </div>
 
       <ContainerOrders data={data} />
+      <ModalAddOrder />
 
       <Pagination
         currentPage={pagination.currentPage}
@@ -89,6 +112,14 @@ function ListOrders() {
         onClick={onPaginationClick}
       />
     </main>
+  );
+}
+
+function ListOrders() {
+  return (
+    <ListOrderContextProvider>
+      <Main />
+    </ListOrderContextProvider>
   );
 }
 
