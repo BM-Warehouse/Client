@@ -1,10 +1,15 @@
 import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
-const getAllCategories = async () => {
+const getAllCategories = async (contains) => {
+  let response = null;
   try {
-    const respose = await fetchWithToken(`${BASE_URL}/categories`);
-    const responseJson = await respose.json();
+    if (!contains) {
+      response = await fetchWithToken(`${BASE_URL}/categories`);
+    } else {
+      response = await fetchWithToken(`${BASE_URL}/categories?contains=${contains}`);
+    }
+    const responseJson = await response.json();
     const { status, message } = responseJson;
     if (status !== 'success') {
       throw new Error(message);
@@ -40,7 +45,7 @@ const getCategoryDetail = async (id) => {
 
 const addCategory = async (name, description, imageUrl) => {
   try {
-    const response = await fetchWithToken(`${BASE_URL}/categories/`, {
+    const response = await fetchWithToken(`${BASE_URL}/categories`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

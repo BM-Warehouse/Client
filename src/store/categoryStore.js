@@ -13,9 +13,9 @@ const useCategryStore = create((set) => ({
   categoryDetail: null,
   productCategories: [],
   newCategory: null,
-  asyncGetAll: async () => {
+  asyncGetAll: async (contains) => {
     try {
-      const categories = await getAllCategories();
+      const categories = await getAllCategories(contains);
       set((_state) => ({
         categoriesData: categories
       }));
