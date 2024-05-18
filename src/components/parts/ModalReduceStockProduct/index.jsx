@@ -1,13 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import useProductStore from '@/store/productStore';
+import useWarehouseStore from '@/store/warehouseStore';
 // import useWarehouseStore from '@/store/warehouseStore';
 
-function ModalAddStockProduct({ product, onClose, warehouseData }) {
-  const { asyncAddProductToWarehouse, asyncGetAll, asyncGetDetail } = useProductStore();
-
+function ModalReduceStockProduct({ product, onClose, warehouseData }) {
+  const { asyncReduceProduct, asyncGetAll, asyncGetDetail } = useProductStore();
+  const { getWarehouseData } = useWarehouseStore();
   const [selectedWarehouse, setSelectedWarehouse] = useState('');
   const [stock, setStock] = useState('');
+  const [maxStock, setMaxStock] = useState(0);
+
+  useEffect(() => {
+    if (selectedWarehouse) {
+      const foundWarehouse = warehouseData.find((war) => war.id === +selectedWarehouse);
+      if (foundWarehouse) {
+        const productStock = foundWarehouse.productsWarehouses.find(
+          (pw) => pw.product.id === product.id
+        );
+        setMaxStock(productStock ? productStock.quantity : 0);
+      } else {
+        setMaxStock(0);
+      }
+    } else {
+      setMaxStock(null);
+    }
+  }, [selectedWarehouse, product, warehouseData]);
 
   if (!product) {
     return null;
@@ -16,9 +34,10 @@ function ModalAddStockProduct({ product, onClose, warehouseData }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await asyncAddProductToWarehouse(product.id, +selectedWarehouse, +stock);
-      asyncGetAll();
-      asyncGetDetail(product.id);
+      await asyncReduceProduct(product.id, +selectedWarehouse, +stock);
+      await asyncGetAll();
+      await asyncGetDetail(product.id);
+      await getWarehouseData();
       onClose();
     } catch (error) {
       console.error('Error adding stock:', error.message);
@@ -29,7 +48,7 @@ function ModalAddStockProduct({ product, onClose, warehouseData }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black opacity-50" />
       <div className="relative z-10 rounded-lg bg-primary w-[29rem] p-6">
-        <h3 className="text-lg font-bold text-secondary">Add Stock Product</h3>
+        <h3 className="text-lg font-bold text-secondary">Reduce Stock Product</h3>
         <form onSubmit={handleSubmit} className="input-container mt-4 text-sm">
           <div className="mb-3 flex items-center">
             <label htmlFor="name" className="w-5/12 text-secondary">
@@ -70,14 +89,22 @@ function ModalAddStockProduct({ product, onClose, warehouseData }) {
             <label htmlFor="stock" className="w-5/12 text-secondary">
               Stock:
             </label>
-            <input
-              type="number"
-              name="stock"
-              className="input max-h-10 w-7/12 border-secondary px-4  py-0  text-sm placeholder:text-secondary"
-              value={stock}
-              onChange={(e) => setStock(e.target.value)}
-              required
-            />
+            <div className="w-7/12">
+              <input
+                type="number"
+                name="stock"
+                className="input max-h-10 w-full border-secondary px-4 py-0 text-sm placeholder:text-secondary"
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
+                required
+                max={maxStock || ''}
+              />
+              {maxStock !== null && (
+                <div className="label">
+                  <span className="label-text-alt">Maximum: {maxStock}</span>
+                </div>
+              )}
+            </div>
           </div>
           <div className="container-btn-action mt-6 flex items-center justify-between">
             <button type="submit" className="btn bg-secondary text-white">
@@ -93,4 +120,4 @@ function ModalAddStockProduct({ product, onClose, warehouseData }) {
   );
 }
 
-export default ModalAddStockProduct;
+export default ModalReduceStockProduct;

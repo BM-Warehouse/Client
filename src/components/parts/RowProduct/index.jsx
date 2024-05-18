@@ -5,7 +5,7 @@ import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
 
 import useProductStore from '@/store/productStore';
 
-function RowProduct({ product, onOpenModal }) {
+function RowProduct({ product, onOpenModal, onOpenMoveModal }) {
   const { asyncDeleteProduct } = useProductStore();
 
   const handleDelete = async () => {
@@ -20,6 +20,10 @@ function RowProduct({ product, onOpenModal }) {
 
   const handleAddStock = () => {
     onOpenModal(product);
+  };
+
+  const handleMoveStock = () => {
+    onOpenMoveModal(product);
   };
 
   if (!product) {
@@ -45,7 +49,10 @@ function RowProduct({ product, onOpenModal }) {
               Add Stock
             </span>
           </button>
-          <button className="mr-2 min-w-28 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary">
+          <button
+            onClick={handleMoveStock}
+            className="mr-2 min-w-28 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
+          >
             <span className="flex items-center justify-center">
               <HiArrowsExpand className="mr-1" />
               Move Stock

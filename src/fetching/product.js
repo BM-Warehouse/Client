@@ -131,10 +131,40 @@ const moveProductWarehouse = async (productId, fromWarehouseId, toWarehouseId, q
   }
 };
 
+const addDamageProduct = async (productId, warehouseId, quantity) => {
+  try {
+    const requestBody = {
+      productId,
+      warehouseId,
+      quantity
+    };
+    // console.log(productId, warehouseId, quantity);
+    const response = await fetchWithToken(`${BASE_URL}/products/damage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    return responseJson;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
 export {
   getAllProducts,
   getProductById,
   deleteProductById,
   addProductToWarehouse,
-  moveProductWarehouse
+  moveProductWarehouse,
+  addDamageProduct
 };

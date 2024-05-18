@@ -8,28 +8,42 @@ import { useEffect, useState } from 'react';
 // import Image from 'next/image';
 
 // import SusuBayik from '@/assets/images/susu-bayik.png';
+import { useRouter } from 'next/navigation';
 import { BiPlus, BiMinus, BiEditAlt } from 'react-icons/bi';
-import { FiArrowUpRight } from 'react-icons/fi';
+import { FiArrowUpRight, FiArrowDownLeft } from 'react-icons/fi';
 import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
 
+import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
+import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
+import ModalReduceStockProduct from '@/components/parts/ModalReduceStockProduct';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import formatRupiah from '@/lib/formatRupiah';
 import useAuthUserStore from '@/store/authUserStore';
 import useCartStore from '@/store/cartStore';
 import useProductStore from '@/store/productStore';
+import useWarehouseStore from '@/store/warehouseStore';
 
 function DetailProduct({ params }) {
-  const { detailProduct, asyncGetDetail } = useProductStore();
+  const { detailProduct, asyncGetDetail, asyncDeleteProduct } = useProductStore();
+  const { warehouseData, getWarehouseData } = useWarehouseStore();
   const { asyncAddProductToCart } = useCartStore();
   const [quantity, setQuantity] = useState(1);
+  const [showMoveStockModal, setShowMoveStockModal] = useState(false);
+  const [showAddStockModal, setShowAddStockModal] = useState(false);
+  const [showReduceStockModal, setShowReduceStockModal] = useState(false);
   const { role } = useAuthUserStore();
+  const router = useRouter();
 
   const id = +params.productId;
 
   useEffect(() => {
     asyncGetDetail(id);
   }, [asyncGetDetail, id]);
+
+  useEffect(() => {
+    getWarehouseData();
+  }, [getWarehouseData]);
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
@@ -59,7 +73,17 @@ function DetailProduct({ params }) {
       alert('Failed to add product to cart.');
     }
   };
-  // const
+
+  const handleDeleteProduct = async () => {
+    try {
+      await asyncDeleteProduct(detailProduct.id);
+      alert('Product deleted successfully!');
+      router.push('/products');
+    } catch (error) {
+      console.error('Error deleting product:', error.message);
+      alert('Failed to delete product.');
+    }
+  };
 
   if (!detailProduct) {
     return <div>Loading...</div>;
@@ -141,7 +165,10 @@ function DetailProduct({ params }) {
             {role === 'admin' && (
               <div className="buttons-product-admin mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="btn-add mb-1">
-                  <button className="w-full bg-tertiary px-8 py-4 font-bold text-white hover:bg-secondary md:px-2 md:py-3">
+                  <button
+                    onClick={() => setShowAddStockModal(true)}
+                    className="w-full bg-tertiary px-8 py-4 font-bold text-white hover:bg-secondary md:px-2 md:py-3"
+                  >
                     <span className="flex items-center justify-center">
                       <FiArrowUpRight className="mr-1" />
                       Add Stock
@@ -149,7 +176,10 @@ function DetailProduct({ params }) {
                   </button>
                 </div>
                 <div className="btn-add mb-1">
-                  <button className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3">
+                  <button
+                    onClick={() => setShowMoveStockModal(true)}
+                    className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3"
+                  >
                     <span className="flex items-center justify-center">
                       <HiArrowsExpand className="mr-1" />
                       Move Stock
@@ -165,7 +195,21 @@ function DetailProduct({ params }) {
                   </button>
                 </div>
                 <div className="btn-add mb-1">
-                  <button className="w-full bg-ligtDanger px-8 py-4 font-bold text-white hover:bg-danger md:px-2 md:py-3">
+                  <button
+                    onClick={() => setShowReduceStockModal(true)}
+                    className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3"
+                  >
+                    <span className="flex items-center justify-center">
+                      <FiArrowDownLeft className="mr-1" />
+                      Reduce Stock
+                    </span>
+                  </button>
+                </div>
+                <div className="btn-add mb-1">
+                  <button
+                    onClick={handleDeleteProduct}
+                    className="w-full bg-ligtDanger px-8 py-4 font-bold text-white hover:bg-danger md:px-2 md:py-3"
+                  >
                     <span className="flex items-center justify-center">
                       <HiOutlineTrash className="mr-1" />
                       Delete
@@ -177,6 +221,27 @@ function DetailProduct({ params }) {
           </div>
         </div>
       </div>
+      {showMoveStockModal && (
+        <ModalMoveStockProduct
+          product={detailProduct}
+          onClose={() => setShowMoveStockModal(false)}
+          warehouseData={warehouseData}
+        />
+      )}
+      {showAddStockModal && (
+        <ModalAddStockProduct
+          product={detailProduct}
+          onClose={() => setShowAddStockModal(false)}
+          warehouseData={warehouseData}
+        />
+      )}
+      {showReduceStockModal && (
+        <ModalReduceStockProduct
+          product={detailProduct}
+          onClose={() => setShowReduceStockModal(false)}
+          warehouseData={warehouseData}
+        />
+      )}
     </section>
   );
 }

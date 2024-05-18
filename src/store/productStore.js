@@ -5,7 +5,8 @@ import {
   getProductById,
   deleteProductById,
   addProductToWarehouse,
-  moveProductWarehouse
+  moveProductWarehouse,
+  addDamageProduct
 } from '@/fetching/product';
 
 const useProductStore = create((set) => ({
@@ -67,6 +68,18 @@ const useProductStore = create((set) => ({
       await moveProductWarehouse(productId, fromWarehouseId, toWarehouseId, quantity);
     } catch (error) {
       console.error('Error in asyncMoveProductWarehouse:', error.message);
+    }
+  },
+  async asyncReduceProduct(productId, warehouseId, quantity) {
+    try {
+      await addDamageProduct(productId, warehouseId, quantity);
+      set((state) => ({
+        productsData: state.productsData.map((product) =>
+          product.id === productId ? { ...product, stock: product.stock - quantity } : product
+        )
+      }));
+    } catch (error) {
+      console.error('Error in asyncAddProductToWarehouse:', error.message);
     }
   }
 }));
