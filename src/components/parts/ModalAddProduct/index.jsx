@@ -41,6 +41,9 @@ const Row = ({ product }) => {
             .then((res) => res.json())
             .then((res) => {
               setData(res.data.checkout.productCheckout);
+            })
+            .catch((e) => {
+              window.alert("getDetailOrder Error", e);
             });
             // eslint-disable-next-line no-alert
             window.alert(
@@ -131,7 +134,7 @@ const ModalAddProduct = ({ show, onClose, products }) => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [onClose]);
-
+  
   return (
     <div>
       <dialog className="modal" open={show}>

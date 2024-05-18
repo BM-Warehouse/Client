@@ -1,5 +1,6 @@
 import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
+import { deleteProductFromCheckout, getDetailOrder } from '@/fetching/orders';
 import React, { useContext, useEffect } from 'react'
 
 const modalId = 'delete-modal'
@@ -12,12 +13,28 @@ const closeModalDeleteVerification = () => {
   document.getElementById(modalId).close()
 }
 
-const ModalDeleteVerification = ({ show }) => {
+const ModalDeleteVerification = ({ checkoutId }) => {
 
-  const { selectedProduct } = useContext(DetailOrderContex);
+  const { selectedProduct, setData, page } = useContext(DetailOrderContex);
 
   const handleDelete = () => {
-    console.log(`Deleteting product id ${selectedProduct?.id}`)
+    console.log(`Deleteting product id ${selectedProduct.id}`)
+    deleteProductFromCheckout(checkoutId, selectedProduct.id)
+      .then(() => {
+        getDetailOrder(checkoutId, page)
+            .then((res) => res.json())
+            .then((res) => {
+              setData(res.data.checkout.productCheckout);
+            })
+            .catch((e) => {
+              window.alert("getDetailOrder Error", e);
+            });
+        window.alert("Delete Success")
+      })
+      .catch((e)=>{
+        console.log(e);
+        window.alert("Delete Fail", e);
+      })
     closeModalDeleteVerification()
   }
 

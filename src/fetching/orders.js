@@ -61,4 +61,27 @@ async function addProductToCheckout(checkoutId, productId, quantity) {
   return resJson;
 }
 
-export { getAllOrders, getDetailOrder, sendOrder, addProductToCheckout };
+async function deleteProductFromCheckout(checkoutId, productId) {
+  const data = {
+    checkoutId: +checkoutId,
+    productId: +productId,
+  };
+  const response = await fetchWithToken(`${BASE_URL}/checkout/deleteProduct`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  console.log(response);
+
+  if (response.status !== 200) {
+    const resJson = await response.json();
+    throw new Error(JSON.stringify(resJson));
+  }
+  const resJson = await response.json();
+  return resJson;
+}
+
+export { getAllOrders, getDetailOrder, sendOrder, addProductToCheckout, deleteProductFromCheckout };

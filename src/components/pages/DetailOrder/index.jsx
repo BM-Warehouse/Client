@@ -34,7 +34,7 @@ const DetailOrder = ({ id }) => {
   const { selectedWarehouses, setCurrentCheckoutId, setPage } =
     useContext(DetailOrderContex);
   const [isProductSelectOpen, setIsProductSelectOpen] = useState(false);
-  const [productList, setProductList] = useState(null);
+  const [productList, setProductList] = useState([]);
 
   function handleSend() {
     const warehouseSelections = Object.entries(selectedWarehouses).map(([key, val]) => ({
@@ -59,7 +59,7 @@ const DetailOrder = ({ id }) => {
   const openProductSelectionDialog = () => {
     getAllProducts().then((res) => {
       // console.log(">>", res);
-      setProductList(res);
+      setProductList(res.products);
       setIsProductSelectOpen(true);
     });
   };
@@ -109,7 +109,7 @@ const DetailOrder = ({ id }) => {
   if (!data) return <p className="ml-36">No Detail Order</p>;
 
   const onPaginationClick = (page) => {
-    console.log(page);
+    // console.log(page);
     setPage(page);
     getDetailOrder(id, page)
       .then((res) => {
@@ -187,7 +187,7 @@ const DetailOrder = ({ id }) => {
         show={isProductSelectOpen}
         products={productList}
       />
-      <ModalDeleteVerification show={isModalDeleteVerificationOpen}/>
+      <ModalDeleteVerification checkoutId={id}/>
       <Pagination
         currentPage={pagination.currentPage}
         totalPage={pagination.totalPage}
