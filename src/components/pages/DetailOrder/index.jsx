@@ -26,7 +26,7 @@ const DetailOrder = ({ id }) => {
   const [isLoading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
   const router = useRouter();
-  const { selectedWarehouses, setCurrentCheckoutId } =
+  const { selectedWarehouses, setCurrentCheckoutId, setPage } =
     useContext(DetailOrderContex);
   const [isProductSelectOpen, setIsProductSelectOpen] = useState(false);
   const [productList, setProductList] = useState(null);
@@ -99,9 +99,10 @@ const DetailOrder = ({ id }) => {
     );
   if (!data) return <p className="ml-36">No Detail Order</p>;
 
-  const onPaginationClick = (setPage) => {
-    console.log(setPage);
-    getDetailOrder(id, setPage)
+  const onPaginationClick = (page) => {
+    console.log(page);
+    setPage(page);
+    getDetailOrder(id, page)
       .then((res) => {
         if (!res.ok) {
           throw new Error('Failed to fetch detail order');

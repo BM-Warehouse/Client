@@ -7,6 +7,7 @@ const DetailContexProvider = ({ children }) => {
   const [selectedWarehouses, setSelectedWarehouses] = useState({});
   const [currentCheckoutId, setCurrentCheckoutId] = useState(0);
   const [data, setData] = useState(null);
+  const [page, setPage] = useState(null);
 
   const updateSelectedWarehouse = useCallback((productId, warehouseId) => {
     setSelectedWarehouses((prevState) => ({
@@ -23,7 +24,9 @@ const DetailContexProvider = ({ children }) => {
         currentCheckoutId,
         setCurrentCheckoutId,
         data,
-        setData
+        setData,
+        page,
+        setPage
       }}
     >
       {children}

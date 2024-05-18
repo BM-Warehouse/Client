@@ -28,7 +28,7 @@ const generateCategoriesString = (product) => {
 
 const Row = ({ product }) => {
   const [quantity, setQuantity] = useState(0);
-  const { currentCheckoutId, setData } = useContext(DetailOrderContex);
+  const { currentCheckoutId, setData, page } = useContext(DetailOrderContex);
 
   const handleQuantity = (event) => {
     setQuantity(Math.max(0, event.target.value));
@@ -37,7 +37,7 @@ const Row = ({ product }) => {
     if (quantity) {
       addProductToCheckout(currentCheckoutId, product.id, quantity)
         .then(() => {
-          getDetailOrder(currentCheckoutId)
+          getDetailOrder(currentCheckoutId, page)
             .then((res) => res.json())
             .then((res) => {
               setData(res.data.checkout.productCheckout);
