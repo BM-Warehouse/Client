@@ -1,18 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import useProductStore from '@/store/productStore';
-import useWarehouseStore from '@/store/warehouseStore';
+// import useWarehouseStore from '@/store/warehouseStore';
 
-function ModalAddStockProduct({ product, onClose }) {
-  const { warehouseData, getWarehouseData } = useWarehouseStore();
+function ModalAddStockProduct({ product, onClose, warehouseData }) {
   const { asyncAddProductToWarehouse, asyncGetAll } = useProductStore();
 
   const [selectedWarehouse, setSelectedWarehouse] = useState('');
   const [stock, setStock] = useState('');
-
-  useEffect(() => {
-    getWarehouseData();
-  }, [getWarehouseData]);
 
   if (!product) {
     return null;
@@ -61,11 +56,13 @@ function ModalAddStockProduct({ product, onClose }) {
               <option disabled value="">
                 Select Warehouse
               </option>
-              {warehouseData.map((war) => (
-                <option value={war.id} key={war.id}>
-                  {war.name}
-                </option>
-              ))}
+
+              {warehouseData &&
+                warehouseData.map((war) => (
+                  <option value={war.id} key={war.id}>
+                    {war.name}
+                  </option>
+                ))}
             </select>
           </div>
           <div className="flex items-center">
