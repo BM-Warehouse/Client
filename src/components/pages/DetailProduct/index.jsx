@@ -27,10 +27,12 @@ import useProductStore from '@/store/productStore';
 import useWarehouseStore from '@/store/warehouseStore';
 import Link from 'next/link';
 import ModalAddCategoryProduct from '@/components/parts/ModalAddCategoryProduct';
+import useCategryStore from '@/store/categoryStore';
 
 function DetailProduct({ params }) {
   const { detailProduct, asyncGetDetail, asyncDeleteProduct } = useProductStore();
   const { warehouseData, getWarehouseData } = useWarehouseStore();
+  const { categoriesData, asyncGetAll } = useCategryStore();
   const { asyncAddProductToCart } = useCartStore();
   const [quantity, setQuantity] = useState(1);
   const [showMoveStockModal, setShowMoveStockModal] = useState(false);
@@ -49,6 +51,10 @@ function DetailProduct({ params }) {
   useEffect(() => {
     getWarehouseData();
   }, [getWarehouseData]);
+
+  useEffect(() => {
+    asyncGetAll();
+  }, [asyncGetAll]);
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
@@ -192,14 +198,15 @@ function DetailProduct({ params }) {
                   </button>
                 </div>
                 <div className="btn-add mb-1">
-                  <Link href={`/edit-product/${id}`}>
-                    <button className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3">
-                      <span className="flex items-center justify-center">
-                        <LuBoxes className="mr-1" />
-                        Add Category
-                      </span>
-                    </button>
-                  </Link>
+                  <button
+                    onClick={() => setShowAddCategoryModal(true)}
+                    className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3"
+                  >
+                    <span className="flex items-center justify-center">
+                      <LuBoxes className="mr-1" />
+                      Add Category
+                    </span>
+                  </button>
                 </div>
                 <div className="btn-add mb-1">
                   <button
@@ -263,7 +270,7 @@ function DetailProduct({ params }) {
         <ModalAddCategoryProduct
           product={detailProduct}
           onClose={() => setShowAddCategoryModal(false)}
-          warehouseData={warehouseData}
+          categoriesData={categoriesData}
         />
       )}
     </section>

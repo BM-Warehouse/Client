@@ -3,11 +3,10 @@ import { useState } from 'react';
 import useProductStore from '@/store/productStore';
 // import useWarehouseStore from '@/store/warehouseStore';
 
-function ModalAddCategoryProduct({ product, onClose, warehouseData }) {
+function ModalAddCategoryProduct({ product, onClose, categoriesData }) {
   const { asyncAddProductToWarehouse, asyncGetAll, asyncGetDetail } = useProductStore();
 
-  const [selectedWarehouse, setSelectedWarehouse] = useState('');
-  const [stock, setStock] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   if (!product) {
     return null;
@@ -16,7 +15,7 @@ function ModalAddCategoryProduct({ product, onClose, warehouseData }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await asyncAddProductToWarehouse(product.id, +selectedWarehouse, +stock);
+      await asyncAddProductToWarehouse(product.id, +selectedCategory);
       asyncGetAll();
       asyncGetDetail(product.id);
       onClose();
@@ -29,7 +28,7 @@ function ModalAddCategoryProduct({ product, onClose, warehouseData }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black opacity-50" />
       <div className="relative z-10 rounded-lg bg-primary w-[29rem] p-6">
-        <h3 className="text-lg font-bold text-secondary">Add Stock Product</h3>
+        <h3 className="text-lg font-bold text-secondary">Add Category Product</h3>
         <form onSubmit={handleSubmit} className="input-container mt-4 text-sm">
           <div className="mb-3 flex items-center">
             <label htmlFor="name" className="w-5/12 text-secondary">
@@ -44,41 +43,29 @@ function ModalAddCategoryProduct({ product, onClose, warehouseData }) {
             />
           </div>
           <div className="mb-3 flex  items-center ">
-            <label htmlFor="warehouse" className="w-5/12 text-secondary">
-              Warehouse :
+            <label htmlFor="categories" className="w-5/12 text-secondary">
+              Categories :
             </label>
             <select
               name="warehouse"
               className="select max-h-10 w-7/12 border border-tertiary bg-bgColor px-4 py-0 text-sm"
-              value={selectedWarehouse}
-              onChange={(e) => setSelectedWarehouse(e.target.value)}
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
               required
             >
               <option disabled value="">
-                Select Warehouse
+                Select Category
               </option>
 
-              {warehouseData &&
-                warehouseData.map((war) => (
-                  <option value={war.id} key={war.id}>
-                    {war.name}
+              {categoriesData &&
+                categoriesData.map((ctg) => (
+                  <option value={ctg.id} key={ctg.id}>
+                    {ctg.name}
                   </option>
                 ))}
             </select>
           </div>
-          <div className="flex items-center">
-            <label htmlFor="stock" className="w-5/12 text-secondary">
-              Stock:
-            </label>
-            <input
-              type="number"
-              name="stock"
-              className="input max-h-10 w-7/12 border-secondary px-4  py-0  text-sm placeholder:text-secondary"
-              value={stock}
-              onChange={(e) => setStock(e.target.value)}
-              required
-            />
-          </div>
+
           <div className="container-btn-action mt-6 flex items-center justify-between">
             <button type="submit" className="btn bg-secondary text-white">
               Submit
