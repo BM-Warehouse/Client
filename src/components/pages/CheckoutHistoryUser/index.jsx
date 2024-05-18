@@ -18,7 +18,7 @@ function CheckoutHistoryUser() {
     <section className="checkout-history-page relative h-screen bg-bgColor font-poppins ">
       <Navbar />
       <Sidebar />
-      {/* <ToggleTheme /> */}
+      {/* <ToggleTheme />  */}
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Checkout History</h1>
       </div>
