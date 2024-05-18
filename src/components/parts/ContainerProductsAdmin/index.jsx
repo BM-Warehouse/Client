@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from 'react';
 
 import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
+import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
 import RowProduct from '@/components/parts/RowProduct';
 import useWarehouseStore from '@/store/warehouseStore';
 
 function ContainerProductsAdmin({ productsData }) {
   const { warehouseData, getWarehouseData } = useWarehouseStore();
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddStockModalOpen, setIsAddStockModalOpen] = useState(false);
+  const [isMoveStockModalOpen, setIsMoveStockModalOpen] = useState(false);
 
-  const handleOpenModal = (product) => {
+  const handleOpenAddStockModal = (product) => {
     setSelectedProduct(product);
-    setIsModalOpen(true);
+    setIsAddStockModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseAddStockModal = () => {
+    setIsAddStockModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const handleOpenMoveStockModal = (product) => {
+    setSelectedProduct(product);
+    setIsMoveStockModalOpen(true);
+  };
+
+  const handleCloseMoveStockModal = () => {
+    setIsMoveStockModalOpen(false);
     setSelectedProduct(null);
   };
 
   useEffect(() => {
     getWarehouseData();
   }, [getWarehouseData]);
-
-  console.log(warehouseData);
 
   if (!productsData) {
     return <div>Loading...</div>;
@@ -44,15 +54,27 @@ function ContainerProductsAdmin({ productsData }) {
           </thead>
           <tbody className="text-tertiary">
             {productsData.map((product) => (
-              <RowProduct key={product.id} product={product} onOpenModal={handleOpenModal} />
+              <RowProduct
+                key={product.id}
+                product={product}
+                onOpenModal={handleOpenAddStockModal}
+                onOpenMoveModal={handleOpenMoveStockModal}
+              />
             ))}
           </tbody>
         </table>
       </div>
-      {isModalOpen && (
+      {isAddStockModalOpen && (
         <ModalAddStockProduct
           product={selectedProduct}
-          onClose={handleCloseModal}
+          onClose={handleCloseAddStockModal}
+          warehouseData={warehouseData}
+        />
+      )}
+      {isMoveStockModalOpen && (
+        <ModalMoveStockProduct
+          product={selectedProduct}
+          onClose={handleCloseMoveStockModal}
           warehouseData={warehouseData}
         />
       )}
