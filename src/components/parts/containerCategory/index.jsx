@@ -1,24 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
-
 import CardCategory from '@/components/parts/CardCategory';
-import useCategryStore from '@/store/categoryStore';
 
-function ContainerCategory({ contains }) {
-  const { categoriesData, asyncGetAll } = useCategryStore((state) => ({
-    categoriesData: state.categoriesData,
-    asyncGetAll: state.asyncGetAll
-  }));
-
-  useEffect(() => {
-    if (contains === '') {
-      asyncGetAll();
-    } else {
-      asyncGetAll(contains);
-    }
-  }, [asyncGetAll, contains]);
-
+function ContainerCategory({ categoriesData }) {
   if (!categoriesData) {
     return <div>Loading...</div>;
   }

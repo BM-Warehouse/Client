@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 import { IoFilterSharp } from 'react-icons/io5';
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
-import ContainerCategory from '@/components/parts/containerCategory';
+import ContainerCategory from '@/components/parts/ContainerCategory';
 import Navbar from '@/components/parts/Navbar';
+import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
 import useInput from '@/hooks/useInput';
 import useAuthUserStore from '@/store/authUserStore';
@@ -24,7 +24,15 @@ function ListCategories() {
   const [contains, setContains] = useState('');
   const [searchContain, onSearchContainChange] = useInput('');
 
-  const { asyncAddCategory } = useCategryStore();
+  const { categoriesData, asyncGetAll, asyncAddCategory, pagination } = useCategryStore();
+
+  useEffect(() => {
+    asyncGetAll();
+  }, [asyncGetAll]);
+
+  const onPaginationClick = async (page) => {
+    await asyncGetAll(contains, page);
+  };
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -33,6 +41,7 @@ function ListCategories() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setContains(searchContain);
+    asyncGetAll(contains);
     router.refresh();
   };
 
@@ -175,22 +184,13 @@ function ListCategories() {
         </div>
       </div>
       {/* <div className="container-products mt-24 grid grid-cols-2 gap-4 p-4 md:ml-20 md:grid-cols-3 xl:grid-cols-5"> */}
-      <ContainerCategory contains={contains} />
+      <ContainerCategory categoriesData={categoriesData} />
       {/* </div> */}
-      <div className="container-pagination flex items-center justify-center pb-10 ">
-        <div className="button-pagination">
-          <MdKeyboardArrowLeft className="text-2xl" />
-        </div>
-        <div className="join">
-          <button className="btn join-item">1</button>
-          <button className="btn join-item">2</button>
-          <button className="btn join-item">3</button>
-          <button className="btn join-item">4</button>
-        </div>
-        <div className="button-pagination">
-          <MdKeyboardArrowRight className="text-2xl" />
-        </div>
-      </div>
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPage={pagination.totalPage}
+        onClick={onPaginationClick}
+      />
     </main>
   );
 }
