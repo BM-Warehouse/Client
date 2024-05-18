@@ -4,7 +4,8 @@ import useProductStore from '@/store/productStore';
 import useWarehouseStore from '@/store/warehouseStore';
 
 function ModalMoveStockProduct({ product, onClose, warehouseData }) {
-  const { asyncMoveProductWarehouse } = useProductStore();
+  const { asyncMoveProductWarehouse, asyncGetDetail } = useProductStore();
+
   const { getWarehouseData } = useWarehouseStore();
   const [selectedOriWarehouse, setSelectedOriWarehouse] = useState('');
   const [selectedDestWarehouse, setSelectedDestWarehouse] = useState('');
@@ -45,9 +46,10 @@ function ModalMoveStockProduct({ product, onClose, warehouseData }) {
         +stock
       );
       await getWarehouseData();
+      await asyncGetDetail(product.id);
       onClose();
 
-      console.log(product.id, +selectedOriWarehouse, +selectedDestWarehouse, +stock);
+      // console.log(product.id, +selectedOriWarehouse, +selectedDestWarehouse, +stock);
     } catch (error) {
       console.error('Error moving stock:', error.message);
     }

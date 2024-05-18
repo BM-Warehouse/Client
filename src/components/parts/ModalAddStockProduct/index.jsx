@@ -4,7 +4,7 @@ import useProductStore from '@/store/productStore';
 // import useWarehouseStore from '@/store/warehouseStore';
 
 function ModalAddStockProduct({ product, onClose, warehouseData }) {
-  const { asyncAddProductToWarehouse, asyncGetAll } = useProductStore();
+  const { asyncAddProductToWarehouse, asyncGetAll, asyncGetDetail } = useProductStore();
 
   const [selectedWarehouse, setSelectedWarehouse] = useState('');
   const [stock, setStock] = useState('');
@@ -18,6 +18,7 @@ function ModalAddStockProduct({ product, onClose, warehouseData }) {
     try {
       await asyncAddProductToWarehouse(product.id, +selectedWarehouse, +stock);
       asyncGetAll();
+      asyncGetDetail(product.id);
       onClose();
     } catch (error) {
       console.error('Error adding stock:', error.message);
@@ -27,7 +28,7 @@ function ModalAddStockProduct({ product, onClose, warehouseData }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black opacity-50" />
-      <div className="relative z-10 rounded-lg bg-primary p-6">
+      <div className="relative z-10 rounded-lg bg-primary w-[29rem] p-6">
         <h3 className="text-lg font-bold text-secondary">Add Stock Product</h3>
         <form onSubmit={handleSubmit} className="input-container mt-4 text-sm">
           <div className="mb-3 flex items-center">
