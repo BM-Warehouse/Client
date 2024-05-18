@@ -5,12 +5,29 @@ import { useContext, useEffect, useState } from 'react';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { getAllWarehouses } from '@/fetching/warehouse';
 import formatRupiah from '@/lib/formatRupiah';
+import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
+import { openModalDeleteVerification } from '@/components/pages/DetailOrder/ModalDeleteVerification';
 
 function Row({ productId, no, productName, amount, price, warehouses }) {
-  const { updateSelectedWarehouse, selectedWarehouses } = useContext(DetailOrderContex);
+  const { updateSelectedWarehouse, 
+    selectedWarehouses, 
+    setSelectedProduct} = useContext(DetailOrderContex);
+    const product = {
+      id: productId,
+      name: productName
+    }
   // function onDetailButtonClick() {
   //   console.log('Here', id);
   // }
+
+  const handleDeleteButtonClick = () => {
+    setSelectedProduct(product);
+    openModalDeleteVerification()
+  }
+  const handleEditButtonClick = () => {
+    setSelectedProduct(product);
+    setIsModalEditQuantityOpen(true);
+  }
 
   return (
     <tr>
@@ -34,6 +51,10 @@ function Row({ productId, no, productName, amount, price, warehouses }) {
             </option>
           ))}
         </select>
+      </td>
+      <td>
+        <ButtonPrimary icon="edit" title="Edit Quantity" onClick={handleEditButtonClick}></ButtonPrimary>
+        <ButtonStrong icon="delete" title="Delete Product" onClick={handleDeleteButtonClick}></ButtonStrong>
       </td>
     </tr>
   );
@@ -69,6 +90,7 @@ function ContainerOrderDetail({ checkoutId, data }) {
               <th>Amount</th>
               <th>Price</th>
               <th>Warehouse</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody className=" text-tertiary">

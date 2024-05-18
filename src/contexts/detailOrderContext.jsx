@@ -8,6 +8,9 @@ const DetailContexProvider = ({ children }) => {
   const [currentCheckoutId, setCurrentCheckoutId] = useState(0);
   const [data, setData] = useState(null);
   const [page, setPage] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  // const [isModalDeleteVerificationOpen, setIsModalDeleteVerificationOpen] = useState(false);
+  // const [isModalEditQuantityOpen, setIsModalEditQuantityOpen] = useState(false);
 
   const updateSelectedWarehouse = useCallback((productId, warehouseId) => {
     setSelectedWarehouses((prevState) => ({
@@ -26,7 +29,9 @@ const DetailContexProvider = ({ children }) => {
         data,
         setData,
         page,
-        setPage
+        setPage,
+        selectedProduct,
+        setSelectedProduct,
       }}
     >
       {children}
