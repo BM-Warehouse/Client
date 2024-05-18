@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { getAllWarehouses, getWarehouseQuantities } from '@/fetching/warehouse';
+import { getAllWarehouses, getWarehouseQuantities, removeWarehouse } from '@/fetching/warehouse';
 
 const useWarehouseStore = create((set) => ({
   warehouseData: [],
@@ -9,7 +9,7 @@ const useWarehouseStore = create((set) => ({
   getWarehouseData: async () => {
     try {
       const warehouses = await getAllWarehouses();
-      set(() => ({ warehouseData: warehouses }));
+      set((_state) => ({ warehouseData: warehouses }));
     } catch (e) {
       console.error('Failed to fetch warehouses', e);
     }
@@ -17,10 +17,17 @@ const useWarehouseStore = create((set) => ({
   getWarehouseQuantities: async () => {
     try {
       const warehouseQuantities = await getWarehouseQuantities();
-      set(() => ({ warehouseQuantities }));
+      set((_state) => ({ warehouseQuantities }));
     } catch (e) {
       console.error('Failed to fetch warehouse quantities', e);
     }
+  },
+  removeWarehouse: async (id) => {
+    const removed = await removeWarehouse(id);
+    set((_state) => ({
+      removed
+    }));
+    return removed;
   }
 }));
 

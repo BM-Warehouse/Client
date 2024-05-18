@@ -3,8 +3,10 @@
 import { Analytics } from '@vercel/analytics/react';
 import { Poppins, Josefin_Slab } from 'next/font/google';
 
-import './globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
+import ToasterProvider from '@/providers/ToastProvider';
+
+import './globals.css';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -29,6 +31,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${josefinSlab.variable}`}>
+        <ToasterProvider />
         <ThemeProvider>
           {children}
           <Analytics />

@@ -49,4 +49,21 @@ const getWarehouseQuantities = async () => {
   }
 };
 
-export { getAllWarehouses, getWarehouseDetails, addWarehouse, getWarehouseQuantities };
+const removeWarehouse = async (id) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
+      method: 'DELETE'
+    });
+    return response;
+  } catch (error) {
+    throw new Error('Failed to fetch:', error);
+  }
+};
+
+export {
+  getAllWarehouses,
+  getWarehouseDetails,
+  addWarehouse,
+  getWarehouseQuantities,
+  removeWarehouse
+};

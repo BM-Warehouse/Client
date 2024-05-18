@@ -32,8 +32,7 @@ const DetailOrder = ({ id }) => {
   const [isLoading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
   const router = useRouter();
-  const { selectedWarehouses, setCurrentCheckoutId, setPage } =
-    useContext(DetailOrderContex);
+  const { selectedWarehouses, setCurrentCheckoutId, setPage } = useContext(DetailOrderContex);
   const [isProductSelectOpen, setIsProductSelectOpen] = useState(false);
   const [productList, setProductList] = useState([]);
 

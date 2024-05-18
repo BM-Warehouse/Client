@@ -1,6 +1,6 @@
 'use client';
 
-import Container from '@/components/parts/container';
+import Container from '@/components/container';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 

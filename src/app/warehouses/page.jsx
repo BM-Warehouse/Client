@@ -11,7 +11,10 @@ import useModalStore from '@/hooks/useModalStore';
 import useWarehouseStore from '@/store/warehouseStore';
 
 const WarehousesPage = () => {
-  const { warehouseData, getWarehouseData } = useWarehouseStore();
+  const { warehouseData, getWarehouseData } = useWarehouseStore((state) => ({
+    warehouseData: state.warehouseData,
+    getWarehouseData: state.getWarehouseData
+  }));
 
   useEffect(() => {
     getWarehouseData();
@@ -19,7 +22,7 @@ const WarehousesPage = () => {
 
   const { isOpen, title, body, openModal, closeModal } = useModalStore();
 
-  const handleOpenModal = (action, warehouseName) => {
+  const handleOpenModal = (action, warehouseName, warehouseId) => {
     let modalTitle;
     let modalBody;
     let buttonLabel;
@@ -54,7 +57,7 @@ const WarehousesPage = () => {
             <h1>
               This will delete <strong>All products in the warehouse too</strong>{' '}
             </h1>
-            <DeleteWarehouseForm />
+            <DeleteWarehouseForm id={warehouseId} />
           </div>
         );
 
@@ -67,7 +70,7 @@ const WarehousesPage = () => {
 
   return (
     <div>
-      <h1 className="mb-10 text-center text-2xl">Warehouse A</h1>
+      <h1 className="mb-10 text-center text-2xl">Warehouses</h1>
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
@@ -92,7 +95,7 @@ const WarehousesPage = () => {
                 <td>{warehouse.address}</td>
                 <td>
                   <button
-                    className="bg-secondary px-4 py-2 text-white"
+                    className="bg-tertiary hover:bg-secondary px-4 py-2 text-white"
                     onClick={() => handleOpenModal('edit', warehouse.name)}
                   >
                     Edit
@@ -104,8 +107,8 @@ const WarehousesPage = () => {
                     Move
                   </button> */}
                   <button
-                    className="ml-2 bg-secondary px-4 py-2 text-white"
-                    onClick={() => handleOpenModal('delete', warehouse.name)}
+                    className="ml-2 bg-tertiary hover:bg-secondary px-4 py-2 text-white"
+                    onClick={() => handleOpenModal('delete', warehouse.name, warehouse.id)}
                   >
                     Delete
                   </button>
