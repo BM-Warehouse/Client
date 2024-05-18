@@ -23,7 +23,6 @@ function Navbar() {
 
     router.push('/login');
   };
-
   // check role
 
   if (!role) {
