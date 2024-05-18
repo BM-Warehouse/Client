@@ -5,17 +5,19 @@ import { useEffect } from 'react';
 import CardCategory from '@/components/parts/CardCategory';
 import useCategryStore from '@/store/categoryStore';
 
-function ContainerCategory() {
+function ContainerCategory({ contains }) {
   const { categoriesData, asyncGetAll } = useCategryStore((state) => ({
     categoriesData: state.categoriesData,
     asyncGetAll: state.asyncGetAll
   }));
 
-  // console.log(categoriesData);
-
   useEffect(() => {
-    asyncGetAll();
-  }, [asyncGetAll]);
+    if (contains === '') {
+      asyncGetAll();
+    } else {
+      asyncGetAll(contains);
+    }
+  }, [asyncGetAll, contains]);
 
   if (!categoriesData) {
     return <div>Loading...</div>;

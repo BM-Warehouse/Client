@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { useRouter } from 'next/navigation';
 import { IoFilterSharp } from 'react-icons/io5';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
@@ -13,16 +14,26 @@ import useAuthUserStore from '@/store/authUserStore';
 import useCategryStore from '@/store/categoryStore';
 
 function ListCategories() {
+  const router = useRouter();
+
   const { role } = useAuthUserStore();
 
   const [name, onNameChange] = useInput('');
   const [description, onDescriptionChange] = useInput('');
   const [file, setFile] = useState(null);
+  const [contains, setContains] = useState('');
+  const [searchContain, onSearchContainChange] = useInput('');
 
   const { asyncAddCategory } = useCategryStore();
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setContains(searchContain);
+    router.refresh();
   };
 
   const handleSubmit = async (e) => {
@@ -131,24 +142,31 @@ function ListCategories() {
           )}
         </div>
         <div className="button-categories flex items-center">
-          <label className="input flex h-8 items-center gap-2 border-tertiary">
+          <label
+            className="input flex h-8 items-center gap-2 border-tertiary"
+            // onSubmit={handleSearchSubmit}
+          >
             <input
               type="text"
+              value={searchContain}
+              onChange={onSearchContainChange}
               className="grow text-sm text-secondary placeholder:text-secondary"
               placeholder="Search category..."
             />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="h-4 w-4 text-tertiary opacity-70"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <button type="button" onClick={handleSearchSubmit}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                className="h-4 w-4 text-tertiary opacity-70"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
           </label>
           <div className="btn-filter ml-5 cursor-pointer rounded-lg p-1 hover:bg-secondary">
             <IoFilterSharp className="text-3xl text-secondary hover:text-white" />
@@ -156,7 +174,7 @@ function ListCategories() {
         </div>
       </div>
       {/* <div className="container-products mt-24 grid grid-cols-2 gap-4 p-4 md:ml-20 md:grid-cols-3 xl:grid-cols-5"> */}
-      <ContainerCategory />
+      <ContainerCategory contains={contains} />
       {/* </div> */}
       <div className="container-pagination flex items-center justify-center pb-10 ">
         <div className="button-pagination">
