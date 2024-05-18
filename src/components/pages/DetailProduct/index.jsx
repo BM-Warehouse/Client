@@ -15,6 +15,7 @@ import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
 
 import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
 import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
+import ModalReduceStockProduct from '@/components/parts/ModalReduceStockProduct';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import formatRupiah from '@/lib/formatRupiah';
@@ -30,6 +31,7 @@ function DetailProduct({ params }) {
   const [quantity, setQuantity] = useState(1);
   const [showMoveStockModal, setShowMoveStockModal] = useState(false);
   const [showAddStockModal, setShowAddStockModal] = useState(false);
+  const [showReduceStockModal, setShowReduceStockModal] = useState(false);
   const { role } = useAuthUserStore();
   const router = useRouter();
 
@@ -193,7 +195,10 @@ function DetailProduct({ params }) {
                   </button>
                 </div>
                 <div className="btn-add mb-1">
-                  <button className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3">
+                  <button
+                    onClick={() => setShowReduceStockModal(true)}
+                    className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3"
+                  >
                     <span className="flex items-center justify-center">
                       <FiArrowDownLeft className="mr-1" />
                       Reduce Stock
@@ -227,6 +232,13 @@ function DetailProduct({ params }) {
         <ModalAddStockProduct
           product={detailProduct}
           onClose={() => setShowAddStockModal(false)}
+          warehouseData={warehouseData}
+        />
+      )}
+      {showReduceStockModal && (
+        <ModalReduceStockProduct
+          product={detailProduct}
+          onClose={() => setShowReduceStockModal(false)}
           warehouseData={warehouseData}
         />
       )}
