@@ -15,16 +15,17 @@ const DetailContexProvider = ({ children }) => {
     }));
   }, []);
 
-
   return (
-    <DetailOrderContex.Provider value={{
-      selectedWarehouses,
-      updateSelectedWarehouse,
-      currentCheckoutId,
-      setCurrentCheckoutId,
-      data,
-      setData
-    }}>
+    <DetailOrderContex.Provider
+      value={{
+        selectedWarehouses,
+        updateSelectedWarehouse,
+        currentCheckoutId,
+        setCurrentCheckoutId,
+        data,
+        setData
+      }}
+    >
       {children}
     </DetailOrderContex.Provider>
   );

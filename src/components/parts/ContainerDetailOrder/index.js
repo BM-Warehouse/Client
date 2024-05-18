@@ -19,7 +19,8 @@ function Row({ productId, no, productName, amount, price, warehouses }) {
       <td>{amount || '-'}</td>
       <td>{price || '-'}</td>
       <td>
-        <select className='select select-bordered min-h-9 h-9 min-w-48'
+        <select
+          className="select select-bordered h-9 min-h-9 min-w-48"
           value={selectedWarehouses[productId] || ''}
           id="warehouseSelect"
           onChange={(e) => {
@@ -74,7 +75,7 @@ function ContainerOrderDetail({ checkoutId, data }) {
             {data.map((d, i) => (
               <Row
                 key={d.productId}
-                no={i+1}
+                no={i + 1}
                 productId={d.productId}
                 productName={d.product.name}
                 amount={d.quantityItem}
