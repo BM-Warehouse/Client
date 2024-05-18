@@ -26,7 +26,6 @@ const WarehousesPage = () => {
     let modalTitle;
     let modalBody;
     let buttonLabel;
-    console.log(warehouseId);
 
     switch (action) {
       case 'edit':
