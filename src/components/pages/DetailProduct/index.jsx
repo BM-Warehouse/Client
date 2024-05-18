@@ -32,7 +32,7 @@ import useCategryStore from '@/store/categoryStore';
 function DetailProduct({ params }) {
   const { detailProduct, asyncGetDetail, asyncDeleteProduct } = useProductStore();
   const { warehouseData, getWarehouseData } = useWarehouseStore();
-  const { categoriesData, asyncGetAll } = useCategryStore();
+  const { categoriesData, asyncGetAllWithoutPagination } = useCategryStore();
   const { asyncAddProductToCart } = useCartStore();
   const [quantity, setQuantity] = useState(1);
   const [showMoveStockModal, setShowMoveStockModal] = useState(false);
@@ -53,8 +53,8 @@ function DetailProduct({ params }) {
   }, [getWarehouseData]);
 
   useEffect(() => {
-    asyncGetAll();
-  }, [asyncGetAll]);
+    asyncGetAllWithoutPagination();
+  }, [asyncGetAllWithoutPagination]);
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
@@ -116,14 +116,15 @@ function DetailProduct({ params }) {
           <div className="detail-body w-full px-6 pt-4 md:ml-10 md:w-2/4 md:px-0">
             <div className="title-product">
               <p className="mb-3 flex gap-2 text-base">
-                {detailProduct.productCategories.map((ctg) => (
-                  <span
-                    key={ctg.category.id}
-                    className="badge badge-outline text-[0.7rem] md:text-[0.8rem]"
-                  >
-                    {ctg.category.name}
-                  </span>
-                ))}
+                {detailProduct.productCategories &&
+                  detailProduct.productCategories.map((ctg) => (
+                    <span
+                      key={ctg.category.id}
+                      className="badge badge-outline text-[0.7rem] md:text-[0.8rem]"
+                    >
+                      {ctg.category.name}
+                    </span>
+                  ))}
               </p>
               <h5 className="mb-3 text-3xl font-bold">{detailProduct.name}</h5>
               <p className="price mb-3 text-2xl">{formatRupiah(detailProduct.price)}</p>

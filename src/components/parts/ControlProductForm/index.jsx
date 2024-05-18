@@ -19,11 +19,11 @@ function ControlProductForm({ product }) {
   const { asyncAddProduct, asyncEditProduct } = useProductStore();
   const [name, onNameChange] = useInput(product ? product.name : '');
   const [price, onPriceChange] = useInput(product ? product.price : '');
-  const [desc, onDescChange] = useInput(product ? product.desc : '');
+  const [desc, onDescChange] = useInput(product ? product.description : '');
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const { categoriesData, asyncGetAll } = useCategryStore();
-  const router = useRouter;
+  const router = useRouter();
 
   // console.log(categoriesData);
 

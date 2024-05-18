@@ -26,7 +26,7 @@ function RowProduct({ product, onOpenModal, onOpenMoveModal }) {
     onOpenMoveModal(product);
   };
 
-  if (!product || !product.productCategories[0]) {
+  if (!product || !product.productCategories) {
     return null;
   }
 

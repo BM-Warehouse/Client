@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
+import useCategryStore from '@/store/categoryStore';
 import useProductStore from '@/store/productStore';
 // import useWarehouseStore from '@/store/warehouseStore';
 
 function ModalAddCategoryProduct({ product, onClose, categoriesData }) {
-  const { asyncAddProductToWarehouse, asyncGetAll, asyncGetDetail } = useProductStore();
+  const { asyncGetAll, asyncGetDetail } = useProductStore();
+  const { asyncSetCategoryProduct } = useCategryStore();
 
   const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -15,7 +17,7 @@ function ModalAddCategoryProduct({ product, onClose, categoriesData }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await asyncAddProductToWarehouse(product.id, +selectedCategory);
+      await asyncSetCategoryProduct(product.id, +selectedCategory);
       asyncGetAll();
       asyncGetDetail(product.id);
       onClose();
@@ -48,7 +50,7 @@ function ModalAddCategoryProduct({ product, onClose, categoriesData }) {
             </label>
             <select
               name="warehouse"
-              className="select max-h-10 w-7/12 border border-tertiary bg-bgColor px-4 py-0 text-sm"
+              className="select max-h-10 w-full border border-tertiary bg-bgColor px-4 py-0 text-sm overflow-auto"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               required
