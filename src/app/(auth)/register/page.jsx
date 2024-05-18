@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import { register } from '@/fetching/auth';
 import useInput from '@/hooks/useInput';
@@ -22,7 +23,6 @@ const RegisterPage = () => {
   const [phone, onPhoneChange] = useInput('');
   const [address, onAddressChange] = useInput('');
   const [birthdate, onBirthdateChange] = useInput('');
-  // const [avatar, onAvatarChange] = useInput('');
   let avatar = '';
   if (gender === 'Male') {
     avatar =
@@ -37,7 +37,7 @@ const RegisterPage = () => {
 
   const onRegister = async () => {
     if (password !== confirmPassword) {
-      alert(`Password doesn't match!`);
+      toast.error(`Password don't match!`);
       return;
     }
 
@@ -55,11 +55,11 @@ const RegisterPage = () => {
         avatar,
         role: 'user'
       });
+      toast.success('Register Successfull! Please Login!');
       router.push('/login');
-      alert('Registration successful! Please log in.');
     } catch (error) {
       console.error('Registration failed:', error);
-      alert(`Registration failed: ${error.message}`);
+      toast.error(`Registration failed: ${error.message}`);
     } finally {
       setLoading(false);
     }
