@@ -7,6 +7,7 @@ import { getAllWarehouses } from '@/fetching/warehouse';
 import formatRupiah from '@/lib/formatRupiah';
 import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
 import { openModalDeleteVerification } from '@/components/pages/DetailOrder/ModalDeleteVerification';
+import { openModalEditQuantity } from '@/components/pages/DetailOrder/ModalEditQuantity';
 
 function Row({ productId, no, productName, amount, price, warehouses }) {
   const { updateSelectedWarehouse, 
@@ -14,7 +15,8 @@ function Row({ productId, no, productName, amount, price, warehouses }) {
     setSelectedProduct} = useContext(DetailOrderContex);
     const product = {
       id: productId,
-      name: productName
+      name: productName,
+      quantity: amount
     }
   // function onDetailButtonClick() {
   //   console.log('Here', id);
@@ -26,7 +28,7 @@ function Row({ productId, no, productName, amount, price, warehouses }) {
   }
   const handleEditButtonClick = () => {
     setSelectedProduct(product);
-    setIsModalEditQuantityOpen(true);
+    openModalEditQuantity();
   }
 
   return (

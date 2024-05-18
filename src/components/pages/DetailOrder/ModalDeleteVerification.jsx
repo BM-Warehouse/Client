@@ -44,7 +44,7 @@ const ModalDeleteVerification = ({ checkoutId }) => {
 
   return (
     <>
-      <dialog id="delete-modal" className="modal">
+      <dialog id={modalId} className="modal">
         <div className="modal-box h-auto w-auto max-w-full">
           <div>
             <h2 className="font-bold text-lg">Delete Product</h2>

@@ -13,6 +13,7 @@ import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { sendOrder, getDetailOrder } from '@/fetching/orders';
 import { getAllProducts } from '@/fetching/product';
 import ModalDeleteVerification from './ModalDeleteVerification';
+import ModalEditQuantity from './ModalEditQuantity';
 
 const DetailOrder = ({ id }) => {
   const { data, 
@@ -188,6 +189,7 @@ const DetailOrder = ({ id }) => {
         products={productList}
       />
       <ModalDeleteVerification checkoutId={id}/>
+      <ModalEditQuantity checkoutId={id}/>
       <Pagination
         currentPage={pagination.currentPage}
         totalPage={pagination.totalPage}

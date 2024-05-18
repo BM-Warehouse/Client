@@ -61,6 +61,28 @@ async function addProductToCheckout(checkoutId, productId, quantity) {
   return resJson;
 }
 
+async function editProductInCheckout(checkoutId, productId, quantity) {
+  const data = {
+    checkoutId: +checkoutId,
+    productId: +productId,
+    quantity: +quantity
+  };
+  const response = await fetchWithToken(`${BASE_URL}/checkout/editProduct`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (response.status !== 200) {
+    const resJson = await response.json();
+    throw new Error(JSON.stringify(resJson));
+  }
+  const resJson = await response.json();
+  return resJson;
+}
+
 async function deleteProductFromCheckout(checkoutId, productId) {
   const data = {
     checkoutId: +checkoutId,
@@ -84,4 +106,9 @@ async function deleteProductFromCheckout(checkoutId, productId) {
   return resJson;
 }
 
-export { getAllOrders, getDetailOrder, sendOrder, addProductToCheckout, deleteProductFromCheckout };
+export { getAllOrders, 
+  getDetailOrder, 
+  sendOrder, 
+  addProductToCheckout, 
+  deleteProductFromCheckout,
+  editProductInCheckout };
