@@ -13,11 +13,20 @@ const useCategryStore = create((set) => ({
   categoryDetail: null,
   productCategories: [],
   newCategory: null,
-  asyncGetAll: async (contains) => {
+  pagination: {
+    totalPage: null,
+    totalData: null,
+    nextPage: null,
+    prevPage: null,
+    currentPage: 1,
+    limit: null
+  },
+  asyncGetAll: async (contains, page = 1) => {
     try {
-      const categories = await getAllCategories(contains);
+      const data = await getAllCategories(contains, page);
       set((_state) => ({
-        categoriesData: categories
+        categoriesData: data.categories,
+        pagination: data.pagination
       }));
     } catch (error) {
       console.error('Error in asyncFunc:', error);

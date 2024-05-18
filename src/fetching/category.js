@@ -1,25 +1,32 @@
 import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
-const getAllCategories = async (contains) => {
+const getAllCategories = async (contains, page = 1, limit = 10) => {
   let response = null;
   try {
     if (!contains) {
-      response = await fetchWithToken(`${BASE_URL}/categories`);
+      response = await fetchWithToken(
+        `${BASE_URL}/categories?${new URLSearchParams({
+          page,
+          limit
+        })}`
+      );
     } else {
-      response = await fetchWithToken(`${BASE_URL}/categories?contains=${contains}`);
+      response = await fetchWithToken(
+        `${BASE_URL}/categories?${new URLSearchParams({
+          page,
+          limit,
+          contains
+        })}`
+      );
     }
     const responseJson = await response.json();
     const { status, message } = responseJson;
     if (status !== 'success') {
       throw new Error(message);
     }
-    const {
-      data: {
-        getAll: { categories }
-      }
-    } = responseJson;
-    return categories;
+    const { data } = responseJson;
+    return data;
   } catch (error) {
     console.error('Error fetching data:', error.message);
     throw error;
@@ -35,7 +42,6 @@ const getCategoryDetail = async (id) => {
       throw new Error(message);
     }
     const { data } = responseJson;
-    // console.log(data);
     return data;
   } catch (error) {
     console.error('Error fetching data:', error.message);
