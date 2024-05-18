@@ -19,7 +19,7 @@ const generateCategoriesString = (product) => {
     if (categoriesString === '') {
       categoriesString += category;
     } else {
-      categoriesString += `, ${  category}`;
+      categoriesString += `, ${category}`;
     }
   }
 
@@ -42,13 +42,13 @@ const Row = ({ product }) => {
             .then((res) => {
               setData(res.data.checkout.productCheckout);
             });
-            // eslint-disable-next-line no-alert
-            window.alert(
-              `Success adding ${quantity} items of ${product.name}(${product.id}) to checkout id ${currentCheckoutId} to checkout list`
-            );
-            // window.alert(JSON.stringify(res, null, 2));
-          })
-          .catch((e) => {
+          // eslint-disable-next-line no-alert
+          window.alert(
+            `Success adding ${quantity} items of ${product.name}(${product.id}) to checkout id ${currentCheckoutId} to checkout list`
+          );
+          // window.alert(JSON.stringify(res, null, 2));
+        })
+        .catch((e) => {
           // eslint-disable-next-line no-alert
           window.alert('Error', e);
         });
@@ -110,11 +110,11 @@ const Table = ({ products }) => (
       <tbody>
         {products?.map((p) => (
           <Row key={p.id} product={p} />
-          ))}
+        ))}
       </tbody>
     </table>
   </div>
-  );
+);
 
 const ModalAddProduct = ({ show, onClose, products }) => {
   useEffect(() => {
