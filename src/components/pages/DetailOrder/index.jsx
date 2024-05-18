@@ -85,7 +85,7 @@ const DetailOrder = ({ id }) => {
       .catch((error) => {
         console.log('Error:', error);
       });
-  });
+  }, [id, setCurrentCheckoutId, setData]);
 
   // useEffect(() => {
   //   console.log('pagination---', pagination);
