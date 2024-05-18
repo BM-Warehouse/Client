@@ -26,7 +26,7 @@ function RowProduct({ product, onOpenModal, onOpenMoveModal }) {
     onOpenMoveModal(product);
   };
 
-  if (!product) {
+  if (!product || !product.productCategories[0]) {
     return null;
   }
 
@@ -36,7 +36,11 @@ function RowProduct({ product, onOpenModal, onOpenMoveModal }) {
       <td>
         <Link href={`/products/${product.id}`}>{product.name}</Link>
       </td>
-      <td>{product.productCategories[0] ? product.productCategories[0].category.name : '-'}</td>
+      <td>
+        {product.productCategories[0] && product.productCategories[0]
+          ? product.productCategories[0].category.name
+          : '-'}
+      </td>
       <td>{product.totalStock}</td>
       <td>
         <div className="buttons-action flex justify-between">

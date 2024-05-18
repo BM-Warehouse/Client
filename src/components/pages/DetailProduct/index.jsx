@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 /* eslint-disable no-alert */
 /* eslint-disable @next/next/no-img-element */
 
@@ -12,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { BiPlus, BiMinus, BiEditAlt } from 'react-icons/bi';
 import { FiArrowUpRight, FiArrowDownLeft } from 'react-icons/fi';
 import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
+import { LuBoxes } from 'react-icons/lu';
 
 import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
 import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
@@ -23,6 +25,8 @@ import useAuthUserStore from '@/store/authUserStore';
 import useCartStore from '@/store/cartStore';
 import useProductStore from '@/store/productStore';
 import useWarehouseStore from '@/store/warehouseStore';
+import Link from 'next/link';
+import ModalAddCategoryProduct from '@/components/parts/ModalAddCategoryProduct';
 
 function DetailProduct({ params }) {
   const { detailProduct, asyncGetDetail, asyncDeleteProduct } = useProductStore();
@@ -32,6 +36,7 @@ function DetailProduct({ params }) {
   const [showMoveStockModal, setShowMoveStockModal] = useState(false);
   const [showAddStockModal, setShowAddStockModal] = useState(false);
   const [showReduceStockModal, setShowReduceStockModal] = useState(false);
+  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
   const { role } = useAuthUserStore();
   const router = useRouter();
 
@@ -187,12 +192,14 @@ function DetailProduct({ params }) {
                   </button>
                 </div>
                 <div className="btn-add mb-1">
-                  <button className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3">
-                    <span className="flex items-center justify-center">
-                      <BiEditAlt className="mr-1" />
-                      Edit Product
-                    </span>
-                  </button>
+                  <Link href={`/edit-product/${id}`}>
+                    <button className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3">
+                      <span className="flex items-center justify-center">
+                        <LuBoxes className="mr-1" />
+                        Add Category
+                      </span>
+                    </button>
+                  </Link>
                 </div>
                 <div className="btn-add mb-1">
                   <button
@@ -204,6 +211,16 @@ function DetailProduct({ params }) {
                       Reduce Stock
                     </span>
                   </button>
+                </div>
+                <div className="btn-add mb-1">
+                  <Link href={`/edit-product/${id}`}>
+                    <button className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3">
+                      <span className="flex items-center justify-center">
+                        <BiEditAlt className="mr-1" />
+                        Edit Product
+                      </span>
+                    </button>
+                  </Link>
                 </div>
                 <div className="btn-add mb-1">
                   <button
@@ -239,6 +256,13 @@ function DetailProduct({ params }) {
         <ModalReduceStockProduct
           product={detailProduct}
           onClose={() => setShowReduceStockModal(false)}
+          warehouseData={warehouseData}
+        />
+      )}
+      {showAddCategoryModal && (
+        <ModalAddCategoryProduct
+          product={detailProduct}
+          onClose={() => setShowAddCategoryModal(false)}
           warehouseData={warehouseData}
         />
       )}

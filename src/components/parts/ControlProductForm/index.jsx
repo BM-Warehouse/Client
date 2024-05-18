@@ -7,22 +7,37 @@ import { useEffect, useState } from 'react';
 
 // import Image from 'next/image';
 
+import { useRouter } from 'next/navigation';
+
 import useInput from '@/hooks/useInput';
 import useCategryStore from '@/store/categoryStore';
+import useProductStore from '@/store/productStore';
+import useWarehouseStore from '@/store/warehouseStore';
 
 function ControlProductForm({ product }) {
+  const { warehouseData, getWarehouseData } = useWarehouseStore();
+  const { asyncAddProduct, asyncEditProduct } = useProductStore();
   const [name, onNameChange] = useInput(product ? product.name : '');
   const [price, onPriceChange] = useInput(product ? product.price : '');
   const [desc, onDescChange] = useInput(product ? product.desc : '');
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const { categoriesData, asyncGetAll } = useCategryStore();
+  const router = useRouter;
 
   // console.log(categoriesData);
 
   useEffect(() => {
     asyncGetAll();
   }, [asyncGetAll]);
+
+  useEffect(() => {
+    getWarehouseData();
+  }, [getWarehouseData]);
+
+  if (!warehouseData) {
+    return <div>Loading...</div>;
+  }
 
   if (!categoriesData) {
     return <div>Loading...</div>;
@@ -34,7 +49,7 @@ function ControlProductForm({ product }) {
     setPreviewImage(URL.createObjectURL(file));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmitAdd = async (e) => {
     e.preventDefault();
     console.log('submit diklik');
 
@@ -58,8 +73,42 @@ function ControlProductForm({ product }) {
 
       const imageUrl = secure_url;
 
-      console.log(name, price, desc, imageUrl);
+      console.log(name, +price, desc, imageUrl);
+      await asyncAddProduct(name, +price, desc, imageUrl);
+      router.push(`/products`);
+      // await asyncAddCategory({ name, description, imageUrl });
+    } catch (error) {
+      console.log(`category added failed: ${error}`);
+    }
+  };
 
+  const handleSubmitUpdate = async (e) => {
+    e.preventDefault();
+    console.log('submit diklik');
+
+    if (!selectedImage) {
+      alert('Please select a file to upload.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', selectedImage);
+    formData.append('upload_preset', 'rwheysjo');
+
+    try {
+      const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      // secureUrl ganti dulu jadi secure_url
+      const { secure_url } = await response.json();
+
+      const imageUrl = secure_url;
+
+      console.log(product.id, name, +price, desc, imageUrl);
+      await asyncEditProduct(+product.id, name, +price, desc, imageUrl);
+      router.push(`/products/${product.id}`);
       // await asyncAddCategory({ name, description, imageUrl });
     } catch (error) {
       console.log(`category added failed: ${error}`);
@@ -87,7 +136,7 @@ function ControlProductForm({ product }) {
           <span className="label-text text-txt">Price</span>
         </div>
         <input
-          type="text"
+          type="number"
           placeholder="Enter product price"
           className="input w-full max-w-lg border border-tertiary bg-bgColor"
           name="price"
@@ -96,31 +145,35 @@ function ControlProductForm({ product }) {
           onChange={onPriceChange}
         />
       </label>
-      <label className="form-control  w-full max-w-lg">
+      {/* <label className="form-control  w-full max-w-lg">
         <div className="label">
           <span className="label-text text-txt">Category</span>
         </div>
         <select className="select  w-full max-w-lg  border border-tertiary bg-bgColor">
           <option disabled selected>
-            Who shot firsts?
+            Select Category
           </option>
-          {/* {console.log(categoriesData)} */}
+
           {categoriesData.map((ctg) => (
             <option key={ctg.id}>{ctg.name}</option>
           ))}
-          {/* <option>Greedo</option> */}
         </select>
       </label>
       <label className="form-control  w-full max-w-lg">
         <div className="label">
           <span className="label-text text-txt">Warehouse</span>
         </div>
-        <select className="select  w-full max-w-lg  border border-tertiary bg-bgColor">
+        <select className="select  w-full max-w-lg  border border-tertiary bg-bgColor" required>
           <option disabled selected>
-            Who shot first?
+            Select Warehouse
           </option>
-          <option>Han Solo</option>
-          <option>Greedo</option>
+
+          {warehouseData &&
+            warehouseData.map((war) => (
+              <option value={war.id} key={war.id}>
+                {war.name}
+              </option>
+            ))}
         </select>
       </label>
       <label className="form-control w-full max-w-lg">
@@ -134,14 +187,14 @@ function ControlProductForm({ product }) {
           name="stock"
           // required
         />
-      </label>
+      </label> */}
       <label className="form-control  w-full max-w-lg">
         <div className="label">
           <span className="label-text text-txt">Description</span>
         </div>
 
         <textarea
-          className="textarea w-full max-w-lg  border border-tertiary bg-bgColor"
+          className="textarea w-full max-w-lg min-h-32  border border-tertiary bg-bgColor"
           placeholder="Enter product description here ..."
           name="description"
           defaultValue={product ? product.description : desc}
@@ -165,22 +218,31 @@ function ControlProductForm({ product }) {
         alt="Selected Imagess"
         className="max-h-auto ml-3 mt-3 max-h-48 max-w-48"
       /> */}
-      {previewImage && (
+      {(previewImage || product) && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={previewImage}
+          src={previewImage || product.imageUrl}
           alt="Selected Imagesss"
           className="max-h-auto ml-3 mt-3 max-h-48 max-w-48"
         />
       )}
-
-      <button
-        type="submit"
-        onClick={handleSubmit}
-        className="btn mt-5 w-full max-w-lg rounded-sm  border-0 bg-tertiary text-xl text-bgColor hover:bg-secondary "
-      >
-        Add Book
-      </button>
+      {product ? (
+        <button
+          type="submit"
+          onClick={handleSubmitUpdate}
+          className="btn mt-5 w-full max-w-lg rounded-sm  border-0 bg-tertiary text-xl text-bgColor hover:bg-secondary "
+        >
+          Update Product
+        </button>
+      ) : (
+        <button
+          type="submit"
+          onClick={handleSubmitAdd}
+          className="btn mt-5 w-full max-w-lg rounded-sm  border-0 bg-tertiary text-xl text-bgColor hover:bg-secondary "
+        >
+          Add Product
+        </button>
+      )}
     </form>
   );
 }
