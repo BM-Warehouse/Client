@@ -70,7 +70,7 @@ const WarehousesPage = () => {
 
   return (
     <div>
-      <h1 className="mb-10 text-center text-2xl">Warehouse A</h1>
+      <h1 className="mb-10 text-center text-2xl">Warehouses</h1>
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
@@ -95,7 +95,7 @@ const WarehousesPage = () => {
                 <td>{warehouse.address}</td>
                 <td>
                   <button
-                    className="bg-secondary px-4 py-2 text-white"
+                    className="bg-tertiary hover:bg-secondary px-4 py-2 text-white"
                     onClick={() => handleOpenModal('edit', warehouse.name)}
                   >
                     Edit
@@ -107,7 +107,7 @@ const WarehousesPage = () => {
                     Move
                   </button> */}
                   <button
-                    className="ml-2 bg-secondary px-4 py-2 text-white"
+                    className="ml-2 bg-tertiary hover:bg-secondary px-4 py-2 text-white"
                     onClick={() => handleOpenModal('delete', warehouse.name, warehouse.id)}
                   >
                     Delete
