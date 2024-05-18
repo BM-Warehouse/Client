@@ -91,4 +91,39 @@ const removeCategory = async (id) => {
   }
 };
 
-export { getAllCategories, getCategoryDetail, addCategory, editCategory, removeCategory };
+const setCategoryProduct = async (productId, categoryId) => {
+  try {
+    const requestBody = {
+      productId,
+      categoryId
+    };
+    // console.log(productId, warehouseId, quantity);
+    const response = await fetchWithToken(`${BASE_URL}/categories/set`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    return responseJson;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
+export {
+  getAllCategories,
+  getCategoryDetail,
+  addCategory,
+  editCategory,
+  removeCategory,
+  setCategoryProduct
+};
