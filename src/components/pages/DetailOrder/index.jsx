@@ -12,13 +12,12 @@ import Pagination from '@/components/parts/Pagination';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { sendOrder, getDetailOrder } from '@/fetching/orders';
 import { getAllProducts } from '@/fetching/product';
+
 import ModalDeleteVerification from './ModalDeleteVerification';
 import ModalEditQuantity from './ModalEditQuantity';
 
 const DetailOrder = ({ id }) => {
-  const { data, 
-    setData,  
-    } = useContext(DetailOrderContex);
+  const { data, setData } = useContext(DetailOrderContex);
   const [pagination, setPagination] = useState({
     totalPage: null,
     totalData: null,
@@ -134,8 +133,9 @@ const DetailOrder = ({ id }) => {
       </div>
       <div className="container-btn-products mt-20 flex items-center justify-between gap-3 px-5 md:ml-20 md:flex-row">
         <button
-          className={`mt-5 min-w-28 rounded-md  px-3 py-2 text-primary  md:mt-0 ${status === 'SENT' ? 'bg-grey' : 'bg-tertiary hover:bg-secondary'
-            }`}
+          className={`mt-5 min-w-28 rounded-md  px-3 py-2 text-primary  md:mt-0 ${
+            status === 'SENT' ? 'bg-grey' : 'bg-tertiary hover:bg-secondary'
+          }`}
           onClick={handleSend}
           disabled={status === 'SENT'}
         >
@@ -185,8 +185,8 @@ const DetailOrder = ({ id }) => {
         show={isProductSelectOpen}
         products={productList}
       />
-      <ModalDeleteVerification checkoutId={id}/>
-      <ModalEditQuantity checkoutId={id}/>
+      <ModalDeleteVerification checkoutId={id} />
+      <ModalEditQuantity checkoutId={id} />
       <Pagination
         currentPage={pagination.currentPage}
         totalPage={pagination.totalPage}

@@ -86,7 +86,7 @@ async function editProductInCheckout(checkoutId, productId, quantity) {
 async function deleteProductFromCheckout(checkoutId, productId) {
   const data = {
     checkoutId: +checkoutId,
-    productId: +productId,
+    productId: +productId
   };
   const response = await fetchWithToken(`${BASE_URL}/checkout/deleteProduct`, {
     method: 'DELETE',
@@ -104,7 +104,7 @@ async function deleteProductFromCheckout(checkoutId, productId) {
   return resJson;
 }
 
-async function addCheckout({userId, address, method, courier, status = 'PACKING'}) {
+async function addCheckout({ userId, address, method, courier, status = 'PACKING' }) {
   const data = {
     userId: +userId,
     address,
@@ -129,10 +129,12 @@ async function addCheckout({userId, address, method, courier, status = 'PACKING'
   return resJson;
 }
 
-export { getAllOrders, 
-  getDetailOrder, 
-  sendOrder, 
-  addProductToCheckout, 
+export {
+  getAllOrders,
+  getDetailOrder,
+  sendOrder,
+  addProductToCheckout,
   deleteProductFromCheckout,
   editProductInCheckout,
-  addCheckout };
+  addCheckout
+};

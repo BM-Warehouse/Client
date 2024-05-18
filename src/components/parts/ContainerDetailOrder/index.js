@@ -2,34 +2,33 @@
 
 import { useContext, useEffect, useState } from 'react';
 
+import { openModalDeleteVerification } from '@/components/pages/DetailOrder/ModalDeleteVerification';
+import { openModalEditQuantity } from '@/components/pages/DetailOrder/ModalEditQuantity';
+import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { getAllWarehouses } from '@/fetching/warehouse';
 import formatRupiah from '@/lib/formatRupiah';
-import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
-import { openModalDeleteVerification } from '@/components/pages/DetailOrder/ModalDeleteVerification';
-import { openModalEditQuantity } from '@/components/pages/DetailOrder/ModalEditQuantity';
 
 function Row({ productId, no, productName, amount, price, warehouses }) {
-  const { updateSelectedWarehouse, 
-    selectedWarehouses, 
-    setSelectedProduct} = useContext(DetailOrderContex);
-    const product = {
-      id: productId,
-      name: productName,
-      quantity: amount
-    }
+  const { updateSelectedWarehouse, selectedWarehouses, setSelectedProduct } =
+    useContext(DetailOrderContex);
+  const product = {
+    id: productId,
+    name: productName,
+    quantity: amount
+  };
   // function onDetailButtonClick() {
   //   console.log('Here', id);
   // }
 
   const handleDeleteButtonClick = () => {
     setSelectedProduct(product);
-    openModalDeleteVerification()
-  }
+    openModalDeleteVerification();
+  };
   const handleEditButtonClick = () => {
     setSelectedProduct(product);
     openModalEditQuantity();
-  }
+  };
 
   return (
     <tr>
@@ -55,8 +54,16 @@ function Row({ productId, no, productName, amount, price, warehouses }) {
         </select>
       </td>
       <td>
-        <ButtonPrimary icon="edit" title="Edit Quantity" onClick={handleEditButtonClick}></ButtonPrimary>
-        <ButtonStrong icon="delete" title="Delete Product" onClick={handleDeleteButtonClick}></ButtonStrong>
+        <ButtonPrimary
+          icon="edit"
+          title="Edit Quantity"
+          onClick={handleEditButtonClick}
+         />
+        <ButtonStrong
+          icon="delete"
+          title="Delete Product"
+          onClick={handleDeleteButtonClick}
+         />
       </td>
     </tr>
   );

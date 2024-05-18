@@ -31,7 +31,7 @@ const DetailContexProvider = ({ children }) => {
         page,
         setPage,
         selectedProduct,
-        setSelectedProduct,
+        setSelectedProduct
       }}
     >
       {children}
