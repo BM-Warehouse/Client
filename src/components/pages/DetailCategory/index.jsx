@@ -74,7 +74,7 @@ function DetailCategory({ params }) {
 
   const handleRemove = async () => {
     await asyncRemoveCategory(id);
-    router.push('/categories');
+    router.refresh();
   };
 
   useEffect(() => {

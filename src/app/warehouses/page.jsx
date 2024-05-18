@@ -11,7 +11,10 @@ import useModalStore from '@/hooks/useModalStore';
 import useWarehouseStore from '@/store/warehouseStore';
 
 const WarehousesPage = () => {
-  const { warehouseData, getWarehouseData } = useWarehouseStore();
+  const { warehouseData, getWarehouseData } = useWarehouseStore((state) => ({
+    warehouseData: state.warehouseData,
+    getWarehouseData: state.getWarehouseData
+  }));
 
   useEffect(() => {
     getWarehouseData();
@@ -19,7 +22,7 @@ const WarehousesPage = () => {
 
   const { isOpen, title, body, openModal, closeModal } = useModalStore();
 
-  const handleOpenModal = (action, warehouseName) => {
+  const handleOpenModal = (action, warehouseName, warehouseId) => {
     let modalTitle;
     let modalBody;
     let buttonLabel;
@@ -54,7 +57,7 @@ const WarehousesPage = () => {
             <h1>
               This will delete <strong>All products in the warehouse too</strong>{' '}
             </h1>
-            <DeleteWarehouseForm />
+            <DeleteWarehouseForm id={warehouseId} />
           </div>
         );
 
@@ -105,7 +108,7 @@ const WarehousesPage = () => {
                   </button> */}
                   <button
                     className="ml-2 bg-secondary px-4 py-2 text-white"
-                    onClick={() => handleOpenModal('delete', warehouse.name)}
+                    onClick={() => handleOpenModal('delete', warehouse.name, warehouse.id)}
                   >
                     Delete
                   </button>
