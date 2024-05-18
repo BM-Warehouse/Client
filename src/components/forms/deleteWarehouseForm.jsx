@@ -1,9 +1,15 @@
 'use client';
 
 import useModalStore from '@/hooks/useModalStore';
+import useWarehouseStore from '@/store/warehouseStore';
+import { useRouter } from 'next/navigation';
 
-const DeleteWarehouseForm = () => {
+const DeleteWarehouseForm = ({ id }) => {
+  const router = useRouter();
   const closeModal = useModalStore((state) => state.closeModal);
+  const { removeWarehouse } = useWarehouseStore((state) => ({
+    removeWarehouse: state.removeWarehouse
+  }));
 
   // useEffect(() => {
   //   if (warehouse) {
@@ -13,9 +19,12 @@ const DeleteWarehouseForm = () => {
   //   }
   // }, [warehouse]);
 
-  const handleDelete = (e) => {
+  const handleDelete = async (e) => {
     e.preventDefault();
-    console.log('Deleted Succesfully!');
+    const response = await removeWarehouse(id);
+    if (response.ok) {
+      router.refresh('/warehouses');
+    }
     closeModal();
   };
 
