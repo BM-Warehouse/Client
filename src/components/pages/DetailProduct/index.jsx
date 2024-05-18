@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 /* eslint-disable no-alert */
 /* eslint-disable @next/next/no-img-element */
 
@@ -12,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { BiPlus, BiMinus, BiEditAlt } from 'react-icons/bi';
 import { FiArrowUpRight, FiArrowDownLeft } from 'react-icons/fi';
 import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
+import { LuBoxes } from 'react-icons/lu';
 
 import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
 import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
@@ -23,15 +25,20 @@ import useAuthUserStore from '@/store/authUserStore';
 import useCartStore from '@/store/cartStore';
 import useProductStore from '@/store/productStore';
 import useWarehouseStore from '@/store/warehouseStore';
+import Link from 'next/link';
+import ModalAddCategoryProduct from '@/components/parts/ModalAddCategoryProduct';
+import useCategryStore from '@/store/categoryStore';
 
 function DetailProduct({ params }) {
   const { detailProduct, asyncGetDetail, asyncDeleteProduct } = useProductStore();
   const { warehouseData, getWarehouseData } = useWarehouseStore();
+  const { categoriesData, asyncGetAllWithoutPagination } = useCategryStore();
   const { asyncAddProductToCart } = useCartStore();
   const [quantity, setQuantity] = useState(1);
   const [showMoveStockModal, setShowMoveStockModal] = useState(false);
   const [showAddStockModal, setShowAddStockModal] = useState(false);
   const [showReduceStockModal, setShowReduceStockModal] = useState(false);
+  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
   const { role } = useAuthUserStore();
   const router = useRouter();
 
@@ -44,6 +51,10 @@ function DetailProduct({ params }) {
   useEffect(() => {
     getWarehouseData();
   }, [getWarehouseData]);
+
+  useEffect(() => {
+    asyncGetAllWithoutPagination();
+  }, [asyncGetAllWithoutPagination]);
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
@@ -105,14 +116,15 @@ function DetailProduct({ params }) {
           <div className="detail-body w-full px-6 pt-4 md:ml-10 md:w-2/4 md:px-0">
             <div className="title-product">
               <p className="mb-3 flex gap-2 text-base">
-                {detailProduct.productCategories.map((ctg) => (
-                  <span
-                    key={ctg.category.id}
-                    className="badge badge-outline text-[0.7rem] md:text-[0.8rem]"
-                  >
-                    {ctg.category.name}
-                  </span>
-                ))}
+                {detailProduct.productCategories &&
+                  detailProduct.productCategories.map((ctg) => (
+                    <span
+                      key={ctg.category.id}
+                      className="badge badge-outline text-[0.7rem] md:text-[0.8rem]"
+                    >
+                      {ctg.category.name}
+                    </span>
+                  ))}
               </p>
               <h5 className="mb-3 text-3xl font-bold">{detailProduct.name}</h5>
               <p className="price mb-3 text-2xl">{formatRupiah(detailProduct.price)}</p>
@@ -187,10 +199,13 @@ function DetailProduct({ params }) {
                   </button>
                 </div>
                 <div className="btn-add mb-1">
-                  <button className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3">
+                  <button
+                    onClick={() => setShowAddCategoryModal(true)}
+                    className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3"
+                  >
                     <span className="flex items-center justify-center">
-                      <BiEditAlt className="mr-1" />
-                      Edit Product
+                      <LuBoxes className="mr-1" />
+                      Add Category
                     </span>
                   </button>
                 </div>
@@ -204,6 +219,16 @@ function DetailProduct({ params }) {
                       Reduce Stock
                     </span>
                   </button>
+                </div>
+                <div className="btn-add mb-1">
+                  <Link href={`/edit-product/${id}`}>
+                    <button className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3">
+                      <span className="flex items-center justify-center">
+                        <BiEditAlt className="mr-1" />
+                        Edit Product
+                      </span>
+                    </button>
+                  </Link>
                 </div>
                 <div className="btn-add mb-1">
                   <button
@@ -240,6 +265,13 @@ function DetailProduct({ params }) {
           product={detailProduct}
           onClose={() => setShowReduceStockModal(false)}
           warehouseData={warehouseData}
+        />
+      )}
+      {showAddCategoryModal && (
+        <ModalAddCategoryProduct
+          product={detailProduct}
+          onClose={() => setShowAddCategoryModal(false)}
+          categoriesData={categoriesData}
         />
       )}
     </section>

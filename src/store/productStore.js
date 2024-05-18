@@ -6,12 +6,15 @@ import {
   deleteProductById,
   addProductToWarehouse,
   moveProductWarehouse,
-  addDamageProduct
+  addDamageProduct,
+  addProduct,
+  editProduct
 } from '@/fetching/product';
 
 const useProductStore = create((set) => ({
   productsData: [],
   detailProduct: null,
+  newProduct: null,
   pagination: {
     totalPage: null,
     totalData: null,
@@ -79,7 +82,31 @@ const useProductStore = create((set) => ({
         )
       }));
     } catch (error) {
-      console.error('Error in asyncAddProductToWarehouse:', error.message);
+      console.error('Error in asyncReduceProduct:', error.message);
+    }
+  },
+  async asyncAddProduct(name, price, description, imageUrl) {
+    try {
+      const newProduct = await addProduct(name, price, description, imageUrl);
+      set((state) => ({
+        productsData: [newProduct, ...state.productsData],
+        newProduct
+      }));
+    } catch (error) {
+      console.error('Error in asyncAddProduct:', error.message);
+    }
+  },
+  async asyncEditProduct(id, name, price, description, imageUrl) {
+    try {
+      const updatedProduct = await editProduct(id, name, price, description, imageUrl);
+      set((state) => ({
+        productsData: state.productsData.map((product) =>
+          product.id === id ? updatedProduct : product
+        ),
+        detailProduct: state.detailProduct?.id === id ? updatedProduct : state.detailProduct
+      }));
+    } catch (error) {
+      console.error('Error in asyncEditProduct:', error.message);
     }
   }
 }));

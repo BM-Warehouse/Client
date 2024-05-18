@@ -5,7 +5,8 @@ import {
   editCategory,
   getAllCategories,
   getCategoryDetail,
-  removeCategory
+  removeCategory,
+  setCategoryProduct
 } from '@/fetching/category';
 
 const useCategryStore = create((set) => ({
@@ -21,9 +22,9 @@ const useCategryStore = create((set) => ({
     currentPage: 1,
     limit: null
   },
-  asyncGetAll: async (contains, page = 1) => {
+  asyncGetAll: async (contains, page = 1, limit = 10) => {
     try {
-      const data = await getAllCategories(contains, page);
+      const data = await getAllCategories(contains, page, limit);
       set((_state) => ({
         categoriesData: data.categories,
         pagination: data.pagination
@@ -72,6 +73,24 @@ const useCategryStore = create((set) => ({
       }));
     } catch (error) {
       console.error('Error in asyncFunc:', error);
+    }
+  },
+  asyncGetAllWithoutPagination: async (contains, page = 1, limit = 99999) => {
+    try {
+      const data = await getAllCategories(contains, page, limit);
+      set((_state) => ({
+        categoriesData: data.categories,
+        pagination: data.pagination
+      }));
+    } catch (error) {
+      console.error('Error in asyncFunc:', error);
+    }
+  },
+  async asyncSetCategoryProduct(productId, categoryId) {
+    try {
+      await setCategoryProduct(productId, categoryId);
+    } catch (error) {
+      console.error('Error in asyncAddProductToWarehouse:', error.message);
     }
   }
 }));
