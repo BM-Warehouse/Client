@@ -3,6 +3,8 @@ import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { deleteProductFromCheckout, getDetailOrder } from '@/fetching/orders';
 import React, { useContext, useEffect } from 'react'
 
+import toast from 'react-hot-toast';
+
 const modalId = 'delete-modal'
 
 const openModalDeleteVerification = () => {
@@ -27,13 +29,13 @@ const ModalDeleteVerification = ({ checkoutId }) => {
               setData(res.data.checkout.productCheckout);
             })
             .catch((e) => {
-              window.alert("getDetailOrder Error", e);
+              toast.error("getDetailOrder Error", e);
             });
-        window.alert("Delete Success")
+        toast.success("Delete Success")
       })
       .catch((e)=>{
         console.log(e);
-        window.alert("Delete Fail", e);
+        toast.error("Delete Fail", e);
       })
     closeModalDeleteVerification()
   }

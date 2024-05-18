@@ -17,10 +17,8 @@ import ModalEditQuantity from './ModalEditQuantity';
 
 const DetailOrder = ({ id }) => {
   const { data, 
-    setData, 
-    isModalEditQuantityOpen, 
-    isModalDeleteVerificationOpen, 
-    selectedProductId } = useContext(DetailOrderContex);
+    setData,  
+    } = useContext(DetailOrderContex);
   const [pagination, setPagination] = useState({
     totalPage: null,
     totalData: null,
@@ -92,13 +90,13 @@ const DetailOrder = ({ id }) => {
       });
   }, [id, setCurrentCheckoutId, setData]);
 
-  useEffect(() => {
-    console.log('delete---', isModalDeleteVerificationOpen, selectedProductId);
-  }, [isModalDeleteVerificationOpen]);
+  // useEffect(() => {
+  //   console.log('delete---', isModalDeleteVerificationOpen, selectedProductId);
+  // }, [isModalDeleteVerificationOpen]);
 
-  useEffect(() => {
-    console.log('edit---', isModalEditQuantityOpen, selectedProductId);
-  }, [isModalEditQuantityOpen]);
+  // useEffect(() => {
+  //   console.log('edit---', isModalEditQuantityOpen, selectedProductId);
+  // }, [isModalEditQuantityOpen]);
 
   if (isLoading)
     return (

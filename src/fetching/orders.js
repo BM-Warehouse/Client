@@ -96,9 +96,32 @@ async function deleteProductFromCheckout(checkoutId, productId) {
     body: JSON.stringify(data)
   });
 
-  console.log(response);
-
   if (response.status !== 200) {
+    const resJson = await response.json();
+    throw new Error(JSON.stringify(resJson));
+  }
+  const resJson = await response.json();
+  return resJson;
+}
+
+async function addCheckout({userId, address, method, courier, status = 'PACKING'}) {
+  const data = {
+    userId: +userId,
+    address,
+    method,
+    courier,
+    status
+  };
+
+  const response = await fetchWithToken(`${BASE_URL}/checkout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (response.status !== 201) {
     const resJson = await response.json();
     throw new Error(JSON.stringify(resJson));
   }
@@ -111,4 +134,5 @@ export { getAllOrders,
   sendOrder, 
   addProductToCheckout, 
   deleteProductFromCheckout,
-  editProductInCheckout };
+  editProductInCheckout,
+  addCheckout };

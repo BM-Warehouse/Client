@@ -7,6 +7,7 @@ import Image from 'next/image';
 import defaultProductImage from '@/assets/images/defaultProduct.png';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { addProductToCheckout, getDetailOrder } from '@/fetching/orders';
+import toast from 'react-hot-toast';
 
 const generateCategoriesString = (product) => {
   let categoriesString = '';
@@ -43,11 +44,12 @@ const Row = ({ product }) => {
               setData(res.data.checkout.productCheckout);
             })
             .catch((e) => {
-              window.alert("getDetailOrder Error", e);
+              toast.error("getDetailOrder Error", e);
             });
           // eslint-disable-next-line no-alert
-          window.alert(
-            `Success adding ${quantity} items of ${product.name}(${product.id}) to checkout id ${currentCheckoutId} to checkout list`
+          toast.success(
+            `Success adding ${quantity} items of ${product.name} to checkout list`,
+            {duration: 5000}
           );
           // window.alert(JSON.stringify(res, null, 2));
         })
