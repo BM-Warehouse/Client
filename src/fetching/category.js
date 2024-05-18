@@ -54,4 +54,30 @@ const addCategory = async (name, description, imageUrl) => {
   }
 };
 
-export { getAllCategories, getCategoryDetail, addCategory };
+const editCategory = async (id, name, description, imageUrl) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/categories/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(name, description, imageUrl)
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
+const removeCategory = async (id) => {
+  try {
+    await fetchWithToken(`${BASE_URL}/categories/${id}`, {
+      method: 'DELETE'
+    });
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+  }
+};
+
+export { getAllCategories, getCategoryDetail, addCategory, editCategory, removeCategory };

@@ -3,8 +3,6 @@
 import CardProduct from '@/components/parts/CardProduct';
 
 function ContainerProductCategory({ productCategories }) {
-  console.log(productCategories);
-
   if (!productCategories) {
     return null;
   }

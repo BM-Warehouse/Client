@@ -21,9 +21,9 @@ const getAllUsers = async () => {
   }
 };
 
-const getUserById = async (id) => {
+const getUserDetail = async (id) => {
   try {
-    const response = await fetch(`${BASE_URL}/users/${id}`);
+    const response = await fetchWithToken(`${BASE_URL}/users/${id}`);
     const responseJson = await response.json();
     const { status, message } = responseJson;
     if (status !== 'success') {
@@ -37,6 +37,93 @@ const getUserById = async (id) => {
     // eslint-disable-next-line no-console
     console.error('Error fetching data:', error.message);
     throw error;
+  }
+};
+
+const addUser = async (
+  fullName,
+  email,
+  username,
+  password,
+  phone,
+  address,
+  gender,
+  birthdate,
+  role,
+  avatar
+) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/users/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        fullName,
+        email,
+        username,
+        password,
+        phone,
+        address,
+        gender,
+        birthdate,
+        role,
+        avatar
+      )
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
+const updateUser = async (
+  id,
+  fullName,
+  email,
+  username,
+  password,
+  phone,
+  address,
+  gender,
+  birthdate,
+  role,
+  avatar
+) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/users/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        fullName,
+        email,
+        username,
+        password,
+        phone,
+        address,
+        gender,
+        birthdate,
+        role,
+        avatar
+      )
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
+const destroyUser = async (id) => {
+  try {
+    await fetchWithToken(`${BASE_URL}/users/${id}`, {
+      method: 'DELETE'
+    });
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
   }
 };
 
@@ -62,4 +149,4 @@ const getOwnProfile = async () => {
   }
 };
 
-export { getOwnProfile, getUserById, getAllUsers };
+export { getOwnProfile, getUserDetail, getAllUsers, addUser, updateUser, destroyUser };

@@ -1,6 +1,12 @@
 import { create } from 'zustand';
 
-import { addCategory, getAllCategories, getCategoryDetail } from '@/fetching/category';
+import {
+  addCategory,
+  editCategory,
+  getAllCategories,
+  getCategoryDetail,
+  removeCategory
+} from '@/fetching/category';
 
 const useCategryStore = create((set) => ({
   categoriesData: [],
@@ -34,6 +40,26 @@ const useCategryStore = create((set) => ({
       const newCategory = await addCategory(name, description, imageUrl);
       set((_state) => ({
         newCategory
+      }));
+    } catch (error) {
+      console.error('Error in asyncFunc:', error);
+    }
+  },
+  asyncEditCategory: async (id, name, description, imageUrl) => {
+    try {
+      const editedCategory = await editCategory(id, name, description, imageUrl);
+      set((_state) => ({
+        editedCategory
+      }));
+    } catch (error) {
+      console.error('Error in asyncFunc:', error);
+    }
+  },
+  asyncRemoveCategory: async (id) => {
+    try {
+      const removedCategory = await removeCategory(id);
+      set((_state) => ({
+        removedCategory
       }));
     } catch (error) {
       console.error('Error in asyncFunc:', error);
