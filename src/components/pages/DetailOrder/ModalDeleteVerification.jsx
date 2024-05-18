@@ -6,7 +6,6 @@ import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { deleteProductFromCheckout, getDetailOrder } from '@/fetching/orders';
 
-
 const modalId = 'delete-modal';
 
 const openModalDeleteVerification = () => {

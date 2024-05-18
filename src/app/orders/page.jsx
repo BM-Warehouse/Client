@@ -1,8 +1,11 @@
 import ListOrders from '@/components/pages/ListOrder';
+import ContentContainer from '@/components/parts/ContentContainer';
 
 const OrdersPage = () => (
   <div>
-    <ListOrders />
+    <ContentContainer>
+      <ListOrders />
+    </ContentContainer>
   </div>
 );
 

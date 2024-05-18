@@ -13,8 +13,6 @@ import { getAllUsers } from '@/fetching/user';
 import ListOrderContextProvider, { ListOrderContext } from './context';
 import ModalAddOrder, { openModalAddOrder } from './ModalAddOrder';
 
-
-
 function Main() {
   const [data, setData] = useState(null);
   const [pagination, setPagination] = useState({

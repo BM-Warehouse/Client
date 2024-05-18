@@ -55,13 +55,13 @@ const ModalEditQuantity = ({ checkoutId }) => {
               Quantity
             </label>
             <input
-                type="number"
-                value={quantity}
-                className="input input-bordered w-32 max-w-xs"
-                onChange={(e) => {
-                  handleChange(e.target.value);
-                }}
-              />
+              type="number"
+              value={quantity}
+              className="input input-bordered w-32 max-w-xs"
+              onChange={(e) => {
+                handleChange(e.target.value);
+              }}
+            />
           </div>
 
           <div className="flex items-center justify-between mt-4">

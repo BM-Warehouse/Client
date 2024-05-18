@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
 import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
-import { addCheckout} from '@/fetching/orders';
+import { addCheckout } from '@/fetching/orders';
 
 import { ListOrderContext } from './context';
 
@@ -76,29 +76,29 @@ const ModalAddOrder = () => {
           <h2 className="font-bold text-lg mb-5">Create New Order</h2>
           <div className="flex justify-center items-center">
             <form
-                onSubmit={(e) => handleSubmit(e)}
-                className="flex flex-col items-center justify-center gap-2"
-              >
+              onSubmit={(e) => handleSubmit(e)}
+              className="flex flex-col items-center justify-center gap-2"
+            >
               <label className="form-control w-full max-w-xs">
                 <div className="label">
                   <span className="label-text">Username</span>
                 </div>
                 <select
-                    name="userId"
-                    id=""
-                    className="select select-bordered w-full max-w-xs"
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    value={form.username}
-                    required
-                  >
+                  name="userId"
+                  id=""
+                  className="select select-bordered w-full max-w-xs"
+                  onChange={(e) => {
+                    handleChange(e);
+                  }}
+                  value={form.username}
+                  required
+                >
                   <option value=""> </option>
                   {users.map((u) => (
                     <option key={u.id} value={`${u.id}`}>
                       {u.username}
                     </option>
-                    ))}
+                  ))}
                 </select>
               </label>
               <label className="form-control w-full max-w-xs">
@@ -106,30 +106,30 @@ const ModalAddOrder = () => {
                   <span className="label-text">Adress</span>
                 </div>
                 <textarea
-                    rows={5}
-                    value={form.address}
-                    name="address"
-                    placeholder="Type here"
-                    className="textarea textarea-bordered w-full max-w-xs h-32 max-h-32"
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    required
-                  />
+                  rows={5}
+                  value={form.address}
+                  name="address"
+                  placeholder="Type here"
+                  className="textarea textarea-bordered w-full max-w-xs h-32 max-h-32"
+                  onChange={(e) => {
+                    handleChange(e);
+                  }}
+                  required
+                />
               </label>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
                   <span className="label-text">Courier</span>
                 </div>
                 <select
-                    name="courier"
-                    className="select select-bordered w-full max-w-xs"
-                    value={form.courier}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    required
-                  >
+                  name="courier"
+                  className="select select-bordered w-full max-w-xs"
+                  value={form.courier}
+                  onChange={(e) => {
+                    handleChange(e);
+                  }}
+                  required
+                >
                   <option value=""> </option>
                   <option value="JNE">JNE</option>
                   <option value="TIKI">TIKI</option>
@@ -141,14 +141,14 @@ const ModalAddOrder = () => {
                   <span className="label-text">Method</span>
                 </div>
                 <select
-                    name="method"
-                    value={form.method}
-                    className="select select-bordered w-full max-w-xs"
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    required
-                  >
+                  name="method"
+                  value={form.method}
+                  className="select select-bordered w-full max-w-xs"
+                  onChange={(e) => {
+                    handleChange(e);
+                  }}
+                  required
+                >
                   <option value=""> </option>
                   <option value="OFFLINE">OFFLINE</option>
                   <option value="ONLINE">ONLINE</option>

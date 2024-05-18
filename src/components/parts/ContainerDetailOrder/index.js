@@ -54,16 +54,8 @@ function Row({ productId, no, productName, amount, price, warehouses }) {
         </select>
       </td>
       <td>
-        <ButtonPrimary
-          icon="edit"
-          title="Edit Quantity"
-          onClick={handleEditButtonClick}
-         />
-        <ButtonStrong
-          icon="delete"
-          title="Delete Product"
-          onClick={handleDeleteButtonClick}
-         />
+        <ButtonPrimary icon="edit" title="Edit Quantity" onClick={handleEditButtonClick} />
+        <ButtonStrong icon="delete" title="Delete Product" onClick={handleDeleteButtonClick} />
       </td>
     </tr>
   );
