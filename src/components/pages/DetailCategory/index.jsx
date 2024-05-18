@@ -94,7 +94,7 @@ function DetailCategory({ params }) {
           <figure className="max-h-[20rem] w-full max-w-[20rem] p-2 md:w-2/4">
             <img src={categoryDetail.imageUrl} alt="Susu Bayi" />
           </figure>
-          <div className="detail-body w-full px-6 pt-4 md:ml-10 md:w-2/4 md:px-0 grid grid-rows">
+          <div className="detail-body grid-rows grid w-full px-6 pt-4 md:ml-10 md:w-2/4 md:px-0">
             <div className="container-text">
               <div className="title-category">
                 <h5 className="mb-3 text-3xl font-bold">{categoryDetail.name}</h5>
@@ -104,17 +104,17 @@ function DetailCategory({ params }) {
               </div>
             </div>
             {role === 'admin' ? (
-              <div className="container-btn content-end mb-5">
+              <div className="container-btn mb-5 content-end">
                 <div className="btn-edit mt-5">
                   <button
-                    className="btn bg-tertiary hover:bg-secondary text-white w-full"
+                    className="btn w-full bg-tertiary text-white hover:bg-secondary"
                     onClick={() => document.getElementById('my_modal_1').showModal()}
                   >
                     Edit Category
                   </button>
                   <dialog id="my_modal_1" className="modal">
                     <div className="modal-box bg-primary">
-                      <h3 className="font-bold text-lg text-secondary">Edit Category</h3>
+                      <h3 className="text-lg font-bold text-secondary">Edit Category</h3>
                       <div className="input-container">
                         <label htmlFor="" className="text-secondary">
                           Category name:

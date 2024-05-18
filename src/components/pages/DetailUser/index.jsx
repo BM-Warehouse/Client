@@ -2,15 +2,21 @@
 
 import { useEffect } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import formatDate from '@/lib/formatBirthdate';
 import useUsersStore from '@/store/userStore';
 
 function DetailUser({ params }) {
+  const router = useRouter();
   const { userDetail, asyncGetDetail } = useUsersStore((state) => ({
     userDetail: state.userDetail,
     asyncGetDetail: state.asyncGetDetail
+  }));
+  const { asyncDestroyUser } = useUsersStore((state) => ({
+    asyncDestroyUser: state.asyncDestroyUser
   }));
 
   const id = +params.userid;
@@ -21,6 +27,11 @@ function DetailUser({ params }) {
   if (!userDetail) {
     return <div>Loading...</div>;
   }
+
+  const handleDestroy = async () => {
+    await asyncDestroyUser(id);
+    router.push('/users');
+  };
 
   return (
     <section className="detail-user-page relative min-h-screen bg-bgColor pb-20 font-poppins">
@@ -56,10 +67,33 @@ function DetailUser({ params }) {
               </button>
             </div>
             <div className="btn-delete mt-5">
-              <button className="w-full bg-red-500 px-8 py-4 font-bold text-white hover:bg-red-600 rounded-lg h-11 text-sm">
+              <button
+                className="w-full bg-red-500 px-8 py-4 font-bold text-white hover:bg-red-600 rounded-lg h-11 text-sm"
+                onClick={() => document.getElementById('my_modal_1').showModal()}
+              >
                 Delete User
               </button>
             </div>
+            <dialog id="my_modal_1" className="modal">
+              <div className="modal-box bg-primary rounded-lg shadow-lg p-6">
+                <h2 className="text-lg font-bold mb-4">Confirm Action</h2>
+                <p className="mb-4">Are you sure you want to delete this user?</p>
+                <div className="flex justify-end space-x-4">
+                  <button
+                    className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+                    onClick={() => document.getElementById('my_modal_1').close()}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                    onClick={handleDestroy}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </dialog>
           </div>
         </div>
       </div>

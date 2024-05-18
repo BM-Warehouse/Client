@@ -1,17 +1,45 @@
+/* eslint-disable no-alert */
+import Link from 'next/link';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
 
-function RowProduct() {
+import useProductStore from '@/store/productStore';
+
+function RowProduct({ product, onOpenModal }) {
+  const { asyncDeleteProduct } = useProductStore();
+
+  const handleDelete = async () => {
+    try {
+      await asyncDeleteProduct(product.id);
+      alert('Product removed successfully!');
+    } catch (error) {
+      console.error('Error deleting product:', error.message);
+      alert('Failed to remove product.');
+    }
+  };
+
+  const handleAddStock = () => {
+    onOpenModal(product);
+  };
+
+  if (!product) {
+    return null;
+  }
+
   return (
     <tr>
-      <th>1</th>
-      <td>PediaComplete Vanila</td>
-      <td>Food & Grocery</td>
-      <td>Warehouse A</td>
-      <td>1100</td>
+      <th>{product.id}</th>
+      <td>
+        <Link href={`/products/${product.id}`}>{product.name}</Link>
+      </td>
+      <td>{product.productCategories[0] ? product.productCategories[0].category.name : '-'}</td>
+      <td>{product.totalStock}</td>
       <td>
         <div className="buttons-action flex justify-between">
-          <button className="mr-2 min-w-28 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary">
+          <button
+            onClick={handleAddStock}
+            className="mr-2 min-w-28 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
+          >
             <span className="flex items-center justify-center">
               <FiArrowUpRight className="mr-1" />
               Add Stock
@@ -23,7 +51,10 @@ function RowProduct() {
               Move Stock
             </span>
           </button>
-          <button className="mr-2 min-w-28 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary">
+          <button
+            onClick={handleDelete}
+            className="mr-2 min-w-28 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
+          >
             <span className="flex items-center justify-center">
               <HiOutlineTrash className="mr-1" />
               Delete

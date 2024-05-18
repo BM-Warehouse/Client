@@ -27,6 +27,8 @@ html,
   --darkblue: #003d7e;
   --txt: #1e1e1e;
   --bgColor: #fffdea;
+  --danger: #dc3545;
+  --ligtDanger: #e3342f;
 }
 
 [data-theme='dark'] {

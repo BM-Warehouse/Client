@@ -1,18 +1,31 @@
 'use client';
 
+import { useEffect } from 'react';
+
+import Link from 'next/link';
 import { HiPlus } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
 import ToggleTheme from '@/components/elements/ToggleTheme';
 import ContainerProductsAdmin from '@/components/parts/ContainerProductsAdmin';
 import ContainerProductsUser from '@/components/parts/ContainerProductsUser';
 import Navbar from '@/components/parts/Navbar';
+import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
 import useAuthUserStore from '@/store/authUserStore';
+import useProductStore from '@/store/productStore';
 
 function ListProducts() {
   const { role } = useAuthUserStore();
+  const { productsData, asyncGetAll, pagination } = useProductStore();
+
+  useEffect(() => {
+    asyncGetAll();
+  }, [asyncGetAll]);
+
+  const onPaginationClick = async (page) => {
+    await asyncGetAll(page);
+  };
 
   if (!role) {
     return null;
@@ -28,12 +41,14 @@ function ListProducts() {
       <div className="container-btn-products  mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
         <div className="btn-add-product">
           {role === 'admin' ? (
-            <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
-              <span className="flex items-center justify-center">
-                <HiPlus className="mr-1" />
-                Add Product
-              </span>
-            </button>
+            <Link href="/add-product">
+              <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
+                <span className="flex items-center justify-center">
+                  <HiPlus className="mr-1" />
+                  Add Product
+                </span>
+              </button>
+            </Link>
           ) : (
             <div> </div>
           )}
@@ -64,22 +79,17 @@ function ListProducts() {
         </div>
       </div>
 
-      {role === 'admin' ? <ContainerProductsAdmin /> : <ContainerProductsUser />}
+      {role === 'admin' ? (
+        <ContainerProductsAdmin productsData={productsData} />
+      ) : (
+        <ContainerProductsUser productsData={productsData} />
+      )}
 
-      <div className="container-pagination flex  items-center justify-center bg-bgColor pb-10 ">
-        <div className="button-pagination">
-          <MdKeyboardArrowLeft className="text-2xl" />
-        </div>
-        <div className="join">
-          <button className="btn join-item">1</button>
-          <button className="btn join-item btn-active">2</button>
-          <button className="btn join-item">3</button>
-          <button className="btn join-item">4</button>
-        </div>
-        <div className="button-pagination">
-          <MdKeyboardArrowRight className="text-2xl" />
-        </div>
-      </div>
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPage={pagination.totalPage}
+        onClick={onPaginationClick}
+      />
     </main>
   );
 }

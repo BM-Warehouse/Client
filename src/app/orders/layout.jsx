@@ -5,8 +5,8 @@ import Sidebar from '@/components/parts/Sidebar';
 
 const OrdersPageLayout = ({ children }) => (
   <div>
-    <Navbar />
     <Sidebar />
+    <Navbar />
     <div>{children}</div>
   </div>
 );
