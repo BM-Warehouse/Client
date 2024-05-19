@@ -11,7 +11,7 @@ function CardCategory({ category }) {
           <img src={category.imageUrl} alt="Shoes" />
         </figure>
         <div className="card-body gap-0 px-6 py-2">
-          <h2 className="card-title text-sm md:text-base justify-center">{category.name}</h2>
+          <h2 className="card-title justify-center text-sm md:text-base">{category.name}</h2>
         </div>
       </div>
     </Link>

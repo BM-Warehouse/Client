@@ -2,25 +2,43 @@
 
 import { useContext, useEffect, useState } from 'react';
 
+import { openModalDeleteVerification } from '@/components/pages/DetailOrder/ModalDeleteVerification';
+import { openModalEditQuantity } from '@/components/pages/DetailOrder/ModalEditQuantity';
+import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { getAllWarehouses } from '@/fetching/warehouse';
 import formatRupiah from '@/lib/formatRupiah';
 
-function Row({ productId, productName, amount, price, warehouses }) {
-  const { updateSelectedWarehouse, selectedWarehouses } = useContext(DetailOrderContex);
+function Row({ productId, no, productName, amount, price, warehouses }) {
+  const { updateSelectedWarehouse, selectedWarehouses, setSelectedProduct } =
+    useContext(DetailOrderContex);
+  const product = {
+    id: productId,
+    name: productName,
+    quantity: amount
+  };
   // function onDetailButtonClick() {
   //   console.log('Here', id);
   // }
 
+  const handleDeleteButtonClick = () => {
+    setSelectedProduct(product);
+    openModalDeleteVerification();
+  };
+  const handleEditButtonClick = () => {
+    setSelectedProduct(product);
+    openModalEditQuantity();
+  };
+
   return (
     <tr>
-      <td>{productId || '-'}</td>
+      <td>{no || '-'}</td>
       <td>{productName || '-'}</td>
       <td>{amount || '-'}</td>
       <td>{price || '-'}</td>
-      {/* <td>{warehouse || '-'}</td> */}
       <td>
         <select
+          className="select select-bordered h-9 min-h-9 min-w-48"
           value={selectedWarehouses[productId] || ''}
           id="warehouseSelect"
           onChange={(e) => {
@@ -35,6 +53,10 @@ function Row({ productId, productName, amount, price, warehouses }) {
           ))}
         </select>
       </td>
+      <td>
+        <ButtonPrimary icon="edit" title="Edit Quantity" onClick={handleEditButtonClick} />
+        <ButtonStrong icon="delete" title="Delete Product" onClick={handleDeleteButtonClick} />
+      </td>
     </tr>
   );
 }
@@ -45,13 +67,17 @@ function ContainerOrderDetail({ checkoutId, data }) {
   useEffect(() => {
     getAllWarehouses()
       .then((res) => {
-        // console.log('>>>', res.warehouses);
+        // console.log('>>>', res);
         setWarehouses(res);
       })
       .catch((error) => {
         console.log('Error:', error);
       });
   }, [checkoutId]);
+
+  // useEffect(()=> {
+  //   console.log("===========", warehouses);
+  // }, [warehouses]);
 
   return (
     <div className="container-detail-order mt-4  p-4 md:ml-20 ">
@@ -65,17 +91,19 @@ function ContainerOrderDetail({ checkoutId, data }) {
               <th>Amount</th>
               <th>Price</th>
               <th>Warehouse</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody className=" text-tertiary">
-            {data.map((d) => (
+            {data.map((d, i) => (
               <Row
                 key={d.productId}
+                no={i + 1}
                 productId={d.productId}
                 productName={d.product.name}
                 amount={d.quantityItem}
                 price={formatRupiah(d.productPrice)}
-                warehouses={warehouses?.warehouses}
+                warehouses={warehouses}
               />
             ))}
           </tbody>

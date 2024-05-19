@@ -1,7 +1,7 @@
 import DetailUser from '@/components/pages/DetailUser';
 
-function page() {
+function DetailProfilePage() {
   return <DetailUser />;
 }
 
-export default page;
+export default DetailProfilePage;

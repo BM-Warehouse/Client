@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 /* eslint-disable no-alert */
 /* eslint-disable @next/next/no-img-element */
 
@@ -6,25 +7,54 @@
 import { useEffect, useState } from 'react';
 
 // import Image from 'next/image';
-import { BiPlus, BiMinus } from 'react-icons/bi';
 
 // import SusuBayik from '@/assets/images/susu-bayik.png';
+import { useRouter } from 'next/navigation';
+import { BiPlus, BiMinus, BiEditAlt } from 'react-icons/bi';
+import { FiArrowUpRight, FiArrowDownLeft } from 'react-icons/fi';
+import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
+import { LuBoxes } from 'react-icons/lu';
+
+import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
+import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
+import ModalReduceStockProduct from '@/components/parts/ModalReduceStockProduct';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import formatRupiah from '@/lib/formatRupiah';
+import useAuthUserStore from '@/store/authUserStore';
 import useCartStore from '@/store/cartStore';
 import useProductStore from '@/store/productStore';
+import useWarehouseStore from '@/store/warehouseStore';
+import Link from 'next/link';
+import ModalAddCategoryProduct from '@/components/parts/ModalAddCategoryProduct';
+import useCategryStore from '@/store/categoryStore';
 
 function DetailProduct({ params }) {
-  const { detailProduct, asyncGetDetail } = useProductStore();
+  const { detailProduct, asyncGetDetail, asyncDeleteProduct } = useProductStore();
+  const { warehouseData, getWarehouseData } = useWarehouseStore();
+  const { categoriesData, asyncGetAllWithoutPagination } = useCategryStore();
   const { asyncAddProductToCart } = useCartStore();
   const [quantity, setQuantity] = useState(1);
+  const [showMoveStockModal, setShowMoveStockModal] = useState(false);
+  const [showAddStockModal, setShowAddStockModal] = useState(false);
+  const [showReduceStockModal, setShowReduceStockModal] = useState(false);
+  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
+  const { role } = useAuthUserStore();
+  const router = useRouter();
 
   const id = +params.productId;
 
   useEffect(() => {
     asyncGetDetail(id);
   }, [asyncGetDetail, id]);
+
+  useEffect(() => {
+    getWarehouseData();
+  }, [getWarehouseData]);
+
+  useEffect(() => {
+    asyncGetAllWithoutPagination();
+  }, [asyncGetAllWithoutPagination]);
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
@@ -54,10 +84,24 @@ function DetailProduct({ params }) {
       alert('Failed to add product to cart.');
     }
   };
-  // const
+
+  const handleDeleteProduct = async () => {
+    try {
+      await asyncDeleteProduct(detailProduct.id);
+      alert('Product deleted successfully!');
+      router.push('/products');
+    } catch (error) {
+      console.error('Error deleting product:', error.message);
+      alert('Failed to delete product.');
+    }
+  };
 
   if (!detailProduct) {
     return <div>Loading...</div>;
+  }
+
+  if (!role) {
+    return null;
   }
 
   return (
@@ -72,55 +116,164 @@ function DetailProduct({ params }) {
           <div className="detail-body w-full px-6 pt-4 md:ml-10 md:w-2/4 md:px-0">
             <div className="title-product">
               <p className="mb-3 flex gap-2 text-base">
-                {detailProduct.productCategories.map((ctg) => (
-                  <span
-                    key={ctg.category.id}
-                    className="badge badge-outline text-[0.7rem] md:text-[0.8rem]"
-                  >
-                    {ctg.category.name}
-                  </span>
-                ))}
+                {detailProduct.productCategories &&
+                  detailProduct.productCategories.map((ctg) => (
+                    <span
+                      key={ctg.category.id}
+                      className="badge badge-outline text-[0.7rem] md:text-[0.8rem]"
+                    >
+                      {ctg.category.name}
+                    </span>
+                  ))}
               </p>
               <h5 className="mb-3 text-3xl font-bold">{detailProduct.name}</h5>
               <p className="price mb-3 text-2xl">{formatRupiah(detailProduct.price)}</p>
-              <p className="price mb-6 text-base">
-                Tersisa <span>{detailProduct.totalStock}</span> buah
-              </p>
+              {role === 'user' ? (
+                <p className="price mb-6 text-base">
+                  Tersisa <span>{detailProduct.totalStock}</span> buah
+                </p>
+              ) : (
+                <p className="price mb-6 text-base">
+                  Total Stock <span>{detailProduct.totalStock}</span> buah
+                </p>
+              )}
             </div>
-            <div className="quantity">
-              <p className="mb-4">Quantity</p>
-              <div className="container-quantity mb-6 flex items-center gap-2 ">
+            {role === 'user' && (
+              <div className="quantity">
+                <p className="mb-4">Quantity</p>
+                <div className="container-quantity mb-6 flex items-center gap-2 ">
+                  <button
+                    onClick={decreaseQuantity}
+                    className="btn-size rounded-sm bg-tertiary text-3xl text-bgColor hover:bg-secondary "
+                  >
+                    <BiMinus />
+                  </button>
+                  <label className="btn-size border-1 border-solid border-tertiary bg-bgColor px-5 py-2 hover:border-secondary xl:px-8">
+                    {quantity}
+                  </label>
+                  <button
+                    onClick={increaseQuantity}
+                    className="btn-size rounded-sm bg-tertiary text-3xl text-bgColor  hover:bg-secondary "
+                  >
+                    <BiPlus />
+                  </button>
+                </div>
+              </div>
+            )}
+            {role === 'user' && (
+              <div className="btn-add mb-10">
                 <button
-                  onClick={decreaseQuantity}
-                  className="btn-size rounded-sm bg-tertiary text-3xl text-bgColor hover:bg-secondary "
+                  onClick={handleAddToCart}
+                  className="w-full bg-tertiary px-8 py-4 font-bold text-white hover:bg-secondary"
                 >
-                  <BiMinus />
-                </button>
-                <label className="btn-size border-1 border-solid border-tertiary bg-bgColor px-5 py-2 hover:border-secondary xl:px-8">
-                  {quantity}
-                </label>
-                <button
-                  onClick={increaseQuantity}
-                  className="btn-size rounded-sm bg-tertiary text-3xl text-bgColor  hover:bg-secondary "
-                >
-                  <BiPlus />
+                  ADD TO CHART
                 </button>
               </div>
-            </div>
-            <div className="btn-add mb-10">
-              <button
-                onClick={handleAddToCart}
-                className="w-full bg-tertiary px-8 py-4 font-bold text-white hover:bg-secondary"
-              >
-                ADD TO CHART
-              </button>
-            </div>
+            )}
+
             <div className="description">
               <p className="text-sm leading-6">{detailProduct.description}</p>
             </div>
+            {role === 'admin' && (
+              <div className="buttons-product-admin mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="btn-add mb-1">
+                  <button
+                    onClick={() => setShowAddStockModal(true)}
+                    className="w-full bg-tertiary px-8 py-4 font-bold text-white hover:bg-secondary md:px-2 md:py-3"
+                  >
+                    <span className="flex items-center justify-center">
+                      <FiArrowUpRight className="mr-1" />
+                      Add Stock
+                    </span>
+                  </button>
+                </div>
+                <div className="btn-add mb-1">
+                  <button
+                    onClick={() => setShowMoveStockModal(true)}
+                    className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3"
+                  >
+                    <span className="flex items-center justify-center">
+                      <HiArrowsExpand className="mr-1" />
+                      Move Stock
+                    </span>
+                  </button>
+                </div>
+                <div className="btn-add mb-1">
+                  <button
+                    onClick={() => setShowAddCategoryModal(true)}
+                    className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3"
+                  >
+                    <span className="flex items-center justify-center">
+                      <LuBoxes className="mr-1" />
+                      Add Category
+                    </span>
+                  </button>
+                </div>
+                <div className="btn-add mb-1">
+                  <button
+                    onClick={() => setShowReduceStockModal(true)}
+                    className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3"
+                  >
+                    <span className="flex items-center justify-center">
+                      <FiArrowDownLeft className="mr-1" />
+                      Reduce Stock
+                    </span>
+                  </button>
+                </div>
+                <div className="btn-add mb-1">
+                  <Link href={`/edit-product/${id}`}>
+                    <button className="w-full bg-tertiary px-8 py-4 font-bold text-white  hover:bg-secondary md:px-2 md:py-3">
+                      <span className="flex items-center justify-center">
+                        <BiEditAlt className="mr-1" />
+                        Edit Product
+                      </span>
+                    </button>
+                  </Link>
+                </div>
+                <div className="btn-add mb-1">
+                  <button
+                    onClick={handleDeleteProduct}
+                    className="w-full bg-ligtDanger px-8 py-4 font-bold text-white hover:bg-danger md:px-2 md:py-3"
+                  >
+                    <span className="flex items-center justify-center">
+                      <HiOutlineTrash className="mr-1" />
+                      Delete
+                    </span>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
+      {showMoveStockModal && (
+        <ModalMoveStockProduct
+          product={detailProduct}
+          onClose={() => setShowMoveStockModal(false)}
+          warehouseData={warehouseData}
+        />
+      )}
+      {showAddStockModal && (
+        <ModalAddStockProduct
+          product={detailProduct}
+          onClose={() => setShowAddStockModal(false)}
+          warehouseData={warehouseData}
+        />
+      )}
+      {showReduceStockModal && (
+        <ModalReduceStockProduct
+          product={detailProduct}
+          onClose={() => setShowReduceStockModal(false)}
+          warehouseData={warehouseData}
+        />
+      )}
+      {showAddCategoryModal && (
+        <ModalAddCategoryProduct
+          product={detailProduct}
+          onClose={() => setShowAddCategoryModal(false)}
+          categoriesData={categoriesData}
+        />
+      )}
     </section>
   );
 }

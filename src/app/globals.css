@@ -27,14 +27,20 @@ html,
   --darkblue: #003d7e;
   --txt: #1e1e1e;
   --bgColor: #fffdea;
+  --danger: #dc3545;
+  --ligtDanger: #e3342f;
+  --accent-color: #45abff;
+  --table-zebra: #f2f2f2;
 }
 
 [data-theme='dark'] {
   --primary: #1a1a1a; /* Example dark mode primary color */
   --secondary: #444444;
-  --tertiary: #007080;
+  --tertiary: #cccccc;
   --bgColor: #121212;
   --txt: #ffffff;
+  --accent-color: #1a1a1a;
+  --table-zebra: #191e24;
   /* Add your other dark mode variables here */
 }
 
@@ -62,4 +68,12 @@ body {
 
 .fp-watermark {
   display: none;
+}
+
+table tr th:hover span {
+  color: var(--accent-color);
+}
+
+.table-zebra tbody tr:nth-child(even) {
+  background-color: var(--table-zebra);
 }

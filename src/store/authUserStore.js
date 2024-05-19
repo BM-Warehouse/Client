@@ -16,6 +16,7 @@ const useAuthUserStore = create(
           const token = await login({ username, password });
           setAccessToken(token);
           const user = await getOwnProfile();
+          // console.log(user);
           set(() => ({
             authUser: user,
             role: user.role
