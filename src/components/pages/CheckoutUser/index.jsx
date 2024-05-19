@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import Navbar from '@/components/parts/Navbar';
 import OrderSummary from '@/components/parts/OrderSummary';
@@ -46,6 +47,7 @@ function CheckoutUser() {
     }
 
     await asyncAddCartToCheckout(+cart.id, selectedCourier, address, selectedShippingMethod);
+    toast.success('Products  checkouted successfully');
 
     await asyncResetCartToDefault();
 
