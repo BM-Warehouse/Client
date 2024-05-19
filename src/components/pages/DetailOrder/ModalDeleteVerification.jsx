@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';

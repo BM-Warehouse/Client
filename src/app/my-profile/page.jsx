@@ -1,7 +1,7 @@
-import DetailUser from '@/components/pages/DetailUser';
+import ProfilePage from '@/components/pages/ProfilePage';
 
 function DetailProfilePage() {
-  return <DetailUser />;
+  return <ProfilePage />;
 }
 
 export default DetailProfilePage;
