@@ -1,7 +1,7 @@
 'use client';
 
+import Container from '@/components/container';
 import Navbar from '@/components/navbar-admin';
-import Container from '@/components/parts/container';
 
 const CustomersPageLayout = ({ children }) => (
   <div>

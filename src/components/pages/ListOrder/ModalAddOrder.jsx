@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
 import { addCheckout } from '@/fetching/orders';

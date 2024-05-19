@@ -45,8 +45,8 @@ const QuantitiesChart = () => {
   }, [getWarehouseQuantities]);
 
   useEffect(() => {
-    console.log('Warehouse Quantities:', warehouseQuantities);
-    console.log('Warehouse Names:', warehouseNames);
+    // console.log('Warehouse Quantities:', warehouseQuantities);
+    // console.log('Warehouse Names:', warehouseNames);
   }, [warehouseQuantities, warehouseNames]);
 
   const labels =
