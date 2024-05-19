@@ -9,6 +9,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import BWMLogo from '@/assets/images/LogoBMW2.png';
 import CartIcon from '@/components/elements/CartIcon';
@@ -19,9 +20,15 @@ function Navbar() {
   const router = useRouter();
 
   const onLogout = async () => {
-    await asyncUnsetAuthUser();
+    // await asyncUnsetAuthUser();
 
-    router.push('/login');
+    try {
+      await asyncUnsetAuthUser();
+      toast.success('Logout Success!');
+      router.push('/login');
+    } catch (error) {
+      toast.error('Logout Failed! Please try again!');
+    }
   };
   // check role
 

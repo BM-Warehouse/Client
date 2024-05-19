@@ -8,7 +8,9 @@ import { useEffect, useState } from 'react';
 // import Image from 'next/image';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
+import ModalConfirmation from '@/components/parts/ModalConfirmation';
 import useInput from '@/hooks/useInput';
 import useCategryStore from '@/store/categoryStore';
 import useProductStore from '@/store/productStore';
@@ -75,10 +77,12 @@ function ControlProductForm({ product }) {
 
       console.log(name, +price, desc, imageUrl);
       await asyncAddProduct(name, +price, desc, imageUrl);
+      toast.success('Product created successfully');
       router.push(`/products`);
       // await asyncAddCategory({ name, description, imageUrl });
     } catch (error) {
-      console.log(`category added failed: ${error}`);
+      toast.error('Failed to create this product');
+      console.log(`Failed to create this product: ${error}`);
     }
   };
 
@@ -106,12 +110,14 @@ function ControlProductForm({ product }) {
 
       const imageUrl = secure_url;
 
-      console.log(product.id, name, +price, desc, imageUrl);
+      // console.log(product.id, name, +price, desc, imageUrl);
       await asyncEditProduct(+product.id, name, +price, desc, imageUrl);
+      toast.success('Product updated successfully');
       router.push(`/products/${product.id}`);
       // await asyncAddCategory({ name, description, imageUrl });
     } catch (error) {
-      console.log(`category added failed: ${error}`);
+      toast.error('Failed to update this product');
+      console.log(`Failed to update this product :  ${error}`);
     }
   };
 
@@ -139,7 +145,7 @@ function ControlProductForm({ product }) {
           type="number"
           placeholder="Enter product price"
           className="input w-full max-w-lg border border-tertiary bg-bgColor"
-          name="price"
+          name="pricee"
           required
           defaultValue={product ? product.price : price}
           onChange={onPriceChange}
@@ -227,21 +233,37 @@ function ControlProductForm({ product }) {
         />
       )}
       {product ? (
-        <button
-          type="submit"
-          onClick={handleSubmitUpdate}
-          className="btn mt-5 w-full max-w-lg rounded-sm  border-0 bg-tertiary text-xl text-bgColor hover:bg-secondary "
-        >
-          Update Product
-        </button>
+        <>
+          <button
+            type="button"
+            // onClick={handleSubmitUpdate}
+            onClick={() => document.getElementById('modal-confirmation-update').showModal()}
+            className="btn mt-5 w-full max-w-lg rounded-sm  border-0 bg-tertiary text-xl text-bgColor hover:bg-secondary "
+          >
+            Update Product
+          </button>
+          <ModalConfirmation
+            action={handleSubmitUpdate}
+            message="Are you sure you want to update this product?"
+            id="modal-confirmation-update"
+          />
+        </>
       ) : (
-        <button
-          type="submit"
-          onClick={handleSubmitAdd}
-          className="btn mt-5 w-full max-w-lg rounded-sm  border-0 bg-tertiary text-xl text-bgColor hover:bg-secondary "
-        >
-          Add Product
-        </button>
+        <>
+          <button
+            type="button"
+            // onClick={handleSubmitAdd}
+            onClick={() => document.getElementById('modal-confirmation-add').showModal()}
+            className="btn mt-5 w-full max-w-lg rounded-sm  border-0 bg-tertiary text-xl text-bgColor hover:bg-secondary "
+          >
+            Add Product
+          </button>
+          <ModalConfirmation
+            id="modal-confirmation-add"
+            action={handleSubmitAdd}
+            message="Are you sure you want to create this product?"
+          />
+        </>
       )}
     </form>
   );
