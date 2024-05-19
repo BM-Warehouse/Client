@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import toast from 'react-hot-toast';
+
 import useProductStore from '@/store/productStore';
 // import useWarehouseStore from '@/store/warehouseStore';
 
@@ -17,10 +19,12 @@ function ModalAddStockProduct({ product, onClose, warehouseData }) {
     event.preventDefault();
     try {
       await asyncAddProductToWarehouse(product.id, +selectedWarehouse, +stock);
-      asyncGetAll();
-      asyncGetDetail(product.id);
+      toast.success('Product stock added successfully!');
+      await asyncGetAll();
+      await asyncGetDetail(product.id);
       onClose();
     } catch (error) {
+      toast.error('Failed to adding stock.');
       console.error('Error adding stock:', error.message);
     }
   };

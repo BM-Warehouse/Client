@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import toast from 'react-hot-toast';
+
 import useProductStore from '@/store/productStore';
 import useWarehouseStore from '@/store/warehouseStore';
 
@@ -47,10 +49,12 @@ function ModalMoveStockProduct({ product, onClose, warehouseData }) {
       );
       await getWarehouseData();
       await asyncGetDetail(product.id);
+      toast.success('Product stock moved successfully!');
       onClose();
 
       // console.log(product.id, +selectedOriWarehouse, +selectedDestWarehouse, +stock);
     } catch (error) {
+      toast.error('Failed to moving stock.');
       console.error('Error moving stock:', error.message);
     }
   };
