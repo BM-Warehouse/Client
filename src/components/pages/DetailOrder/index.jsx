@@ -7,7 +7,6 @@ import { IoMdAdd } from 'react-icons/io';
 import { TbTruckDelivery } from 'react-icons/tb';
 
 import ContainerOrderDetail from '@/components/parts/ContainerDetailOrder';
-import ModalAddProduct from '@/components/parts/ModalAddProduct';
 import Pagination from '@/components/parts/Pagination';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { sendOrder, getDetailOrder } from '@/fetching/orders';
@@ -15,6 +14,7 @@ import { getAllProducts } from '@/fetching/product';
 
 import ModalDeleteVerification from './ModalDeleteVerification';
 import ModalEditQuantity from './ModalEditQuantity';
+import ModalAddProduct from './ModalAddProduct';
 
 const DetailOrder = ({ id }) => {
   const { data, setData } = useContext(DetailOrderContex);
