@@ -1,6 +1,4 @@
-import Link from 'next/link';
-import { CgChevronRight } from 'react-icons/cg';
-
+import { ButtonPrimary } from '@/components/parts/Button';
 import formatRupiah from '@/lib/formatRupiah';
 
 function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
@@ -17,16 +15,9 @@ function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
       <td>{totalPrice || '-'}</td>
       <td>{status || '-'}</td>
       <td>
-        <Link href={`/orders/${id}`}>
-          <button
-            className="relative mr-2 min-w-10 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
-            title="Detail"
-          >
-            <span className="flex items-center justify-center">
-              <CgChevronRight className="mr-1" />
-            </span>
-          </button>
-        </Link>
+        <ButtonPrimary icon="chevronR" href={`/orders/${id}`} title="Detail">
+          Detail
+        </ButtonPrimary>
       </td>
     </tr>
   );
