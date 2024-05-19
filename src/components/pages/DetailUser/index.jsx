@@ -30,9 +30,16 @@ function DetailUser({ params }) {
 
   const handleDestroy = async () => {
     await asyncDestroyUser(id);
-    router.push('/users');
+    router.back();
   };
 
+  const handleUpdate = () => {
+    router.push(`/users/${id}/edit`);
+  };
+
+  const handleBack = () => {
+    router.back();
+  };
   return (
     <section className="detail-user-page relative min-h-screen bg-bgColor pb-20 font-poppins">
       <Navbar />
@@ -61,17 +68,28 @@ function DetailUser({ params }) {
               <p className="mb-3 text-base">Birthdate: {formatDate(userDetail.birthdate)}</p>
               <p className="mb-3 text-base">Role: {userDetail.role}</p>
             </div>
-            <div className="btn-edit mt-5">
-              <button className="btn bg-tertiary hover:bg-secondary text-white w-full">
+            <div className="btn-edit mt-3 ">
+              <button
+                onClick={handleUpdate}
+                className="btn bg-tertiary hover:bg-secondary text-white w-full"
+              >
                 Edit User
               </button>
             </div>
-            <div className="btn-delete mt-5">
+            <div className="btn-delete mt-3">
               <button
                 className="w-full bg-red-500 px-8 py-4 font-bold text-white hover:bg-red-600 rounded-lg h-11 text-sm"
                 onClick={() => document.getElementById('my_modal_1').showModal()}
               >
                 Delete User
+              </button>
+            </div>
+            <div className="btn-back mt-3">
+              <button
+                className="btn w-full bg-tertiary hover:bg-secondary text-white"
+                onClick={handleBack}
+              >
+                Back
               </button>
             </div>
             <dialog id="my_modal_1" className="modal">

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import { useRouter } from 'next/navigation';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 import Navbar from '@/components/parts/Navbar';
@@ -25,6 +26,7 @@ const AddUser = () => {
   const [file, setFile] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const { asyncAddUser } = useUsersStore();
+  const router = useRouter();
 
   if (!role) {
     return null;
@@ -32,6 +34,10 @@ const AddUser = () => {
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+  };
+
+  const handleBack = async () => {
+    router.back();
   };
 
   const handleSubmit = async (e) => {
@@ -216,7 +222,11 @@ const AddUser = () => {
               </label>
             </div>
             <div className="modal-action mt-6 flex justify-between">
-              <button type="button" className="btn bg-secondary text-white rounded-md px-4 py-2">
+              <button
+                type="button"
+                onClick={handleBack}
+                className="btn bg-secondary text-white rounded-md px-4 py-2"
+              >
                 Close
               </button>
               <button
