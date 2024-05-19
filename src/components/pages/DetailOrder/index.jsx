@@ -29,9 +29,13 @@ const DetailOrder = ({ id }) => {
   const [isLoading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
   const router = useRouter();
-  const { selectedWarehouses, setCurrentCheckoutId, setPage } = useContext(DetailOrderContex);
+  const { selectedWarehouses, 
+    setCurrentCheckoutId, 
+    setPage, 
+    productList, 
+    setProductList } = useContext(DetailOrderContex);
   const [isProductSelectOpen, setIsProductSelectOpen] = useState(false);
-  const [productList, setProductList] = useState([]);
+  // const [productList, setProductList] = useState([]);
 
   function handleSend() {
     const warehouseSelections = Object.entries(selectedWarehouses).map(([key, val]) => ({

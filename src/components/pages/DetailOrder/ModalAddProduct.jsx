@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import defaultProductImage from '@/assets/images/defaultProduct.png';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { addProductToCheckout, getDetailOrder } from '@/fetching/orders';
+import { getAllProducts } from '@/fetching/product';
 
 const generateCategoriesString = (product) => {
   let categoriesString = '';
@@ -121,6 +122,11 @@ const Table = ({ products }) => (
 );
 
 const ModalAddProduct = ({ show, onClose, products }) => {
+  const { 
+    productList, 
+    setProductList } = useContext(DetailOrderContex);
+  const TYPE_TIMEOUT_SEARCH = 1000;
+  let tSearch = null;
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
@@ -136,15 +142,27 @@ const ModalAddProduct = ({ show, onClose, products }) => {
     };
   }, [onClose]);
 
+  const handleSearchChange = (e) => {
+    clearTimeout(tSearch);
+
+    tSearch = setTimeout(()=> {
+      console.log(e.target.value)
+      getAllProducts(1, 10, e.target.value).then((res) => {
+        // console.log(">>", res);
+        setProductList(res.products);
+      });
+    }, TYPE_TIMEOUT_SEARCH)
+  }
+
   return (
     <div>
       <dialog className="modal" open={show}>
         <div className="modal-box h-2/3 w-4/5 max-w-full">
           <div>
-            <h2 className="text-2xl font-bold">Productsff</h2>
+            <h2 className="text-2xl font-bold">Products</h2>
             <div className="search-filter flex items-center justify-center">
               <label className="input input-bordered flex items-center gap-2">
-                <input type="text" className="grow" placeholder="Search" />
+                <input type="text" className="grow" placeholder="Search" onChange={(e) => {handleSearchChange(e)}}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 16 16"

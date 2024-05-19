@@ -1,13 +1,19 @@
 import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
-const getAllProducts = async (page = 1, limit = 10) => {
+const getAllProducts = async (page = 1, limit = 10, contains='') => {
   try {
+    let param = new URLSearchParams({
+      page,
+      limit,
+    })
+
+    if(contains){
+      param.append('contains', contains);
+    }
+
     const response = await fetchWithToken(
-      `${BASE_URL}/products?${new URLSearchParams({
-        page,
-        limit
-      })}`
+      `${BASE_URL}/products?${param}`
     );
     const responseJson = await response.json();
     const { status, message } = responseJson;
