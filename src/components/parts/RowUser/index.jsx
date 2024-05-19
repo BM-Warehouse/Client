@@ -23,23 +23,37 @@ function RowUser({ user, index }) {
     router.push('/users');
   };
 
-  // const handleEdit = () => {
-  // router.push(`/users/${user.id}/edit`);
-  // };
+  const handleEdit = () => {
+    router.push(`/users/${user.id}/edit`);
+  };
+
+  const handleDetail = () => {
+    router.push(`/users/${user.id}`);
+  };
 
   return (
     <>
       <tr className="hover:underline cursor-pointer text-center">
-        <td>{index}</td>
-        <td>{user.email}</td>
-        <td>{user.username}</td>
-        <td>{user.fullName}</td>
-        <td>{user.phone}</td>
-        <td>{user.role}</td>
+        {[
+          `${index}`,
+          `${user.email}`,
+          `${user.username}`,
+          `${user.fullName}`,
+          `${user.phone}`,
+          `${user.role}`
+        ].map((header) => (
+          <th
+            key={header}
+            onClick={() => handleDetail()}
+            className="cursor-pointer hover:underline"
+          >
+            {header}
+          </th>
+        ))}
         <td>
           <div className="buttons-action flex justify-around">
             <button
-              // onClick={handleEdit}
+              onClick={handleEdit}
               className="mr-2 min-w-24 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
             >
               <span className="flex items-center justify-center">
