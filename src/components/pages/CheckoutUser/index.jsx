@@ -1,19 +1,60 @@
+/* eslint-disable no-alert */
+
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import { useRouter } from 'next/navigation';
 
 import Navbar from '@/components/parts/Navbar';
 import OrderSummary from '@/components/parts/OrderSummary';
 import ProductPurchase from '@/components/parts/ProductPurchase';
 import Sidebar from '@/components/parts/Sidebar';
+import useInput from '@/hooks/useInput';
 import useCartStore from '@/store/cartStore';
+import useCheckoutStore from '@/store/checkoutStore';
 
 function CheckoutUser() {
-  const { cart, asyncShowCart } = useCartStore();
+  const { cart, asyncShowCart, asyncResetCartToDefault } = useCartStore();
+  const { asyncAddCartToCheckout } = useCheckoutStore();
+  const [shippingCost, setShippingCost] = useState(0);
+  const [address, onAddressChange] = useInput('');
+  const [selectedShippingMethod, onShippingMethodChange] = useInput('');
+  const [selectedCourier, setSelectedCourier] = useState('');
+
+  const router = useRouter();
 
   useEffect(() => {
     asyncShowCart();
   }, [asyncShowCart]);
+
+  const handleCourierChange = (e) => {
+    setSelectedCourier(e.target.value);
+    if (e.target.value === 'JNE') {
+      setShippingCost(54000);
+    } else if (e.target.value === 'JNT') {
+      setShippingCost(63000);
+    } else if (e.target.value === 'SiCepat') {
+      setShippingCost(33000);
+    }
+  };
+
+  const handlePlaceOrder = async () => {
+    if (!address || !selectedShippingMethod || !selectedCourier) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    await asyncAddCartToCheckout(+cart.id, selectedCourier, address, selectedShippingMethod);
+
+    await asyncResetCartToDefault();
+
+    router.push('/products');
+
+    // console.log(selectedCourier, address, selectedShippingMethod);
+
+    // console.log(cart.id);
+  };
 
   if (!cart) {
     return null;
@@ -43,44 +84,41 @@ function CheckoutUser() {
               type="text"
               placeholder="Street, Apt/Suite, City, State, ZIP Code"
               className="input mt-3 w-full border border-tertiary bg-bgColor text-sm"
+              value={address}
+              onChange={onAddressChange}
             />
           </div>
-          <div className="select-courier flex w-full flex-col  border-b  border-tertiary py-5">
-            <label className="text-lg font-bold">Courier</label>
+
+          <div className="select-shipping-method flex w-full flex-col  border-b  border-tertiary py-5">
+            <label className="text-lg font-bold">Shipping Method</label>
             <select
               className="select mt-3 w-full border border-tertiary bg-bgColor"
               defaultValue=""
+              value={selectedShippingMethod}
+              onChange={onShippingMethodChange}
+              required
             >
-              <option value="">Choose courier service</option>
-              <option value="Jalur Nugraha Ekakurir (JNE)">Jalur Nugraha Ekakurir (JNE)</option>
+              <option value="">Choose shipping method</option>
+              <option value="ONLINE">ONLINE</option>
             </select>
           </div>
-          <div className="select-shipping method flex w-full  flex-col border-b  border-tertiary py-5">
-            <label className="text-lg font-bold">Shipping Method</label>
+          <div className="select-courier flex w-full  flex-col border-b  border-tertiary py-5">
+            <label className="text-lg font-bold">Courier</label>
             <select
               className="select mt-3 w-full border  border-tertiary bg-bgColor"
               defaultValue=""
+              value={selectedCourier}
+              onChange={handleCourierChange}
             >
-              <option value="">Choose shipping method</option>
-              <option value="OKE | Rp.54,000, 3-6 days">OKE | Rp.54,000, 3-6 days</option>
-              <option value="REG | Rp.63,000, 2-3 days">REG | Rp.63,000, 2-3 days</option>
-            </select>
-          </div>
-          <div className="select-shipping method flex w-full flex-col border-b border-tertiary py-5">
-            <label className="text-lg font-bold">Transfer Method</label>
-            <select
-              className="select mt-3 w-full border border-tertiary bg-bgColor"
-              defaultValue=""
-            >
-              <option value="">Choose transfer method</option>
-              <option value="BSI Admin 722391312">BSI</option>
-              <option value="BCA Admin 120992311">BCA</option>
-              <option value="BNI Admin 909090908">BNI</option>
+              <option value="">Choose courier service</option>
+              <option value="JNE">JNE | Rp.54,000, 3-6 days</option>
+              <option value="JNT">JNT | Rp.63,000, 2-3 days</option>
+              <option value="SiCepat">SiCepat | Rp.33,000, 4-7 days</option>
             </select>
           </div>
         </div>
 
-        <OrderSummary cart={cart} />
+        <OrderSummary cart={cart} shippingCost={shippingCost} handlePlaceOrder={handlePlaceOrder} />
       </div>
     </section>
   );

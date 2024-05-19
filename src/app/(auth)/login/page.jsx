@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import useInput from '@/hooks/useInput';
 import useAuthUserStore from '@/store/authUserStore';
@@ -27,13 +28,15 @@ const LoginPage = () => {
     try {
       await asyncSetAuthUser({ username, password });
       if (role === 'admin') {
+        toast.success('Login Success!');
         router.push('/dashboard');
       }
       if (role === 'user') {
+        toast.success('Login Success!');
         router.push('/products');
       }
     } catch (error) {
-      console.error('Login failed:', error);
+      toast.error('Login Failed! Please try again!');
     } finally {
       setLoading(false);
     }

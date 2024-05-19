@@ -4,9 +4,7 @@ import { fetchWithToken } from '@/lib/fetchLib';
 const getAllWarehouses = async () => {
   const response = await fetchWithToken(`${BASE_URL}/warehouses`);
   const data = await response.json();
-
   const warehouseData = data.data.warehouses.warehouses;
-
   return warehouseData;
 };
 
@@ -15,6 +13,13 @@ const getWarehouseDetails = async (id) => {
   const warehouseDetails = await response.json();
 
   return warehouseDetails;
+};
+
+const getWarehouseName = async (id) => {
+  const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`);
+  const warehouseDetails = await response.json();
+
+  return warehouseDetails.data.warehouse.name;
 };
 
 const addWarehouse = async (params) => {
@@ -51,4 +56,22 @@ const getWarehouseQuantities = async () => {
   }
 };
 
-export { getAllWarehouses, getWarehouseDetails, addWarehouse, getWarehouseQuantities };
+const removeWarehouse = async (id) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
+      method: 'DELETE'
+    });
+    return response;
+  } catch (error) {
+    throw new Error('Failed to fetch:', error);
+  }
+};
+
+export {
+  getAllWarehouses,
+  getWarehouseDetails,
+  addWarehouse,
+  getWarehouseQuantities,
+  getWarehouseName,
+  removeWarehouse
+};

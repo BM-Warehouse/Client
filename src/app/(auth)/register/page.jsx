@@ -7,12 +7,14 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 import { register } from '@/fetching/auth';
 import useInput from '@/hooks/useInput';
 
 const RegisterPage = () => {
   const [step, setStep] = useState(1);
+  const [gender, setGender] = useState('Male');
   const [email, onEmailChange] = useInput('');
   const [username, onUsernameChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
@@ -20,16 +22,22 @@ const RegisterPage = () => {
   const [fullName, onFullNameChange] = useInput('');
   const [phone, onPhoneChange] = useInput('');
   const [address, onAddressChange] = useInput('');
-  const [gender, onGenderChange] = useInput('');
   const [birthdate, onBirthdateChange] = useInput('');
-  const [avatar, onAvatarChange] = useInput('');
+  let avatar = '';
+  if (gender === 'Male') {
+    avatar =
+      'https://res.cloudinary.com/denyah3ls/image/upload/v1716033038/profile-avatar_z4huvm.jpg';
+  } else {
+    avatar =
+      'https://res.cloudinary.com/denyah3ls/image/upload/v1716036464/female-profile_hgzl8v.jpg';
+  }
 
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const onRegister = async () => {
     if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+      toast.error(`Password don't match!`);
       return;
     }
 
@@ -44,13 +52,14 @@ const RegisterPage = () => {
         address,
         gender,
         birthdate,
-        role: 'User'
+        avatar,
+        role: 'user'
       });
-      alert('Registration successful! Please log in.');
+      toast.success('Register Successfull! Please Login!');
       router.push('/login');
     } catch (error) {
       console.error('Registration failed:', error);
-      alert(`Registration failed: ${error.message}`);
+      toast.error(`Registration failed: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -109,7 +118,7 @@ const RegisterPage = () => {
         disabled={loading}
       />
       <input
-        type="text"
+        type="tel"
         placeholder="Enter your phone number..."
         className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
         value={phone}
@@ -126,7 +135,7 @@ const RegisterPage = () => {
         required
         disabled={loading}
       />
-      <input
+      {/* <input
         type="text"
         placeholder="Enter your gender..."
         className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
@@ -134,7 +143,17 @@ const RegisterPage = () => {
         onChange={onGenderChange}
         required
         disabled={loading}
-      />
+      /> */}
+      <select
+        onChange={(e) => setGender(e.target.value)}
+        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+      >
+        <option disabled selected className="text-gray-300">
+          Choose your gender...
+        </option>
+        <option className="text-secondary">Male</option>
+        <option className="text-secondary">Female</option>
+      </select>
       <input
         type="date"
         placeholder="Enter your birthdate..."
@@ -144,14 +163,14 @@ const RegisterPage = () => {
         required
         disabled={loading}
       />
-      <input
+      {/* <input
         type="text"
         placeholder="Enter your avatar URL..."
         className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
         value={avatar}
         onChange={onAvatarChange}
         disabled={loading}
-      />
+      /> */}
     </>
   );
 

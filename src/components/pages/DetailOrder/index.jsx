@@ -3,17 +3,21 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 import { useRouter } from 'next/navigation';
+import { IoMdAdd } from 'react-icons/io';
 import { TbTruckDelivery } from 'react-icons/tb';
 
 import ContainerOrderDetail from '@/components/parts/ContainerDetailOrder';
-import Navbar from '@/components/parts/Navbar';
+import ModalAddProduct from '@/components/parts/ModalAddProduct';
 import Pagination from '@/components/parts/Pagination';
-import Sidebar from '@/components/parts/Sidebar';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { sendOrder, getDetailOrder } from '@/fetching/orders';
+import { getAllProducts } from '@/fetching/product';
+
+import ModalDeleteVerification from './ModalDeleteVerification';
+import ModalEditQuantity from './ModalEditQuantity';
 
 const DetailOrder = ({ id }) => {
-  const [data, setData] = useState(null);
+  const { data, setData } = useContext(DetailOrderContex);
   const [pagination, setPagination] = useState({
     totalPage: null,
     totalData: null,
@@ -25,7 +29,9 @@ const DetailOrder = ({ id }) => {
   const [isLoading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
   const router = useRouter();
-  const { selectedWarehouses } = useContext(DetailOrderContex);
+  const { selectedWarehouses, setCurrentCheckoutId, setPage } = useContext(DetailOrderContex);
+  const [isProductSelectOpen, setIsProductSelectOpen] = useState(false);
+  const [productList, setProductList] = useState([]);
 
   function handleSend() {
     const warehouseSelections = Object.entries(selectedWarehouses).map(([key, val]) => ({
@@ -43,11 +49,28 @@ const DetailOrder = ({ id }) => {
       });
   }
 
-  useEffect(() => {
-    console.log(selectedWarehouses);
-  }, [selectedWarehouses]);
+  const closeProductSelectionDialog = () => {
+    setIsProductSelectOpen(false);
+  };
+
+  const openProductSelectionDialog = () => {
+    getAllProducts().then((res) => {
+      // console.log(">>", res);
+      setProductList(res.products);
+      setIsProductSelectOpen(true);
+    });
+  };
+
+  // useEffect(() => {
+  //   console.log(">>>>", selectedWarehouses);
+  // }, [selectedWarehouses]);
+
+  // useEffect(() => {
+  //   console.log(">>>>", currentCheckoutId);
+  // }, [currentCheckoutId]);
 
   useEffect(() => {
+    setCurrentCheckoutId(id);
     getDetailOrder(id)
       .then((res) => {
         if (!res.ok) {
@@ -64,11 +87,15 @@ const DetailOrder = ({ id }) => {
       .catch((error) => {
         console.log('Error:', error);
       });
-  }, [id]);
+  }, [id, setCurrentCheckoutId, setData]);
 
-  useEffect(() => {
-    console.log('pagination---', pagination);
-  }, [pagination]);
+  // useEffect(() => {
+  //   console.log('delete---', isModalDeleteVerificationOpen, selectedProductId);
+  // }, [isModalDeleteVerificationOpen]);
+
+  // useEffect(() => {
+  //   console.log('edit---', isModalEditQuantityOpen, selectedProductId);
+  // }, [isModalEditQuantityOpen]);
 
   if (isLoading)
     return (
@@ -78,9 +105,10 @@ const DetailOrder = ({ id }) => {
     );
   if (!data) return <p className="ml-36">No Detail Order</p>;
 
-  const onPaginationClick = (setPage) => {
-    console.log(setPage);
-    getDetailOrder(id, setPage)
+  const onPaginationClick = (page) => {
+    // console.log(page);
+    setPage(page);
+    getDetailOrder(id, page)
       .then((res) => {
         if (!res.ok) {
           throw new Error('Failed to fetch detail order');
@@ -100,26 +128,35 @@ const DetailOrder = ({ id }) => {
 
   return (
     <main className="product-page bg-bgg relative h-screen font-poppins">
-      <Navbar />
-      <Sidebar />
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Order Detail</h1>
       </div>
-      <div className="container-btn-products mt-20 flex flex-col-reverse items-center justify-between px-5 md:ml-20 md:flex-row">
-        <div className="btn-add-product">
+      <div className="container-btn-products mt-20 flex items-center justify-between gap-3 px-5 md:ml-20 md:flex-row">
+        <button
+          className={`mt-5 min-w-28 rounded-md  px-3 py-2 text-primary  md:mt-0 ${
+            status === 'SENT' ? 'bg-grey' : 'bg-tertiary hover:bg-secondary'
+          }`}
+          onClick={handleSend}
+          disabled={status === 'SENT'}
+        >
+          <span className="flex items-center justify-center">
+            <TbTruckDelivery className="mr-1" />
+            {status === 'SENT' ? 'Sent' : 'Send'}
+          </span>
+        </button>
+        {status === 'PACKING' && (
           <button
-            className={`mt-5 min-w-28 rounded-md  px-3 py-2 text-primary  md:mt-0 ${
-              status === 'SENT' ? 'bg-grey' : 'bg-tertiary hover:bg-secondary'
-            }`}
-            onClick={handleSend}
-            disabled={status === 'SENT'}
+            className="mt-5 min-w-28 rounded-md  bg-tertiary px-3 py-2  text-primary hover:bg-secondary md:mt-0"
+            onClick={openProductSelectionDialog}
           >
             <span className="flex items-center justify-center">
-              <TbTruckDelivery className="mr-1" />
-              {status === 'SENT' ? 'Sent' : 'Send'}
+              <IoMdAdd className="mr-1" />
+              Add Product
             </span>
           </button>
-        </div>
+        )}
+
+        <div className="grow"> </div>
         <div className="search-filter flex items-center justify-center">
           <label className="input input-bordered flex items-center gap-2">
             <input type="text" className="grow" placeholder="Search" />
@@ -143,7 +180,13 @@ const DetailOrder = ({ id }) => {
       </div>
 
       <ContainerOrderDetail checkoutId={id} data={data} />
-
+      <ModalAddProduct
+        onClose={closeProductSelectionDialog}
+        show={isProductSelectOpen}
+        products={productList}
+      />
+      <ModalDeleteVerification checkoutId={id} />
+      <ModalEditQuantity checkoutId={id} />
       <Pagination
         currentPage={pagination.currentPage}
         totalPage={pagination.totalPage}
