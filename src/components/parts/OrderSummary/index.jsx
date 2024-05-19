@@ -1,6 +1,6 @@
 import formatRupiah from '@/lib/formatRupiah';
 
-function OrderSummary({ cart }) {
+function OrderSummary({ cart, shippingCost, handlePlaceOrder }) {
   if (!cart) {
     return null;
   }
@@ -16,15 +16,19 @@ function OrderSummary({ cart }) {
         </div>
         <div className="shipping mb-3 flex justify-between">
           <p>Shipping</p>
-          <p className="font-bold">{formatRupiah(10000)}</p>
+          <p className="font-bold">{formatRupiah(shippingCost)}</p>
         </div>
         <div className="total-pay flex justify-between">
           <p className="font-bold">Total to Pay</p>
-          <p className="font-bold">{formatRupiah(cart.totalPrice)}</p>
+          <p className="font-bold">{formatRupiah(cart.totalPrice + shippingCost)}</p>
         </div>
       </div>
       <div className="btn-order mb-10">
-        <button className="w-full bg-tertiary px-8 py-4 font-bold text-white hover:bg-secondary">
+        <button
+          type="button"
+          onClick={handlePlaceOrder}
+          className="w-full bg-tertiary px-8 py-4 font-bold text-white hover:bg-secondary"
+        >
           PLACE ORDER
         </button>
       </div>

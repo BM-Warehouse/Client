@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import toast from 'react-hot-toast';
+
 import useProductStore from '@/store/productStore';
 import useWarehouseStore from '@/store/warehouseStore';
 // import useWarehouseStore from '@/store/warehouseStore';
@@ -38,9 +40,11 @@ function ModalReduceStockProduct({ product, onClose, warehouseData }) {
       await asyncGetAll();
       await asyncGetDetail(product.id);
       await getWarehouseData();
+      toast.success('Product reduced successfully!');
       onClose();
     } catch (error) {
-      console.error('Error adding stock:', error.message);
+      toast.error('Failed to reducing stock');
+      console.error('Failed to reducing stock:', error.message);
     }
   };
 

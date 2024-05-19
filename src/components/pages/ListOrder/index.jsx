@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from 'react';
 
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { ButtonPrimary } from '@/components/parts/Button';
 import ContainerOrders from '@/components/parts/ContainerOrders';
