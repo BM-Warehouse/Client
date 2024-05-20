@@ -17,7 +17,7 @@ function Pagination({ totalPage, currentPage, onClick }) {
   if (!totalPage || !currentPage) return null;
 
   return (
-    <div className="container-pagination flex items-center justify-center pb-10 ">
+    totalPage > 1 ? (<div className="container-pagination flex items-center justify-center pb-10 ">
       {startPage !== 1 ? (
         <div className="button-pagination">
           <MdKeyboardArrowLeft className="text-2xl" />
@@ -45,7 +45,7 @@ function Pagination({ totalPage, currentPage, onClick }) {
       ) : (
         ''
       )}
-    </div>
+    </div>) : (<></>)
   );
 }
 
