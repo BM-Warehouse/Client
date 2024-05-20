@@ -9,6 +9,7 @@ import defaultProductImage from '@/assets/images/defaultProduct.png';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { addProductToCheckout, getDetailOrder } from '@/fetching/orders';
 import { getAllProducts } from '@/fetching/product';
+import { ButtonPrimary } from '@/components/parts/Button';
 
 const generateCategoriesString = (product) => {
   let categoriesString = '';
@@ -92,12 +93,9 @@ const Row = ({ product }) => {
         />
       </td>
       <th>
-        <button className="btn btn-primary btn-md" onClick={handleAdd}>
-          Add
-        </button>
-      </th>
-    </tr>
-  );
+        <ButtonPrimary icon="add" onClick={handleAdd}>Add</ButtonPrimary>
+      </th> 
+    </tr>);
 };
 
 const Table = ({ products }) => (
