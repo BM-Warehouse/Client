@@ -35,8 +35,8 @@ html,
 
 [data-theme='dark'] {
   --primary: #1a1a1a; /* Example dark mode primary color */
-  --secondary: #444444;
-  --tertiary: #cccccc;
+  --secondary: #e0e0e0;
+  --tertiary: #bdbdbd;
   --bgColor: #121212;
   --txt: #ffffff;
   --accent-color: #1a1a1a;

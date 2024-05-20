@@ -20,7 +20,7 @@ function ToggleTheme() {
         <div className="flex h-8 w-8 items-center justify-center ">
           <button className="text-xl" onClick={toggleTheme}>
             {theme === 'light' ? (
-              <FaMoon className="text-black" />
+              <FaMoon className="text-bgColor" />
             ) : (
               <FaSun className="text-white" />
             )}
