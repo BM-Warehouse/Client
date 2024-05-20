@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { IoFilterSharp } from 'react-icons/io5';
 
-import ContainerCategory from '@/components/parts/containerCategory/index';
+import ContainerCategory from '@/components/parts/ContainerCategory';
 import Navbar from '@/components/parts/Navbar';
 import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
