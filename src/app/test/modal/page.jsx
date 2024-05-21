@@ -7,6 +7,7 @@ import ContentContainer from '@/components/parts/ContentContainer';
 import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
 import { closeModalWithId, Form, Input, InputFile, Modal, openModalWithId, Select, TextArea } from '@/components/parts/Modal';
 import { uploadV1 } from '@/lib/upload';
+import { serverHandleSubmit } from './serverUploader';
 
 const Modal1 = () => {
   const modalId = "modal-test-1"
@@ -31,10 +32,12 @@ const Modal1 = () => {
     console.log("select1:", select1);
     console.log("select2:", select2);
     console.log("file1:", file1);
-
     //upload cloudinary
     const {secure_url} = await uploadV1(file1)
     console.log("url: ", secure_url);
+
+    // const res = await uploadV2(file1)
+    // console.log(res);
     
     // tutup modal
     closeModalWithId(modalId);
@@ -49,12 +52,12 @@ const Modal1 = () => {
     // else if(e.target.name === 'file1') console.log(e.target.files) // kalo mau lihat file change
   }
 
-  const handleCancel = () => {
+  const closeModal = () => {
     closeModalWithId(modalId);
   }
 
   return (
-    <Modal id={modalId} title={"Modal 1"} onSubmit={(e) => {handleSubmit(e)}}>
+    <Modal action={serverHandleSubmit} id={modalId} title={"Modal 1"} onSubmit={closeModal}>
       <div className='overflow-y-auto max-h-96 w-full p-1 scrollbar-hide'>
         <Input label="Input 1" name="input1" value={in1} onChange={(e) => {handleChange(e)}}/>
         <Input label="Input 2" name="input2" onChange={(e) => {handleChange(e)}}/>
@@ -76,7 +79,7 @@ const Modal1 = () => {
         <ButtonPrimary type="submit" >
           Submit
         </ButtonPrimary>
-        <ButtonStrong type="button" onClick={handleCancel}>
+        <ButtonStrong type="button" onClick={closeModal}>
           Cancel
         </ButtonStrong>
       </div>

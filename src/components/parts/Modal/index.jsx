@@ -27,10 +27,10 @@ const Select = ({ children, onChange, value, className, name, label, ...rest }) 
   )
 }
 
-const Form = ({ children, onSubmit }) => {
+const Form = ({ children, onSubmit, action }) => {
   return (
     <form
-      method="dialog"
+      action={action}
       onSubmit={onSubmit}
       className="flex flex-col items-center justify-center gap-2 w-full"
     >
@@ -91,7 +91,7 @@ const InputFile = ({ label, name, onChange, className, value, placeholder }) => 
   )
 }
 
-const TextArea = ({ className, name, label, value, onChange}) => {
+const TextArea = ({ className, name, label, value, onChange }) => {
   return (
     <>
       <label className="form-control w-full">
@@ -111,7 +111,7 @@ const TextArea = ({ className, name, label, value, onChange}) => {
   )
 }
 
-const Modal = ({ children, title, description, id, className, onSubmit }) => {
+const Modal = ({ children, title, description, id, className, onSubmit, action}) => {
   return (
     <dialog id={id} className="modal">
       <div className={`modal-box h-auto max-w-3xl p-12 ${className}`}>
@@ -120,7 +120,7 @@ const Modal = ({ children, title, description, id, className, onSubmit }) => {
           {description && <p className="py-4">
             {description}
           </p>}
-          <Form onSubmit={onSubmit}>
+          <Form onSubmit={onSubmit} action={action}>
             {children}
           </Form>
         </div>

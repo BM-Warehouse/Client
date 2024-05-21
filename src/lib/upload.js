@@ -1,3 +1,5 @@
+import { uploadImageStream } from "./cloudinary";
+
 const uploadV1 = async (file) => {
   if (!file) {
     return null;
@@ -13,7 +15,6 @@ const uploadV1 = async (file) => {
       body: formUpload
     });
 
-    // secureUrl ganti dulu jadi secure_url
     const res = await response.json();
     return res;
   } catch (error) {
@@ -21,6 +22,12 @@ const uploadV1 = async (file) => {
   }
 }
 
+const uploadV2 = async (file) => {
+  const res = await uploadImageStream(file)
+  return res;
+}
+
 export {
-  uploadV1
+  uploadV1,
+  uploadV2
 }
