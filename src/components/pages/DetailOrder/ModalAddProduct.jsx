@@ -101,7 +101,8 @@ const Row = ({ product }) => {
   );
 };
 
-const Table = ({ products }) => {
+const Table = () => {
+  const {productList} = useContext(DetailOrderContex);
   return(
     <div className="overflow-x-auto">
       <table className="table">
@@ -115,14 +116,14 @@ const Table = ({ products }) => {
           </tr>
         </thead>
         <tbody>
-          {products?.map((p) => (
+          {productList?.map((p) => (
             <Row key={p.id} product={p} />
           ))}
         </tbody>
       </table>
     </div>
   );
-} 
+}; 
 
 const ModalAddProduct = ({ show, onClose, products }) => {
   const { setProductList } = useContext(DetailOrderContex);

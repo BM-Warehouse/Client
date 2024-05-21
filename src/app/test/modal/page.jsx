@@ -6,7 +6,6 @@ import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
 import ContentContainer from '@/components/parts/ContentContainer';
 import {
   closeModalWithId,
-  Form,
   Input,
   InputFile,
   Modal,
@@ -44,6 +43,7 @@ const Modal1 = () => {
     console.log('select2:', select2);
     console.log('file1:', file1);
     // upload cloudinary
+    // eslint-disable-next-line camelcase
     const { secure_url } = await uploadV1(file1);
     console.log('url: ', secure_url);
 
@@ -123,8 +123,8 @@ const Modal1 = () => {
 
 const test = () => (
   <div className="font-poppins">
-    {/* <Navbar />
-    <Sidebar /> */}
+    <Navbar />
+    <Sidebar />
     <ContentContainer>
       <div className="mt-40 ml-40">
         <ButtonPrimary

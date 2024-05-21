@@ -3,9 +3,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 import { useRouter } from 'next/navigation';
-import { IoMdAdd } from 'react-icons/io';
-import { TbTruckDelivery } from 'react-icons/tb';
 
+import { ButtonPrimary } from '@/components/parts/Button';
 import ContainerOrderDetail from '@/components/parts/ContainerDetailOrder';
 import Pagination from '@/components/parts/Pagination';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
@@ -15,6 +14,7 @@ import { getAllProducts } from '@/fetching/product';
 import ModalAddProduct from './ModalAddProduct';
 import ModalDeleteVerification from './ModalDeleteVerification';
 import ModalEditQuantity from './ModalEditQuantity';
+
 
 const DetailOrder = ({ id }) => {
   const { data, setData } = useContext(DetailOrderContex);
@@ -34,7 +34,7 @@ const DetailOrder = ({ id }) => {
   const [isProductSelectOpen, setIsProductSelectOpen] = useState(false);
   // const [productList, setProductList] = useState([]);
 
-  function handleSend() {
+  const handleSend = () => {
     const warehouseSelections = Object.entries(selectedWarehouses).map(([key, val]) => ({
       productId: +key,
       warehouseId: +val
@@ -48,7 +48,7 @@ const DetailOrder = ({ id }) => {
       .catch((e) => {
         console.log(e);
       });
-  }
+  };
 
   const closeProductSelectionDialog = () => {
     setIsProductSelectOpen(false);
@@ -133,28 +133,22 @@ const DetailOrder = ({ id }) => {
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Order Detail</h1>
       </div>
       <div className="container-btn-products mt-20 flex items-center justify-between gap-3 px-5 md:ml-20 md:flex-row">
-        <button
-          className={`mt-5 min-w-28 rounded-md  px-3 py-2 text-primary  md:mt-0 ${
-            status === 'SENT' ? 'bg-grey' : 'bg-tertiary hover:bg-secondary'
-          }`}
+        <ButtonPrimary
+          icon="truck"
+          disable={status === 'SENT'}
           onClick={handleSend}
-          disabled={status === 'SENT'}
-        >
-          <span className="flex items-center justify-center">
-            <TbTruckDelivery className="mr-1" />
-            {status === 'SENT' ? 'Sent' : 'Send'}
-          </span>
-        </button>
-        {status === 'PACKING' && (
-          <button
-            className="mt-5 min-w-28 rounded-md  bg-tertiary px-3 py-2  text-primary hover:bg-secondary md:mt-0"
-            onClick={openProductSelectionDialog}
+          className='px-6'
           >
-            <span className="flex items-center justify-center">
-              <IoMdAdd className="mr-1" />
-              Add Product
-            </span>
-          </button>
+          Send
+        </ButtonPrimary>
+
+
+        {status === 'PACKING' && (
+          <ButtonPrimary
+            icon="add"
+            onClick={openProductSelectionDialog}>
+            Add Product
+          </ButtonPrimary>
         )}
 
         <div className="grow"> </div>
