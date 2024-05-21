@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 
 import {
-  editWarehouse,
   getAllWarehouses,
   getWarehouseQuantities,
+  addWarehouse,
+  editWarehouse,
   removeWarehouse
 } from '@/fetching/warehouse';
 
@@ -32,6 +33,17 @@ const useWarehouseStore = create((set) => ({
       const editedWarehouse = await editWarehouse(id, name, city, address);
       set((_state) => ({
         editedWarehouse
+      }));
+    } catch (error) {
+      console.error('Error in editing warehouse:', error);
+    }
+  },
+
+  addWarehouse: async (id, name, city, address) => {
+    try {
+      const addedWarehouse = await addWarehouse(id, name, city, address);
+      set((_state) => ({
+        addedWarehouse
       }));
     } catch (error) {
       console.error('Error in editing warehouse:', error);
