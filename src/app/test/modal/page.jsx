@@ -17,7 +17,7 @@ const Modal1 = () => {
   return (
     <Modal id={modalId} title={"Modal 1"} className="" >
       <Form>
-        <div className='overflow-y-auto max-h-96 w-full p-1'>
+        <div className='overflow-y-auto max-h-96 w-full p-1 scrollbar-hide'>
           <Input label="Input 1" name="input 1" />
           <Input label="Input 2" name="input 1" />
           <TextArea label="Text Area 1" name="textArea1" />
