@@ -32,14 +32,14 @@ const LoginPage = () => {
         router.push('/dashboard');
         setTimeout(() => {
           window.location.reload();
-        }, 1000);
+        }, 5000);
       }
       if (role === 'user') {
         toast.success('Login Success!');
         router.push('/products');
         setTimeout(() => {
           window.location.reload();
-        }, 1000);
+        }, 5000);
       }
     } catch (error) {
       toast.error('Login Failed! Please try again!');
