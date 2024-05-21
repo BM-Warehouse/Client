@@ -3,19 +3,19 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { FaSearch } from 'react-icons/fa';
 
 import { ButtonPrimary } from '@/components/parts/Button';
 import ContainerOrderDetail from '@/components/parts/ContainerDetailOrder';
 import Pagination from '@/components/parts/Pagination';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
-import { sendOrder, getDetailOrder } from '@/fetching/orders';
+import { sendOrder, getDetailOrder, confirmPayment } from '@/fetching/orders';
 import { getAllProducts } from '@/fetching/product';
 
 import ModalAddProduct from './ModalAddProduct';
 import ModalDeleteVerification from './ModalDeleteVerification';
 import ModalEditQuantity from './ModalEditQuantity';
-
 
 const DetailOrder = ({ id }) => {
   const { data, setData } = useContext(DetailOrderContex);
@@ -30,7 +30,7 @@ const DetailOrder = ({ id }) => {
   const [isLoading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
   const router = useRouter();
-  const { selectedWarehouses, setCurrentCheckoutId, setPage, productList, setProductList } =
+  const { selectedWarehouses, setCurrentCheckoutId, setPage, setProductList } =
     useContext(DetailOrderContex);
   const [isProductSelectOpen, setIsProductSelectOpen] = useState(false);
   // const [productList, setProductList] = useState([]);
@@ -128,26 +128,52 @@ const DetailOrder = ({ id }) => {
       });
   };
 
+  const handleConfirm = () => {
+    confirmPayment(id).then(() => {
+      getDetailOrder(id)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Failed to fetch detail order');
+          }
+          return res.json();
+        })
+        .then((detailOrderData) => {
+          setData(detailOrderData.data.checkout.productCheckout);
+          setStatus(detailOrderData.data.checkout.status);
+          setPagination(detailOrderData.data.pagination);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log('Error:', error);
+        });
+      toast.success('Payment Confirmed');
+    });
+  };
+
   return (
     <main className="product-page bg-bgg relative h-screen font-poppins">
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Order Detail</h1>
       </div>
-      <div className="container-btn-products mt-20 flex items-center justify-between gap-3 px-5 md:ml-20 md:flex-row">
+      <div className="container-btn-products mt-20 flex items-center justify-between gap-1 px-5 md:ml-20 md:flex-row">
         <ButtonPrimary
           icon="truck"
           disable={status === 'SENT'}
           onClick={handleSend}
-          className='px-6'
-          >
+          className="px-6"
+        >
           Send
         </ButtonPrimary>
-
-
-        {status === 'PACKING' && (
-          <ButtonPrimary
-            icon="add"
-            onClick={openProductSelectionDialog}>
+        <ButtonPrimary
+          icon="money"
+          title="Confirm Payment"
+          disable={status !== 'WAIT FOR PAYMENT'}
+          onClick={handleConfirm}
+        >
+          Confirm
+        </ButtonPrimary>
+        {status !== 'SENT' && (
+          <ButtonPrimary icon="add" onClick={openProductSelectionDialog}>
             Add Product
           </ButtonPrimary>
         )}
@@ -162,11 +188,7 @@ const DetailOrder = ({ id }) => {
       </div>
 
       <ContainerOrderDetail checkoutId={id} data={data} />
-      <ModalAddProduct
-        onClose={closeProductSelectionDialog}
-        show={isProductSelectOpen}
-        products={productList}
-      />
+      <ModalAddProduct onClose={closeProductSelectionDialog} show={isProductSelectOpen} />
       <ModalDeleteVerification checkoutId={id} />
       <ModalEditQuantity checkoutId={id} />
       <Pagination

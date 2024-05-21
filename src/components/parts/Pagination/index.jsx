@@ -46,8 +46,7 @@ function Pagination({ totalPage, currentPage, onClick }) {
         ''
       )}
     </div>
-  ) : (
-  null);
+  ) : null;
 }
 
 export default Pagination;

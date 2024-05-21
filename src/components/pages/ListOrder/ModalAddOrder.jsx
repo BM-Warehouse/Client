@@ -103,7 +103,7 @@ const ModalAddOrder = () => {
               </label>
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text">Adress</span>
+                  <span className="label-text">Address</span>
                 </div>
                 <textarea
                   rows={5}
