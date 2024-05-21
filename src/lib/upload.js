@@ -1,19 +1,26 @@
-import path from 'path';
+const uploadV1 = async (file) => {
+  if (!file) {
+    return null;
+  }
 
-import { v2 as cloudinary } from 'cloudinary';
+  const formUpload = new FormData();
+  formUpload.append('file', file);
+  formUpload.append('upload_preset', 'rwheysjo');
 
-cloudinary.config({
-  cloud_name: 'denyah3ls',
-  api_key: '718294621377917',
-  api_secret: 'vpjFbNKorBIPIRSVwLjDnUMXlhQ'
-});
+  try {
+    const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
+      method: 'POST',
+      body: formUpload
+    });
 
-async function uploadImage(imagePath) {
-  const baseName = path.basename(imagePath);
-  const publicId = `image_assets/${+new Date()}_${baseName}`;
-
-  const ret = await cloudinary.uploader.upload(imagePath, { publicId });
-  console.log(ret);
+    // secureUrl ganti dulu jadi secure_url
+    const res = await response.json();
+    return res;
+  } catch (error) {
+    console.log(`category added failed: ${error}`);
+  }
 }
 
-export default uploadImage;
+export {
+  uploadV1
+}
