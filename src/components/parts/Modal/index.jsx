@@ -30,6 +30,7 @@ const Select = ({ children, onChange, value, className, name, label, ...rest }) 
 const Form = ({ children, onSubmit }) => {
   return (
     <form
+      method="dialog"
       onSubmit={onSubmit}
       className="flex flex-col items-center justify-center gap-2 w-full"
     >
@@ -50,8 +51,8 @@ const Input = ({ label, name, type, onChange, className, value, placeholder }) =
           type={type}
           name={name}
           value={value}
-          onChange={onChange} 
-          placeholder={placeholder}/>
+          onChange={onChange}
+          placeholder={placeholder} />
       </label>
     </>
   )
@@ -83,14 +84,14 @@ const InputFile = ({ label, name, onChange, className, value, placeholder }) => 
           type="file"
           name={name}
           value={value}
-          onChange={onChange} 
-          placeholder={placeholder}/>
+          onChange={onChange}
+          placeholder={placeholder} />
       </label>
     </>
   )
 }
 
-const TextArea = ({ className, label, value }) => {
+const TextArea = ({ className, name, label, value, onChange}) => {
   return (
     <>
       <label className="form-control w-full">
@@ -100,21 +101,17 @@ const TextArea = ({ className, label, value }) => {
         <textarea
           rows={5}
           value={value}
-          name="address"
+          name={name}
           placeholder="Type here"
           className={`block p-2.5 w-full text-sm text-secondary rounded-lg border border-secondary focus:ring-secondary focus:border-secondary focus:outline  focus:outline-offset-1  ${className || ''}`}
-          onChange={(e) => {
-            handleChange(e);
-          }}
-          required
+          onChange={onChange}
         />
       </label>
     </>
   )
 }
 
-const Modal = ({ children, title, description, id, className }) => {
-  console.log(className)
+const Modal = ({ children, title, description, id, className, onSubmit }) => {
   return (
     <dialog id={id} className="modal">
       <div className={`modal-box h-auto max-w-3xl p-12 ${className}`}>
@@ -123,7 +120,9 @@ const Modal = ({ children, title, description, id, className }) => {
           {description && <p className="py-4">
             {description}
           </p>}
-          {children}
+          <Form onSubmit={onSubmit}>
+            {children}
+          </Form>
         </div>
       </div>
     </dialog>
