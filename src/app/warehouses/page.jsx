@@ -3,68 +3,52 @@
 import { useEffect } from 'react';
 
 import Link from 'next/link';
+import toast from 'react-hot-toast';
+import { FiArrowUpRight } from 'react-icons/fi';
+import { HiOutlineTrash } from 'react-icons/hi';
 
-import DeleteWarehouseForm from '@/components/forms/deleteWarehouseForm';
-import EditWarehouseForm from '@/components/forms/editWarehouseForm';
-import Modal from '@/components/modals/modal';
-import useModalStore from '@/hooks/useModalStore';
 import useWarehouseStore from '@/store/warehouseStore';
 
 const WarehousesPage = () => {
-  const { warehouseData, getWarehouseData } = useWarehouseStore((state) => ({
-    warehouseData: state.warehouseData,
-    getWarehouseData: state.getWarehouseData
-  }));
+  const { warehouseData, getWarehouseData, editWarehouse, removeWarehouse } = useWarehouseStore(
+    (state) => ({
+      warehouseData: state.warehouseData,
+      getWarehouseData: state.getWarehouseData,
+      editWarehouse: state.editWarehouse,
+      removeWarehouse: state.removeWarehouse
+    })
+  );
 
   useEffect(() => {
     getWarehouseData();
   }, [getWarehouseData]);
 
-  const { isOpen, title, body, openModal, closeModal } = useModalStore();
+  const openModal = (id) => {
+    document.getElementById(id).showModal();
+  };
 
-  const handleOpenModal = (action, warehouseName, warehouseId) => {
-    let modalTitle;
-    let modalBody;
-    let buttonLabel;
+  const closeModal = (id) => {
+    document.getElementById(id).close();
+  };
 
-    switch (action) {
-      case 'edit':
-        modalTitle = `Edit ${warehouseName}`;
-        modalBody = (
-          <div>
-            <EditWarehouseForm />
-          </div>
-        );
+  const handleEditWarehouse = async (modalId, id, name, city, address) => {
+    try {
+      await editWarehouse(id, name, city, address);
+      toast.success('Warehouse updated successfully!');
+      getWarehouseData(); // Refresh the warehouse data
+    } catch (error) {
+      toast.error('Failed to update warehouse!');
+    }
+    closeModal(modalId);
+  };
 
-        openModal(modalTitle, modalBody, buttonLabel);
-        break;
-      // case 'move':
-      //   modalTitle = `Move Stock from ${warehouseName}`;
-      //   modalBody = (
-      //     <div>
-      //       <h2>Move Stock</h2>
-      //       {/* Include your move stock form here */}
-      //     </div>
-      //   );
-
-      // openModal(modalTitle, modalBody, buttonLabel);
-      // break;
-      case 'delete':
-        modalTitle = `Delete ${warehouseName}`;
-        modalBody = (
-          <div>
-            <h2>Are you sure you want to delete {warehouseName}?</h2>
-            <h1>
-              This will delete <strong>All products in the warehouse too</strong>{' '}
-            </h1>
-            <DeleteWarehouseForm id={warehouseId} />
-          </div>
-        );
-
-        openModal(modalTitle, modalBody);
-        break;
-      default:
-        break;
+  const handleDeleteWarehouse = async (id) => {
+    try {
+      await removeWarehouse(id);
+      toast.success('Warehouse deleted!');
+      getWarehouseData(); // Refresh warehouse data after deleting
+    } catch (error) {
+      toast.error('Something went wrong!');
     }
   };
 
@@ -94,31 +78,101 @@ const WarehousesPage = () => {
                 <td>{warehouse.city}</td>
                 <td>{warehouse.address}</td>
                 <td>
-                  <button
-                    className="bg-tertiary hover:bg-secondary px-4 py-2 text-white"
-                    onClick={() => handleOpenModal('edit', warehouse.name)}
-                  >
-                    Edit
-                  </button>
-                  {/* <button
-                    className="ml-2 bg-secondary px-4 py-2 text-white"
-                    onClick={() => handleOpenModal('move', warehouse.name)}
-                  >
-                    Move
-                  </button> */}
-                  <button
-                    className="ml-2 bg-tertiary hover:bg-secondary px-4 py-2 text-white"
-                    onClick={() => handleOpenModal('delete', warehouse.name, warehouse.id)}
-                  >
-                    Delete
-                  </button>
+                  <div className="flex items-center gap-4">
+                    {/* Edit Warehouse Form */}
+                    <button
+                      className="bg-tertiary hover:bg-secondary px-4 py-2 text-white rounded-lg"
+                      onClick={() => openModal(`edit_modal_${warehouse.id}`)}
+                    >
+                      <span className="flex items-center justify-center gap-2">
+                        <FiArrowUpRight />
+                        Edit
+                      </span>
+                    </button>
+                    <dialog id={`edit_modal_${warehouse.id}`} className="modal">
+                      <div className="modal-box">
+                        <h3 className="font-bold text-lg">Edit {warehouse.name}</h3>
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            const name = e.target.name.value;
+                            const city = e.target.city.value;
+                            const address = e.target.address.value;
+                            handleEditWarehouse(
+                              `edit_modal_${warehouse.id}`,
+                              warehouse.id,
+                              name,
+                              city,
+                              address
+                            );
+                          }}
+                        >
+                          <div className="form-control">
+                            <label className="label" htmlFor="name">
+                              Name
+                            </label>
+                            <input
+                              className="input input-bordered"
+                              type="text"
+                              name="name"
+                              defaultValue={warehouse.name}
+                            />
+                          </div>
+                          <div className="form-control">
+                            <label className="label" htmlFor="city">
+                              City
+                            </label>
+                            <input
+                              className="input input-bordered"
+                              type="text"
+                              name="city"
+                              defaultValue={warehouse.city}
+                            />
+                          </div>
+                          <div className="form-control">
+                            <label className="label" htmlFor="address">
+                              Address
+                            </label>
+                            <input
+                              className="input input-bordered"
+                              type="text"
+                              name="address"
+                              defaultValue={warehouse.address}
+                            />
+                          </div>
+                          <div className="modal-action">
+                            <button type="submit" className="btn">
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              className="btn"
+                              onClick={() => closeModal(`edit_modal_${warehouse.id}`)}
+                            >
+                              Close
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </dialog>
+
+                    {/* Delete Warehouse */}
+                    <button
+                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg"
+                      onClick={() => handleDeleteWarehouse(warehouse.id)}
+                    >
+                      <span className="flex items-center justify-center gap-2">
+                        <HiOutlineTrash />
+                        Delete
+                      </span>
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      {isOpen && <Modal title={title} body={body} closeModal={closeModal} />}
     </div>
   );
 };

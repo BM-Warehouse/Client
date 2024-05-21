@@ -38,6 +38,35 @@ const addWarehouse = async (params) => {
   }
 };
 
+const editWarehouse = async (id, name, address, city) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, address, city })
+    });
+
+    const updatedWarehouse = await response.json();
+
+    return updatedWarehouse;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+const removeWarehouse = async (id) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
+      method: 'DELETE'
+    });
+    return response;
+  } catch (error) {
+    throw new Error('Failed to fetch:', error);
+  }
+};
+
 const getWarehouseQuantities = async () => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/warehouses/quantities`, {
@@ -56,22 +85,12 @@ const getWarehouseQuantities = async () => {
   }
 };
 
-const removeWarehouse = async (id) => {
-  try {
-    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
-      method: 'DELETE'
-    });
-    return response;
-  } catch (error) {
-    throw new Error('Failed to fetch:', error);
-  }
-};
-
 export {
   getAllWarehouses,
   getWarehouseDetails,
   addWarehouse,
-  getWarehouseQuantities,
   getWarehouseName,
-  removeWarehouse
+  removeWarehouse,
+  editWarehouse,
+  getWarehouseQuantities
 };
