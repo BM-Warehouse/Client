@@ -2,7 +2,12 @@
 
 import { create } from 'zustand';
 
-import { addCartToCheckout, getCheckoutsUser, getDetailCheckoutUser } from '@/fetching/checkout';
+import {
+  addCartToCheckout,
+  getCheckoutsUser,
+  getDetailCheckoutUser,
+  setFeedback
+} from '@/fetching/checkout';
 
 const useCheckoutStore = create((set) => ({
   userCheckouts: [],
@@ -31,6 +36,13 @@ const useCheckoutStore = create((set) => ({
       set({ detailCheckoutUser });
     } catch (error) {
       console.error('Error in asyncGetCheckoutDetail:', error.message);
+    }
+  },
+  asyncSetFeedback: async (checkoutId, feedbackId) => {
+    try {
+      await setFeedback(checkoutId, feedbackId);
+    } catch (error) {
+      console.error('Error in asyncSetFeedback:', error.message);
     }
   }
 }));

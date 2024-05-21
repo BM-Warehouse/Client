@@ -88,4 +88,32 @@ const getDetailCheckoutUser = async (checkoutId) => {
   }
 };
 
-export { addCartToCheckout, getCheckoutsUser, getDetailCheckoutUser, getAllCheckout };
+const setFeedback = async (checkoutId, feedback) => {
+  try {
+    const requestBody = {
+      checkoutId,
+      feedback
+    };
+    // console.log(productId, warehouseId, quantity);
+    const response = await fetchWithToken(`${BASE_URL}/checkout/feedback`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    return responseJson;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
+export { addCartToCheckout, getCheckoutsUser, getDetailCheckoutUser, getAllCheckout, setFeedback };

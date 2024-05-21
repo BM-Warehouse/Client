@@ -5,8 +5,10 @@
 import { useEffect } from 'react';
 
 // import toast from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { FaWhatsapp } from 'react-icons/fa';
 
+import ModalConfirmation from '@/components/parts/ModalConfirmation';
 import Navbar from '@/components/parts/Navbar';
 // import OrderSummary from '@/components/parts/OrderSummary';
 import ProductPurchase from '@/components/parts/ProductPurchase';
@@ -18,7 +20,7 @@ import useCheckoutStore from '@/store/checkoutStore';
 
 function DetailHistoryCheckout({ params }) {
   // const { cart, asyncShowCart, asyncResetCartToDefault } = useCartStore();
-  const { detailCheckoutUser, asyncGetDetailCheckoutUser } = useCheckoutStore();
+  const { detailCheckoutUser, asyncGetDetailCheckoutUser, asyncSetFeedback } = useCheckoutStore();
   const { authUser } = useAuthUserStore();
 
   console.log(authUser);
@@ -71,6 +73,30 @@ function DetailHistoryCheckout({ params }) {
     default:
       messageOrder = 'Thank you for your order';
   }
+
+  const handleDone = async () => {
+    try {
+      const newStatus = 'DONE';
+      await asyncSetFeedback(detailCheckoutUser.id, newStatus);
+      toast.success('Order Confirmed successfully!');
+      await asyncGetDetailCheckoutUser(id);
+    } catch (error) {
+      toast.error('Failed confirm order.');
+      console.error('Error confirm order:', error.message);
+    }
+  };
+
+  const handleComplain = async () => {
+    try {
+      const newStatus = 'COMPLAIN';
+      await asyncSetFeedback(detailCheckoutUser.id, newStatus);
+      toast.success('Order Confirmed successfully!');
+      await asyncGetDetailCheckoutUser(id);
+    } catch (error) {
+      toast.error('Failed confirm order.');
+      console.error('Error confirm order:', error.message);
+    }
+  };
 
   return (
     <section className="checkout-page relative min-h-screen bg-bgColor pb-20 font-poppins">
@@ -193,19 +219,39 @@ function DetailHistoryCheckout({ params }) {
           {detailCheckoutUser.status === 'SENT' && (
             <div className="btn-order mb-10 w-full flex justify-evenly">
               <button
+                onClick={() =>
+                  document
+                    .getElementById(`modal-confirmation-done-id-${detailCheckoutUser.id}`)
+                    .showModal()
+                }
                 type="button"
                 // onClick={handlePlaceOrder}
                 className="md:w-48 w-28 bg-tertiary px-4 md:px-8 py-2 md:py-4 font-bold text-white hover:bg-secondary"
               >
                 DONE
               </button>
+              <ModalConfirmation
+                action={handleDone}
+                message="Are you sure you want to finish this order?"
+                id={`modal-confirmation-done-id-${detailCheckoutUser.id}`}
+              />
               <button
+                onClick={() =>
+                  document
+                    .getElementById(`modal-confirmation-complain-id-${detailCheckoutUser.id}`)
+                    .showModal()
+                }
                 type="button"
                 // onClick={handlePlaceOrder}
                 className=" md:w-48 w-28  bg-ligtDanger px-4 md:px-8 py-2 md:py-4 font-bold text-white hover:bg-danger"
               >
                 COMPLAIN
               </button>
+              <ModalConfirmation
+                action={handleComplain}
+                message="Are you sure you want to complain this order?"
+                id={`modal-confirmation-complain-id-${detailCheckoutUser.id}`}
+              />
             </div>
           )}
         </div>
