@@ -6,10 +6,10 @@ import Image from 'next/image';
 import toast from 'react-hot-toast';
 
 import defaultProductImage from '@/assets/images/defaultProduct.png';
+import { ButtonPrimary } from '@/components/parts/Button';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { addProductToCheckout, getDetailOrder } from '@/fetching/orders';
 import { getAllProducts } from '@/fetching/product';
-import { ButtonPrimary } from '@/components/parts/Button';
 
 const generateCategoriesString = (product) => {
   let categoriesString = '';
@@ -93,36 +93,39 @@ const Row = ({ product }) => {
         />
       </td>
       <th>
-        <ButtonPrimary icon="add" onClick={handleAdd}>Add</ButtonPrimary>
-      </th> 
-    </tr>);
+        <ButtonPrimary icon="add" onClick={handleAdd}>
+          Add
+        </ButtonPrimary>
+      </th>
+    </tr>
+  );
 };
 
-const Table = ({ products }) => (
-  <div className="overflow-x-auto">
-    <table className="table">
-      {/* head */}
-      <thead>
-        <tr>
-          <th>Product Name</th>
-          <th>Categories</th>
-          <th>Quantity</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {products?.map((p) => (
-          <Row key={p.id} product={p} />
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
+const Table = ({ products }) => {
+  return(
+    <div className="overflow-x-auto">
+      <table className="table">
+        {/* head */}
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Categories</th>
+            <th>Quantity</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products?.map((p) => (
+            <Row key={p.id} product={p} />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+} 
 
 const ModalAddProduct = ({ show, onClose, products }) => {
-  const { 
-    productList, 
-    setProductList } = useContext(DetailOrderContex);
+  const { setProductList } = useContext(DetailOrderContex);
   const TYPE_TIMEOUT_SEARCH = 1000;
   let tSearch = null;
   useEffect(() => {
@@ -143,14 +146,14 @@ const ModalAddProduct = ({ show, onClose, products }) => {
   const handleSearchChange = (e) => {
     clearTimeout(tSearch);
 
-    tSearch = setTimeout(()=> {
-      console.log(e.target.value)
+    tSearch = setTimeout(() => {
+      console.log(e.target.value);
       getAllProducts(1, 10, e.target.value).then((res) => {
         // console.log(">>", res);
         setProductList(res.products);
       });
-    }, TYPE_TIMEOUT_SEARCH)
-  }
+    }, TYPE_TIMEOUT_SEARCH);
+  };
 
   return (
     <div>
@@ -160,7 +163,14 @@ const ModalAddProduct = ({ show, onClose, products }) => {
             <h2 className="text-2xl font-bold">Products</h2>
             <div className="search-filter flex items-center justify-center">
               <label className="input input-bordered flex items-center gap-2">
-                <input type="text" className="grow" placeholder="Search" onChange={(e) => {handleSearchChange(e)}}/>
+                <input
+                  type="text"
+                  className="grow"
+                  placeholder="Search"
+                  onChange={(e) => {
+                    handleSearchChange(e);
+                  }}
+                />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 16 16"

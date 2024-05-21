@@ -12,9 +12,9 @@ import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { sendOrder, getDetailOrder } from '@/fetching/orders';
 import { getAllProducts } from '@/fetching/product';
 
+import ModalAddProduct from './ModalAddProduct';
 import ModalDeleteVerification from './ModalDeleteVerification';
 import ModalEditQuantity from './ModalEditQuantity';
-import ModalAddProduct from './ModalAddProduct';
 
 const DetailOrder = ({ id }) => {
   const { data, setData } = useContext(DetailOrderContex);
@@ -29,11 +29,8 @@ const DetailOrder = ({ id }) => {
   const [isLoading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
   const router = useRouter();
-  const { selectedWarehouses, 
-    setCurrentCheckoutId, 
-    setPage, 
-    productList, 
-    setProductList } = useContext(DetailOrderContex);
+  const { selectedWarehouses, setCurrentCheckoutId, setPage, productList, setProductList } =
+    useContext(DetailOrderContex);
   const [isProductSelectOpen, setIsProductSelectOpen] = useState(false);
   // const [productList, setProductList] = useState([]);
 

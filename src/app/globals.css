@@ -83,7 +83,7 @@ table tr th:hover span {
   border-color: var(--secondary);
 }
 .input-border-custom:focus,
-  .input-custom:focus-within {
-  border-color:var(--secondary);
+.input-custom:focus-within {
+  border-color: var(--secondary);
   outline-color: var(--secondary);
 }
