@@ -77,3 +77,13 @@ table tr th:hover span {
 .table-zebra tbody tr:nth-child(even) {
   background-color: var(--table-zebra);
 }
+
+.input-border-custom {
+  @apply input;
+  border-color: var(--secondary);
+}
+.input-border-custom:focus,
+  .input-custom:focus-within {
+  border-color:var(--secondary);
+  outline-color: var(--secondary);
+}
