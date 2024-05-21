@@ -16,7 +16,7 @@ const iconCollection = {
 
 const ButtonPrimary = ({ className, children, icon, title, href = '#', onClick, ...rest }) => {
   let mergedClassName =
-    'relative mr-2 min-w-10 min-h-9 rounded-md px-3 py-2 text-primary bg-tertiary hover:bg-secondary '; // harus ada spasi di akhir
+    'relative min-w-10 min-h-9 rounded-md px-3 py-2 text-primary bg-tertiary hover:bg-secondary '; // harus ada spasi di akhir
   mergedClassName += className;
   let selectedIcon = null;
   if (iconCollection[icon])
@@ -42,7 +42,7 @@ const ButtonPrimary = ({ className, children, icon, title, href = '#', onClick, 
 
 const ButtonStrong = ({ className, children, icon, title, href = '#', onClick, ...rest }) => {
   let mergedClassName =
-    'relative mr-2 min-w-10 min-h-9 rounded-md px-3 py-2 text-primary bg-rose-400 hover:bg-rose-600 '; // harus ada spasi di akhir
+    'relative min-w-10 min-h-9 rounded-md px-3 py-2 text-primary bg-rose-400 hover:bg-rose-600 '; // harus ada spasi di akhir
   mergedClassName += className;
   let selectedIcon = null;
   if (iconCollection[icon])
