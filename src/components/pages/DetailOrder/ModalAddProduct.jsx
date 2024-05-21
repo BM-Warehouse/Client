@@ -125,7 +125,7 @@ const Table = () => {
   );
 }; 
 
-const ModalAddProduct = ({ show, onClose, products }) => {
+const ModalAddProduct = ({ show, onClose }) => {
   const { setProductList } = useContext(DetailOrderContex);
   const TYPE_TIMEOUT_SEARCH = 1000;
   let tSearch = null;
@@ -186,7 +186,7 @@ const ModalAddProduct = ({ show, onClose, products }) => {
                 </svg>
               </label>
             </div>
-            <Table products={products} />
+            <Table />
             <div className="modal-action">
               <button className="btn" onClick={onClose}>
                 Close
