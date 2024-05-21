@@ -51,4 +51,23 @@ const addCartToCheckout = async (cartId, courier, address, method) => {
   }
 };
 
-export { addCartToCheckout, getCheckoutsUser };
+const getDetailCheckoutUser = async (checkoutId) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/checkout/me/${checkoutId}`);
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    const {
+      data: { checkoutDetail }
+    } = responseJson;
+    return checkoutDetail;
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
+export { addCartToCheckout, getCheckoutsUser, getDetailCheckoutUser };

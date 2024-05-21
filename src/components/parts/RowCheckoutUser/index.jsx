@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import formatRupiah from '@/lib/formatRupiah';
 
 function RowCheckoutUser({ checkout }) {
@@ -24,13 +26,27 @@ function RowCheckoutUser({ checkout }) {
 
   return (
     <tr>
-      <th>{checkout.id}</th>
-      <td>{checkout.resi ? checkout.resi : '-'}</td>
-      <td>{formatRupiah(fixTotalPrice)}</td>
-      <td>{checkout.address}</td>
-      <td>{checkout.method}</td>
-      <td>{checkout.courier}</td>
-      <td>{checkout.status}</td>
+      <th>
+        <Link href={`checkout-history/${checkout.id}`}>{checkout.id}</Link>
+      </th>
+      <td>
+        <Link href={`checkout-history/${checkout.id}`}>{checkout.resi ? checkout.resi : '-'}</Link>
+      </td>
+      <td>
+        <Link href={`checkout-history/${checkout.id}`}>{formatRupiah(fixTotalPrice)}</Link>
+      </td>
+      <td>
+        <Link href={`checkout-history/${checkout.id}`}>{checkout.address}</Link>
+      </td>
+      <td>
+        <Link href={`checkout-history/${checkout.id}`}>{checkout.method}</Link>
+      </td>
+      <td>
+        <Link href={`checkout-history/${checkout.id}`}>{checkout.courier}</Link>
+      </td>
+      <td>
+        <Link href={`checkout-history/${checkout.id}`}>{checkout.status}</Link>
+      </td>
     </tr>
   );
 }
