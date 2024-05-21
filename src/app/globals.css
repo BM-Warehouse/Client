@@ -77,3 +77,10 @@ table tr th:hover span {
 .table-zebra tbody tr:nth-child(even) {
   background-color: var(--table-zebra);
 }
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}

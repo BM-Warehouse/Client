@@ -1,6 +1,12 @@
 import { create } from 'zustand';
 
-import { getAllWarehouses, getWarehouseQuantities, removeWarehouse } from '@/fetching/warehouse';
+import {
+  getAllWarehouses,
+  getWarehouseQuantities,
+  addWarehouse,
+  editWarehouse,
+  removeWarehouse
+} from '@/fetching/warehouse';
 
 const useWarehouseStore = create((set) => ({
   warehouseData: [],
@@ -22,6 +28,28 @@ const useWarehouseStore = create((set) => ({
       console.error('Failed to fetch warehouse quantities', e);
     }
   },
+  editWarehouse: async (id, name, city, address) => {
+    try {
+      const editedWarehouse = await editWarehouse(id, name, city, address);
+      set((_state) => ({
+        editedWarehouse
+      }));
+    } catch (error) {
+      console.error('Error in editing warehouse:', error);
+    }
+  },
+
+  addWarehouse: async (id, name, city, address) => {
+    try {
+      const addedWarehouse = await addWarehouse(id, name, city, address);
+      set((_state) => ({
+        addedWarehouse
+      }));
+    } catch (error) {
+      console.error('Error in editing warehouse:', error);
+    }
+  },
+
   removeWarehouse: async (id) => {
     const removed = await removeWarehouse(id);
     set((_state) => ({

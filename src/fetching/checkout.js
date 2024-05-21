@@ -21,6 +21,24 @@ const getCheckoutsUser = async () => {
   }
 };
 
+const getAllCheckout = async () => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/checkout?limit=100`);
+    const responseJson = await response.json();
+    const { status, message, data } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+
+    return data.checkouts; // Return the 'checkouts' array directly
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
 const addCartToCheckout = async (cartId, courier, address, method) => {
   try {
     const requestBody = {
@@ -70,4 +88,4 @@ const getDetailCheckoutUser = async (checkoutId) => {
   }
 };
 
-export { addCartToCheckout, getCheckoutsUser, getDetailCheckoutUser };
+export { addCartToCheckout, getCheckoutsUser, getDetailCheckoutUser, getAllCheckout };

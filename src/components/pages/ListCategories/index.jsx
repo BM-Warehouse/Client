@@ -82,7 +82,7 @@ function ListCategories() {
     return null;
   }
   return (
-    <main className="category-page bg-bgg relative h-screen font-poppins">
+    <main className="category-page bg-bgColor relative h-screen font-poppins">
       <Navbar />
       <Sidebar />
       <div className="category-title flex justify-center pt-24">
