@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -37,7 +37,7 @@ const RegisterPage = () => {
 
   const onRegister = async () => {
     if (password !== confirmPassword) {
-      toast.error(`Password don't match!`);
+      toast.error(`Passwords don't match!`);
       return;
     }
 
@@ -55,7 +55,7 @@ const RegisterPage = () => {
         avatar,
         role: 'user'
       });
-      toast.success('Register Successfull! Please Login!');
+      toast.success('Registration Successful! Please Login!');
       router.push('/login');
     } catch (error) {
       console.error('Registration failed:', error);
@@ -64,6 +64,28 @@ const RegisterPage = () => {
       setLoading(false);
     }
   };
+
+  const [isStepOneValid, setIsStepOneValid] = useState(false);
+  const [isStepTwoValid, setIsStepTwoValid] = useState(false);
+
+  useEffect(() => {
+    setIsStepOneValid(
+      email.trim() !== '' &&
+        username.trim() !== '' &&
+        password.trim() !== '' &&
+        confirmPassword.trim() !== ''
+    );
+  }, [email, username, password, confirmPassword]);
+
+  useEffect(() => {
+    setIsStepTwoValid(
+      fullName.trim() !== '' &&
+        phone.trim() !== '' &&
+        address.trim() !== '' &&
+        gender.trim() !== '' &&
+        birthdate.trim() !== ''
+    );
+  }, [fullName, phone, address, gender, birthdate]);
 
   const renderStepOne = () => (
     <>
@@ -135,20 +157,14 @@ const RegisterPage = () => {
         required
         disabled={loading}
       />
-      {/* <input
-        type="text"
-        placeholder="Enter your gender..."
-        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-        value={gender}
-        onChange={onGenderChange}
-        required
-        disabled={loading}
-      /> */}
       <select
+        value={gender}
         onChange={(e) => setGender(e.target.value)}
         className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        required
+        disabled={loading}
       >
-        <option disabled selected className="text-gray-300">
+        <option disabled className="text-gray-300">
           Choose your gender...
         </option>
         <option className="text-secondary">Male</option>
@@ -163,14 +179,6 @@ const RegisterPage = () => {
         required
         disabled={loading}
       />
-      {/* <input
-        type="text"
-        placeholder="Enter your avatar URL..."
-        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-        value={avatar}
-        onChange={onAvatarChange}
-        disabled={loading}
-      /> */}
     </>
   );
 
@@ -192,11 +200,11 @@ const RegisterPage = () => {
             {step === 1 ? (
               <button
                 type="button"
-                className={` w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
-                  loading ? 'cursor-not-allowed opacity-50' : ''
+                className={`w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
+                  loading || !isStepOneValid ? 'cursor-not-allowed opacity-50' : ''
                 }`}
                 onClick={() => setStep(2)}
-                disabled={loading}
+                disabled={loading || !isStepOneValid}
               >
                 Next
               </button>
@@ -204,7 +212,7 @@ const RegisterPage = () => {
               <>
                 <button
                   type="button"
-                  className={` w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
+                  className={`w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
                     loading ? 'cursor-not-allowed opacity-50' : ''
                   }`}
                   onClick={() => setStep(1)}
@@ -215,10 +223,10 @@ const RegisterPage = () => {
                 <button
                   type="submit"
                   className={`my-5 w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
-                    loading ? 'cursor-not-allowed opacity-50' : ''
+                    loading || !isStepTwoValid ? 'cursor-not-allowed opacity-50' : ''
                   }`}
                   onClick={onRegister}
-                  disabled={loading}
+                  disabled={loading || !isStepTwoValid}
                 >
                   {loading ? 'Registering...' : 'Register'}
                 </button>
