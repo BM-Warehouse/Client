@@ -29,7 +29,9 @@ function Pagination({ totalPage, currentPage, onClick }) {
         {pages.map((i) => (
           <button
             key={i}
-            className={`btn join-item ${i === currentPage ? 'btn-active' : ''}`}
+            className={`btn bg-bgColor text-txt join-item ${
+              i === currentPage ? 'btn-active bg-tertiary' : ''
+            }`}
             onClick={() => {
               onClick(i);
             }}

@@ -79,10 +79,10 @@ function ListProducts() {
           )}
         </div>
         <div className="search-filter flex items-center justify-between">
-          <label className="input  flex h-8 items-center gap-2 border-tertiary ">
+          <label className="input  flex h-8 items-center  bg-bgColor gap-2 border-tertiary ">
             <input
               type="text"
-              className="grow text-sm text-tertiary bg-bgColor transition-none placeholder:text-secondary"
+              className="grow text-sm text-tertiary transition-none placeholder:text-tertiary"
               placeholder="Search product..."
               value={searchKeyword}
               onChange={onSearchKeywordChange}
@@ -91,7 +91,7 @@ function ListProducts() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
               fill="currentColor"
-              className="h-4 w-4 text-tertiary opacity-70"
+              className="h-4 w-4 text-tertiary "
             >
               <path
                 fillRule="evenodd"
@@ -107,7 +107,7 @@ function ListProducts() {
       </div>
 
       {role === 'admin' ? (
-        <ContainerProductsAdmin productsData={productsData} />
+        <ContainerProductsAdmin productsData={keyword ? filteredProducts : productsData} />
       ) : (
         <ContainerProductsUser productsData={keyword ? filteredProducts : productsData} />
       )}
