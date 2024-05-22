@@ -99,7 +99,7 @@ function ListCategories() {
                 Add Category
               </button>
               <dialog id="my_modal_1" className="modal">
-                <div className="modal-box bg-primary">
+                <div className="modal-box bg-primary ">
                   <h3 className="text-lg font-bold text-secondary">Add New Category</h3>
                   <div className="input-container">
                     <label htmlFor="" className="text-secondary">

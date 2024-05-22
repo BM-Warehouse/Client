@@ -68,7 +68,7 @@ const Modal1 = () => {
   };
 
   return (
-    <Modal id={modalId} title="Modal 1" onSubmit={handleSubmit} description='This is Modal 1'>
+    <Modal id={modalId} title="Modal 1" onSubmit={handleSubmit} description="This is Modal 1">
       <div className="overflow-y-auto max-h-96 w-full p-1 scrollbar-hide">
         <Input
           label="Input 1"
@@ -142,7 +142,7 @@ const Modal2 = () => {
       id={modalId}
       title="Modal 2"
       onSubmit={closeModal}
-      description='This is Modal 2'
+      description="This is Modal 2"
     >
       <div className="overflow-y-auto max-h-96 w-full p-1 scrollbar-hide">
         <Input
