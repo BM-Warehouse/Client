@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 import Navbar from '@/components/parts/Navbar';
@@ -10,7 +11,6 @@ import Sidebar from '@/components/parts/Sidebar';
 import useInput from '@/hooks/useInput';
 import useAuthUserStore from '@/store/authUserStore';
 import useUsersStore from '@/store/userStore';
-import toast from 'react-hot-toast';
 
 function UpdateUser({ params }) {
   const { role } = useAuthUserStore();
@@ -165,7 +165,7 @@ function UpdateUser({ params }) {
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary"
                   >
                     {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                   </button>

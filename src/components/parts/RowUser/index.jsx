@@ -5,23 +5,23 @@ import { FiArrowUpRight } from 'react-icons/fi';
 import { HiOutlineTrash } from 'react-icons/hi';
 
 import useAuthUserStore from '@/store/authUserStore';
-import useUsersStore from '@/store/userStore';
+// import useUsersStore from '@/store/userStore';
 
 function RowUser({ user, index }) {
   const router = useRouter();
   const { role } = useAuthUserStore();
-  const { asyncDestroyUser } = useUsersStore((state) => ({
-    asyncDestroyUser: state.asyncDestroyUser
-  }));
+  // const { asyncDestroyUser } = useUsersStore((state) => ({
+  //   asyncDestroyUser: state.asyncDestroyUser
+  // }));
 
   if (!role) {
     return null;
   }
 
-  const handleDestroy = async () => {
-    await asyncDestroyUser(user.id);
-    router.refresh();
-  };
+  // const handleDestroy = async () => {
+  //   await asyncDestroyUser(user.id);
+  //   router.refresh();
+  // };
 
   const handleEdit = () => {
     router.push(`/users/${user.id}/edit`);
@@ -34,7 +34,7 @@ function RowUser({ user, index }) {
   return (
     <>
       <tr className="hover:underline cursor-pointer text-center">
-        {[
+        {/* {[
           `${index}`,
           `${user.email}`,
           `${user.username}`,
@@ -42,14 +42,32 @@ function RowUser({ user, index }) {
           `${user.phone}`,
           `${user.role}`
         ].map((dataUser) => (
-          <th
+          <td
             key={dataUser}
             onClick={() => handleDetail()}
             className="cursor-pointer hover:underline"
           >
             {dataUser}
-          </th>
-        ))}
+          </td>
+        ))} */}
+        <td onClick={() => handleDetail()} className="cursor-pointer hover:underline">
+          {index}
+        </td>
+        <td onClick={() => handleDetail()} className="cursor-pointer hover:underline">
+          {user.email}
+        </td>
+        <td onClick={() => handleDetail()} className="cursor-pointer hover:underline">
+          {user.username}
+        </td>
+        <td onClick={() => handleDetail()} className="cursor-pointer hover:underline">
+          {user.fullName}
+        </td>
+        <td onClick={() => handleDetail()} className="cursor-pointer hover:underline">
+          {user.phone}
+        </td>
+        <td onClick={() => handleDetail()} className="cursor-pointer hover:underline">
+          {user.role}
+        </td>
         <td>
           <div className="buttons-action flex justify-around">
             <button
@@ -73,7 +91,7 @@ function RowUser({ user, index }) {
           </div>
         </td>
       </tr>
-      <dialog id="my_modal_1" className="modal">
+      {/* <dialog id="my_modal_1" className="modal">
         <div className="modal-box bg-primary rounded-lg shadow-lg p-6">
           <h2 className="text-lg font-bold mb-4">Confirm Action</h2>
           <p className="mb-4">Are you sure you want to delete this user?</p>
@@ -92,7 +110,7 @@ function RowUser({ user, index }) {
             </button>
           </div>
         </div>
-      </dialog>
+      </dialog> */}
     </>
   );
 }

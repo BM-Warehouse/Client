@@ -14,10 +14,8 @@ const getAllUsers = async (page = 1, limit = 10) => {
     if (status !== 'success') {
       throw new Error(message);
     }
-    const {
-      data: { users }
-    } = responseJson;
-    return users;
+    const {data} = responseJson;
+    return data;
   } catch (error) {
     console.error('Error fetching data:', error.message);
     throw error;
