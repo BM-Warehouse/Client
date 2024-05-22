@@ -42,7 +42,7 @@ const getWarehouseName = async (id) => {
   const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`);
   const warehouseDetails = await response.json();
 
-  return warehouseDetails.data.warehouse.name;
+  return warehouseDetails.data.warehouse[0].name;
 };
 
 const addWarehouse = async (params) => {
