@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { HiPlus } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 
@@ -17,14 +18,38 @@ import useProductStore from '@/store/productStore';
 
 function ListProducts() {
   const { role } = useAuthUserStore();
-  const { productsData, asyncGetAll, pagination } = useProductStore();
+  const {
+    productsData,
+    asyncGetAll,
+    pagination,
+    filteredPagination,
+    allProductsData,
+    asyncGetAllFullProducts
+  } = useProductStore();
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const keyword = searchParams.get('keyword');
+  const [searchKeyword, setSearchKeyword] = useState(keyword || '');
+
+  const filteredProducts = allProductsData.filter((product) =>
+    product.name.toLowerCase().includes((keyword || '').toLowerCase())
+  );
 
   useEffect(() => {
     asyncGetAll();
-  }, [asyncGetAll]);
+    asyncGetAllFullProducts();
+  }, [asyncGetAll, asyncGetAllFullProducts]);
 
   const onPaginationClick = async (page) => {
     await asyncGetAll(page);
+  };
+
+  const onSearchKeywordChange = ({ target }) => {
+    setSearchKeyword(target.value);
+    const params = new URLSearchParams(searchParams);
+    params.set('keyword', target.value);
+    router.push(`?${params.toString()}`);
   };
 
   if (!role) {
@@ -57,8 +82,10 @@ function ListProducts() {
           <label className="input  flex h-8 items-center gap-2 border-tertiary ">
             <input
               type="text"
-              className="grow text-sm text-tertiary transition-none placeholder:text-secondary"
+              className="grow text-sm text-tertiary bg-bgColor transition-none placeholder:text-secondary"
               placeholder="Search product..."
+              value={searchKeyword}
+              onChange={onSearchKeywordChange}
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -82,12 +109,12 @@ function ListProducts() {
       {role === 'admin' ? (
         <ContainerProductsAdmin productsData={productsData} />
       ) : (
-        <ContainerProductsUser productsData={productsData} />
+        <ContainerProductsUser productsData={keyword ? filteredProducts : productsData} />
       )}
 
       <Pagination
-        currentPage={pagination.currentPage}
-        totalPage={pagination.totalPage}
+        currentPage={keyword ? filteredPagination.currentPage : pagination.currentPage}
+        totalPage={keyword ? filteredPagination.totalPage : pagination.totalPage}
         onClick={onPaginationClick}
       />
     </main>

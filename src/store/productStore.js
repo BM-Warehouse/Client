@@ -13,9 +13,18 @@ import {
 
 const useProductStore = create((set) => ({
   productsData: [],
+  allProductsData: [],
   detailProduct: null,
   newProduct: null,
   pagination: {
+    totalPage: null,
+    totalData: null,
+    nextPage: null,
+    prevPage: null,
+    currentPage: 1,
+    limit: null
+  },
+  filteredPagination: {
     totalPage: null,
     totalData: null,
     nextPage: null,
@@ -107,6 +116,17 @@ const useProductStore = create((set) => ({
       }));
     } catch (error) {
       console.error('Error in asyncEditProduct:', error.message);
+    }
+  },
+  async asyncGetAllFullProducts(page = 1, limit = 99999) {
+    try {
+      const data = await getAllProducts(page, limit);
+      set((_state) => ({
+        allProductsData: data.products,
+        filterPagination: data.pagination
+      }));
+    } catch (error) {
+      console.error('Error in asyncGetAll:', error.message);
     }
   }
 }));
