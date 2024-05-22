@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 
 import { useParams } from 'next/navigation';
+import toast from 'react-hot-toast';
+import { HiOutlineTrash } from 'react-icons/hi';
 
 import Container from '@/components/parts/ContainerWarehouse/warehouse-container';
 import { getWarehouseDetails } from '@/fetching/warehouse';
@@ -31,6 +33,16 @@ const WarehouseDetailPage = () => {
     }
   }, [warehouseId]);
 
+  const handleDeleteWarehouse = () => {
+    toast.success('Deleted Succesfully');
+  };
+  const handleEditStock = () => {
+    toast.success('Edited Product Stocks Succesfully');
+  };
+  const handleMoveProduct = () => {
+    toast.success('Moved Products Succesfully');
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!warehouse) return <p>No warehouse details found.</p>;
@@ -39,55 +51,59 @@ const WarehouseDetailPage = () => {
     <div>
       <Container>
         <h1 className="mb-10 text-center text-2xl">{warehouse.name}</h1>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto ">
           <table className="table">
             {/* head */}
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Product ID</th>
                 <th>Product Name</th>
                 <th>Quantity</th>
-                <th>Price</th>
-                <th>Address</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {/* row 1 */}
-              <tr>
-                <th>1</th>
-                <td>Product 1</td>
-                <td>1000</td>
-                <td>Jakarta</td>
-                <td>Jl Pattimura 20, Jakarta</td>
-              </tr>
-              <tr>
-                <th>2</th>
-                <td>Product 2</td>
-                <td>2000</td>
-                <td>Jakarta</td>
-                <td>Jl Gedong Panjang 19</td>
-              </tr>
-              <tr>
-                <th>3</th>
-                <td>Product 3</td>
-                <td>500</td>
-                <td>Jakarta</td>
-                <td>Jl Kendangsari II/5</td>
-              </tr>
-              <tr>
-                <th>4</th>
-                <td>Product 4</td>
-                <td>100</td>
-                <td>Surabaya</td>
-                <td>Jl Jaksa Agung Suprapto, Jl Muncul</td>
-              </tr>
-              <tr>
-                <th>5</th>
-                <td>Product 5</td>
-                <td>1500</td>
-                <td>DKI Jakarta</td>
-                <td>Jl Cipete Raya</td>
-              </tr>
+              {console.log(warehouse)}
+              {warehouse.products.map((product) => (
+                <tr key={product.id}>
+                  <td>{product.productId}</td>
+                  <td>{product.productName}</td>
+                  <td>{product.quantity}</td>
+                  {/* Action Buttons and Forms */}
+                  <td>
+                    <div className="flex gap-4">
+                      <button
+                        className="bg-tertiary hover:bg-secondary px-4 py-2 text-white rounded-lg"
+                        onClick={() => handleEditStock()}
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          <HiOutlineTrash />
+                          Edit Stock
+                        </span>
+                      </button>
+                      <button
+                        className="bg-tertiary hover:bg-secondary px-4 py-2 text-white rounded-lg"
+                        onClick={() => handleMoveProduct()}
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          <HiOutlineTrash />
+                          Move Product
+                        </span>
+                      </button>
+                      {/* Delete Warehouse */}
+                      <button
+                        className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg"
+                        onClick={() => handleDeleteWarehouse()}
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          <HiOutlineTrash />
+                          Delete
+                        </span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
