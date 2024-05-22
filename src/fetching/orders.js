@@ -104,12 +104,13 @@ async function deleteProductFromCheckout(checkoutId, productId) {
   return resJson;
 }
 
-async function addCheckout({ userId, address, method, courier, status = 'WAIT FOR PAYMENT' }) {
+async function addCheckout({ userId, address, method, courierId, status = 'WAIT FOR PAYMENT' }) {
+  console.log(userId, address, method, courierId, status);
   const data = {
     userId: +userId,
     address,
     method,
-    courier,
+    courierId,
     status
   };
 

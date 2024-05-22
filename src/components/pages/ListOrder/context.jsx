@@ -15,6 +15,7 @@ const ListOrderContextProvider = ({ children }) => {
     currentPage: 1,
     limit: null
   });
+  const [ couriers, setCouriers ] = useState([]);
 
   return (
     <ListOrderContext.Provider
@@ -26,7 +27,9 @@ const ListOrderContextProvider = ({ children }) => {
         data,
         setData,
         pagination,
-        setPagination
+        setPagination,
+        couriers,
+        setCouriers
       }}
     >
       {children}

@@ -12,11 +12,12 @@ import { getAllUsers } from '@/fetching/user';
 import ContainerOrders from './ContainerOrders';
 import ListOrderContextProvider, { ListOrderContext } from './context';
 import ModalAddOrder, { openModalAddOrder } from './ModalAddOrder';
+import { getAllCouriers } from '@/fetching/courier';
 
 function Main() {
   const { data, setData, pagination, setPagination } = useContext(ListOrderContext);
   const [isLoading, setLoading] = useState(true);
-  const { setUsers } = useContext(ListOrderContext);
+  const { setUsers, setCouriers } = useContext(ListOrderContext);
 
   useEffect(() => {
     getAllOrders()
@@ -44,10 +45,14 @@ function Main() {
       });
   };
 
-  const handleAddOrderClick = () => {
+  const handleAddOrderClick = async () => {
     getAllUsers(1, 10000)
       .then((r) => {
         setUsers(r);
+        getAllCouriers()
+          .then((r) => {
+            setCouriers(r.data.couriers.couriers);
+          })
       })
       .catch((e) => {
         toast.error(`fail to fet user: ${e}`);

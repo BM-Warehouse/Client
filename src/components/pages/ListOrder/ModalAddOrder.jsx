@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
@@ -23,15 +23,15 @@ const ModalAddOrder = () => {
   const [form, setForm] = useState({
     userId: '',
     address: '',
-    courier: '',
+    courierId: '',
     method: ''
   });
 
-  const { users } = useContext(ListOrderContext);
+  const { users, couriers } = useContext(ListOrderContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(form);
+    console.log(form);
     addCheckout(form)
       .then((r) => {
         console.log(r);
@@ -39,7 +39,7 @@ const ModalAddOrder = () => {
         setForm({
           userId: '',
           address: '',
-          courier: '',
+          courierId: '',
           method: ''
         });
         closeModalAddOrder();
@@ -68,6 +68,10 @@ const ModalAddOrder = () => {
     });
     closeModalAddOrder();
   };
+
+  useEffect(()=>{
+    console.log(couriers)
+  }, [couriers]);
 
   return (
     <dialog id={modalId} className="modal">
@@ -122,18 +126,18 @@ const ModalAddOrder = () => {
                   <span className="label-text">Courier</span>
                 </div>
                 <select
-                  name="courier"
+                  name="courierId"
                   className="select select-bordered w-full max-w-xs"
-                  value={form.courier}
+                  value={form.courierId}
                   onChange={(e) => {
                     handleChange(e);
                   }}
                   required
                 >
                   <option value=""> </option>
-                  <option value="JNE">JNE</option>
-                  <option value="TIKI">TIKI</option>
-                  <option value="POS INDONESIA">POS INDONESIA</option>
+                  {couriers.map((i) => (
+                    <option key={i.id} value={i.id}>{i.name}</option>
+                  ))}
                 </select>
               </label>
               <label className="form-control w-full max-w-xs">
