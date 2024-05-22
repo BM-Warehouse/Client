@@ -16,7 +16,7 @@ function Pagination({ totalPage, currentPage, onClick }) {
 
   if (!totalPage || !currentPage) return null;
 
-  return (
+  return totalPage > 1 ? (
     <div className="container-pagination flex items-center justify-center pb-10 ">
       {startPage !== 1 ? (
         <div className="button-pagination">
@@ -46,7 +46,7 @@ function Pagination({ totalPage, currentPage, onClick }) {
         ''
       )}
     </div>
-  );
+  ) : null;
 }
 
 export default Pagination;

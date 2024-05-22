@@ -52,6 +52,9 @@ importers:
       sharp:
         specifier: ^0.33.3
         version: 0.33.3
+      tailwind-scrollbar-hide:
+        specifier: ^1.1.7
+        version: 1.1.7
       zustand:
         specifier: ^4.5.2
         version: 4.5.2(react@18.3.1)
@@ -3413,6 +3416,12 @@ packages:
       }
     engines: { node: '>= 0.4' }
 
+  tailwind-scrollbar-hide@1.1.7:
+    resolution:
+      {
+        integrity: sha512-X324n9OtpTmOMqEgDUEA/RgLrNfBF/jwJdctaPZDzB3mppxJk7TLIDmOreEDm1Bq4R9LSPu4Epf8VSdovNU+iA==
+      }
+
   tailwindcss@3.4.3:
     resolution:
       {
@@ -5758,6 +5767,8 @@ snapshots:
       has-flag: 4.0.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  tailwind-scrollbar-hide@1.1.7: {}
 
   tailwindcss@3.4.3:
     dependencies:

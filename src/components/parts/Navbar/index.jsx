@@ -57,11 +57,11 @@ function Navbar() {
             tabIndex={0}
             className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-primary p-2 text-secondary shadow"
           >
-            <Link href="/my-profile">
-              <li>
-                <a className="justify-between">Profile</a>
-              </li>
-            </Link>
+            <li>
+              <Link href="/my-profile" className="justify-between">
+                Profile
+              </Link>
+            </li>
 
             <li>
               <button onClick={() => onLogout()}>Logout</button>

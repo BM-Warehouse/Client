@@ -78,6 +78,16 @@ table tr th:hover span {
   background-color: var(--table-zebra);
 }
 
+.input-border-custom {
+  @apply input;
+  border-color: var(--secondary);
+}
+.input-border-custom:focus,
+.input-custom:focus-within {
+  border-color: var(--secondary);
+  outline-color: var(--secondary);
+}
+
 .chart-container {
   position: relative;
   width: 100%;

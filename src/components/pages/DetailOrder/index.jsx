@@ -3,16 +3,17 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 import { useRouter } from 'next/navigation';
-import { IoMdAdd } from 'react-icons/io';
-import { TbTruckDelivery } from 'react-icons/tb';
+import toast from 'react-hot-toast';
+import { FaSearch } from 'react-icons/fa';
 
+import { ButtonPrimary } from '@/components/parts/Button';
 import ContainerOrderDetail from '@/components/parts/ContainerDetailOrder';
-import ModalAddProduct from '@/components/parts/ModalAddProduct';
 import Pagination from '@/components/parts/Pagination';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
-import { sendOrder, getDetailOrder } from '@/fetching/orders';
+import { sendOrder, getDetailOrder, confirmPayment } from '@/fetching/orders';
 import { getAllProducts } from '@/fetching/product';
 
+import ModalAddProduct from './ModalAddProduct';
 import ModalDeleteVerification from './ModalDeleteVerification';
 import ModalEditQuantity from './ModalEditQuantity';
 
@@ -29,11 +30,12 @@ const DetailOrder = ({ id }) => {
   const [isLoading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
   const router = useRouter();
-  const { selectedWarehouses, setCurrentCheckoutId, setPage } = useContext(DetailOrderContex);
+  const { selectedWarehouses, setCurrentCheckoutId, setPage, setProductList } =
+    useContext(DetailOrderContex);
   const [isProductSelectOpen, setIsProductSelectOpen] = useState(false);
-  const [productList, setProductList] = useState([]);
+  // const [productList, setProductList] = useState([]);
 
-  function handleSend() {
+  const handleSend = () => {
     const warehouseSelections = Object.entries(selectedWarehouses).map(([key, val]) => ({
       productId: +key,
       warehouseId: +val
@@ -47,7 +49,7 @@ const DetailOrder = ({ id }) => {
       .catch((e) => {
         console.log(e);
       });
-  }
+  };
 
   const closeProductSelectionDialog = () => {
     setIsProductSelectOpen(false);
@@ -126,65 +128,67 @@ const DetailOrder = ({ id }) => {
       });
   };
 
+  const handleConfirm = () => {
+    confirmPayment(id).then(() => {
+      getDetailOrder(id)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Failed to fetch detail order');
+          }
+          return res.json();
+        })
+        .then((detailOrderData) => {
+          setData(detailOrderData.data.checkout.productCheckout);
+          setStatus(detailOrderData.data.checkout.status);
+          setPagination(detailOrderData.data.pagination);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log('Error:', error);
+        });
+      toast.success('Payment Confirmed');
+    });
+  };
+
   return (
     <main className="product-page bg-bgg relative h-screen font-poppins">
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Order Detail</h1>
       </div>
-      <div className="container-btn-products mt-20 flex items-center justify-between gap-3 px-5 md:ml-20 md:flex-row">
-        <button
-          className={`mt-5 min-w-28 rounded-md  px-3 py-2 text-primary  md:mt-0 ${
-            status === 'SENT' ? 'bg-grey' : 'bg-tertiary hover:bg-secondary'
-          }`}
+      <div className="container-btn-products mt-20 flex items-center justify-between gap-1 px-5 md:ml-20 md:flex-row">
+        <ButtonPrimary
+          icon="truck"
+          disable={status === 'SENT'}
           onClick={handleSend}
-          disabled={status === 'SENT'}
+          className="px-6"
         >
-          <span className="flex items-center justify-center">
-            <TbTruckDelivery className="mr-1" />
-            {status === 'SENT' ? 'Sent' : 'Send'}
-          </span>
-        </button>
-        {status === 'PACKING' && (
-          <button
-            className="mt-5 min-w-28 rounded-md  bg-tertiary px-3 py-2  text-primary hover:bg-secondary md:mt-0"
-            onClick={openProductSelectionDialog}
-          >
-            <span className="flex items-center justify-center">
-              <IoMdAdd className="mr-1" />
-              Add Product
-            </span>
-          </button>
+          Send
+        </ButtonPrimary>
+        <ButtonPrimary
+          icon="money"
+          title="Confirm Payment"
+          disable={status !== 'WAIT FOR PAYMENT'}
+          onClick={handleConfirm}
+        >
+          Confirm
+        </ButtonPrimary>
+        {status !== 'SENT' && (
+          <ButtonPrimary icon="add" onClick={openProductSelectionDialog}>
+            Add Product
+          </ButtonPrimary>
         )}
 
         <div className="grow"> </div>
         <div className="search-filter flex items-center justify-center">
           <label className="input input-bordered flex items-center gap-2">
             <input type="text" className="grow" placeholder="Search" />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="h-4 w-4 opacity-70"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <FaSearch />
           </label>
-          {/* <div className="btn-filter ml-5 cursor-pointer rounded-lg p-1  hover:bg-secondary">
-                    <IoFilterSharp className="text-3xl text-secondary hover:text-white " />
-                  </div> */}
         </div>
       </div>
 
       <ContainerOrderDetail checkoutId={id} data={data} />
-      <ModalAddProduct
-        onClose={closeProductSelectionDialog}
-        show={isProductSelectOpen}
-        products={productList}
-      />
+      <ModalAddProduct onClose={closeProductSelectionDialog} show={isProductSelectOpen} />
       <ModalDeleteVerification checkoutId={id} />
       <ModalEditQuantity checkoutId={id} />
       <Pagination
