@@ -29,7 +29,7 @@ function Main() {
       .catch((e) => {
         console.log(e);
       });
-  });
+  }, [setData, setPagination]);
 
   const onPaginationClick = (setPage) => {
     getAllOrders(setPage)
