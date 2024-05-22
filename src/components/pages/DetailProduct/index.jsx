@@ -30,6 +30,7 @@ import ModalAddCategoryProduct from '@/components/parts/ModalAddCategoryProduct'
 import useCategryStore from '@/store/categoryStore';
 import toast from 'react-hot-toast';
 import ModalConfirmation from '@/components/parts/ModalConfirmation';
+import ProductChart from '@/components/elements/ProductChart';
 
 function DetailProduct({ params }) {
   const { detailProduct, asyncGetDetail, asyncDeleteProduct } = useProductStore();
@@ -252,6 +253,7 @@ function DetailProduct({ params }) {
             )}
           </div>
         </div>
+        {role === 'admin' && <ProductChart detailProduct={detailProduct} />}
       </div>
       {showMoveStockModal && (
         <ModalMoveStockProduct
