@@ -11,14 +11,12 @@ const getAllUsers = async (page = 1, limit = 10) => {
     const response = await fetchWithToken(url);
     const responseJson = await response.json();
     const { status, message } = responseJson;
-    // console.log(response);
     if (status !== 'success') {
       throw new Error(message);
     }
     const {
       data: { users }
     } = responseJson;
-    // console.log(response);
     return users;
   } catch (error) {
     console.error('Error fetching data:', error.message);
@@ -54,11 +52,11 @@ const addUser = async (
   address,
   gender,
   birthdate,
-  role,
-  avatar
+  avatar,
+  role
 ) => {
   try {
-    const response = await fetchWithToken(`${BASE_URL}/users/`, {
+    const response = await fetchWithToken(`${BASE_URL}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -72,8 +70,8 @@ const addUser = async (
         address,
         gender,
         birthdate,
-        role,
-        avatar
+        avatar,
+        role
       )
     });
     return response;
@@ -93,8 +91,8 @@ const updateUser = async (
   address,
   gender,
   birthdate,
-  role,
-  avatar
+  avatar,
+  role
 ) => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/users/${id}`, {
@@ -111,8 +109,8 @@ const updateUser = async (
         address,
         gender,
         birthdate,
-        role,
-        avatar
+        avatar,
+        role
       )
     });
     return response;

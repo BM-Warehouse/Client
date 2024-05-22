@@ -5,11 +5,20 @@ import { getAllUsers, getUserDetail, addUser, updateUser, destroyUser } from '@/
 const useUsersStore = create((set) => ({
   usersData: [],
   userDetail: null,
-  asyncGetAll: async () => {
+  pagination: {
+    totalPage: null,
+    totalData: null,
+    nextPage: null,
+    prevPage: null,
+    currentPage: 1,
+    limit: null
+  },
+  asyncGetAll: async (page = 1) => {
     try {
-      const users = await getAllUsers();
+      const users = await getAllUsers(page);
       set((_state) => ({
-        usersData: users
+        usersData: users.users,
+        pagination: users.pagination
       }));
     } catch (error) {
       console.error('Error in asyncFunc:', error);

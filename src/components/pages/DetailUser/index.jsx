@@ -92,29 +92,29 @@ function DetailUser({ params }) {
                 Back
               </button>
             </div>
-            <dialog id="my_modal_1" className="modal">
-              <div className="modal-box bg-primary rounded-lg shadow-lg p-6">
-                <h2 className="text-lg font-bold mb-4">Confirm Action</h2>
-                <p className="mb-4">Are you sure you want to delete this user?</p>
-                <div className="flex justify-end space-x-4">
-                  <button
-                    className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
-                    onClick={() => document.getElementById('my_modal_1').close()}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-                    onClick={handleDestroy}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </dialog>
           </div>
         </div>
       </div>
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box bg-primary rounded-lg shadow-lg p-6">
+          <h2 className="text-lg font-bold mb-4">Confirm Action</h2>
+          <p className="mb-4">Are you sure you want to delete this user?</p>
+          <div className="flex justify-end space-x-4">
+            <button
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+              onClick={() => document.getElementById('my_modal_1').close()}
+            >
+              Cancel
+            </button>
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+              onClick={handleDestroy}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </dialog>
     </section>
   );
 }

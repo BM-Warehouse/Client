@@ -5,13 +5,20 @@ import { HiUserAdd } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 
 import Navbar from '@/components/parts/Navbar';
-import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
 import TableUsers from '@/components/parts/TableUsers';
 import useAuthUserStore from '@/store/authUserStore';
+import Pagination from '@/components/parts/Pagination';
+import useUsersStore from '@/store/userStore';
 
 function ListUsers() {
   const { role } = useAuthUserStore();
+  const { pagination } = useUsersStore();
+  console.log(pagination);
+
+  const onPaginationClick = async (page) => {
+    await asyncGetAll(page);
+  };
 
   if (!role) {
     return null;
@@ -61,7 +68,11 @@ function ListUsers() {
       </div>
 
       <TableUsers />
-      <Pagination />
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPage={pagination.totalPage}
+        onClick={onPaginationClick}
+      />
     </main>
   );
 }

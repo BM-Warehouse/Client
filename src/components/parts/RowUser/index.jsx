@@ -20,7 +20,7 @@ function RowUser({ user, index }) {
 
   const handleDestroy = async () => {
     await asyncDestroyUser(user.id);
-    router.push('/users');
+    router.refresh();
   };
 
   const handleEdit = () => {
@@ -41,13 +41,13 @@ function RowUser({ user, index }) {
           `${user.fullName}`,
           `${user.phone}`,
           `${user.role}`
-        ].map((header) => (
+        ].map((dataUser) => (
           <th
-            key={header}
+            key={dataUser}
             onClick={() => handleDetail()}
             className="cursor-pointer hover:underline"
           >
-            {header}
+            {dataUser}
           </th>
         ))}
         <td>
