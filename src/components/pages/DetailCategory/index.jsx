@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import ContainerProductCategory from '@/components/parts/ContainerProductCategory';
 import Navbar from '@/components/parts/Navbar';
@@ -45,7 +46,7 @@ function DetailCategory({ params }) {
     e.preventDefault();
 
     if (!file) {
-      alert('Please select a file to upload');
+      toast.error('Please select a file to upload!');
       return;
     }
 
@@ -66,7 +67,7 @@ function DetailCategory({ params }) {
 
       await asyncEditCategory(id, { name, description, imageUrl });
       console.log(`id:${id}, name:${name}, description:${description}, imageUrl:${imageUrl}`);
-      alert('Category edited successfully!');
+      toast.success('Category updated successfully!');
     } catch (error) {
       console.log(`category edited failed: ${error}`);
     }
