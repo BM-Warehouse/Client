@@ -1,7 +1,11 @@
+import React, { Suspense } from 'react';
+
 import ListProducts from '@/components/pages/ListProducts';
 
-function Products() {
-  return <ListProducts />;
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ListProducts />
+    </Suspense>
+  );
 }
-
-export default Products;

@@ -54,7 +54,7 @@ function DetailHistoryCheckout({ params }) {
 
   let messageOrder = '';
   switch (detailCheckoutUser.status) {
-    case 'WAITING PAYMENT':
+    case 'WAIT FOR PAYMENT':
       messageOrder = 'For the next step, please make your payment and confirm through WhatsApp.';
       break;
     case 'PACKING':
@@ -178,7 +178,7 @@ function DetailHistoryCheckout({ params }) {
               <p className="font-bold">{formatRupiah(detailCheckoutUser.totalPrice)}</p>
             </div> */}
           </div>
-          {detailCheckoutUser.status === 'PACKING' && (
+          {detailCheckoutUser.status === 'WAIT FOR PAYMENT' && (
             <div className="details-order p-5 bg-primary flex items-center justify-center flex-col mb-5 text-justify rounded-xl">
               <div className="main-info ">
                 Please make the payment by transferring to <b>BCA</b> account number{' '}
