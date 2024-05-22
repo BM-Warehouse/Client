@@ -11,6 +11,7 @@ import useCheckoutStore from '@/store/checkoutStore';
 
 function CheckoutHistoryUser() {
   const { userCheckouts, asyncGetCheckoutsUser } = useCheckoutStore();
+
   useEffect(() => {
     asyncGetCheckoutsUser();
   }, [asyncGetCheckoutsUser]);

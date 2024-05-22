@@ -1,5 +1,6 @@
 /* eslint-disable no-alert */
 // import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 
 // import SusuBayik from '@/assets/images/susu-bayik.png';
@@ -8,6 +9,8 @@ import useCartStore from '@/store/cartStore';
 
 function ProductPurchase({ product }) {
   const { asyncDeleteCartProduct, asyncShowCart } = useCartStore();
+
+  const routePath = usePathname();
 
   if (!product) {
     return null;
@@ -36,9 +39,11 @@ function ProductPurchase({ product }) {
           <span>{product.quantityItem}</span> x <span>{formatRupiah(product.product.price)}</span>
         </p>
       </div>
-      <button onClick={handleDelete} className="button-delete absolute right-0">
-        <RiDeleteBin5Line className="hover:text-secondary" />
-      </button>
+      {routePath === '/checkout' && (
+        <button onClick={handleDelete} className="button-delete absolute right-0">
+          <RiDeleteBin5Line className="hover:text-secondary" />
+        </button>
+      )}
     </div>
   );
 }
