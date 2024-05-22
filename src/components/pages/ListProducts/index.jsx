@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { HiPlus } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 
@@ -17,28 +18,53 @@ import useProductStore from '@/store/productStore';
 
 function ListProducts() {
   const { role } = useAuthUserStore();
-  const { productsData, asyncGetAll, pagination } = useProductStore();
+  const {
+    productsData,
+    asyncGetAll,
+    pagination,
+    filteredPagination,
+    allProductsData,
+    asyncGetAllFullProducts
+  } = useProductStore();
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const keyword = searchParams.get('keyword');
+  const [searchKeyword, setSearchKeyword] = useState(keyword || '');
+
+  const filteredProducts = allProductsData.filter((product) =>
+    product.name.toLowerCase().includes((keyword || '').toLowerCase())
+  );
 
   useEffect(() => {
     asyncGetAll();
-  }, [asyncGetAll]);
+    asyncGetAllFullProducts();
+  }, [asyncGetAll, asyncGetAllFullProducts]);
 
   const onPaginationClick = async (page) => {
     await asyncGetAll(page);
   };
 
+  const onSearchKeywordChange = ({ target }) => {
+    setSearchKeyword(target.value);
+    const params = new URLSearchParams(searchParams);
+    params.set('keyword', target.value);
+    router.push(`?${params.toString()}`);
+  };
+
   if (!role) {
     return null;
   }
+
   return (
-    <main className="product-page relative h-screen bg-bgColor font-poppins ">
+    <main className="product-page relative h-screen bg-bgColor font-poppins">
       <Navbar />
       <Sidebar />
       <ToggleTheme />
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Products</h1>
       </div>
-      <div className="container-btn-products  mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
+      <div className="container-btn-products mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
         <div className="btn-add-product">
           {role === 'admin' ? (
             <Link href="/add-product">
@@ -54,17 +80,19 @@ function ListProducts() {
           )}
         </div>
         <div className="search-filter flex items-center justify-between">
-          <label className="input  flex h-8 items-center gap-2 border-tertiary ">
+          <label className="input flex h-8 items-center bg-bgColor gap-2 border-tertiary">
             <input
               type="text"
-              className="grow text-sm text-tertiary transition-none placeholder:text-secondary"
+              className="grow text-sm text-tertiary transition-none placeholder:text-tertiary"
               placeholder="Search product..."
+              value={searchKeyword}
+              onChange={onSearchKeywordChange}
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
               fill="currentColor"
-              className="h-4 w-4 text-tertiary opacity-70"
+              className="h-4 w-4 text-tertiary"
             >
               <path
                 fillRule="evenodd"
@@ -73,21 +101,21 @@ function ListProducts() {
               />
             </svg>
           </label>
-          <div className="btn-filter ml-5 cursor-pointer rounded-lg p-1  hover:bg-secondary">
-            <IoFilterSharp className="text-3xl text-secondary hover:text-white " />
+          <div className="btn-filter ml-5 cursor-pointer rounded-lg p-1 hover:bg-secondary">
+            <IoFilterSharp className="text-3xl text-secondary hover:text-white" />
           </div>
         </div>
       </div>
 
       {role === 'admin' ? (
-        <ContainerProductsAdmin productsData={productsData} />
+        <ContainerProductsAdmin productsData={keyword ? filteredProducts : productsData} />
       ) : (
-        <ContainerProductsUser productsData={productsData} />
+        <ContainerProductsUser productsData={keyword ? filteredProducts : productsData} />
       )}
 
       <Pagination
-        currentPage={pagination.currentPage}
-        totalPage={pagination.totalPage}
+        currentPage={keyword ? filteredPagination.currentPage : pagination.currentPage}
+        totalPage={keyword ? filteredPagination.totalPage : pagination.totalPage}
         onClick={onPaginationClick}
       />
     </main>
