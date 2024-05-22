@@ -44,16 +44,9 @@ const QuantitiesChart = () => {
     getWarehouseQuantities();
   }, [getWarehouseQuantities]);
 
-  useEffect(() => {
-    // console.log('Warehouse Quantities:', warehouseQuantities);
-    // console.log('Warehouse Names:', warehouseNames);
-  }, [warehouseQuantities, warehouseNames]);
-
-  const labels =
-    warehouseNames.length > 0
-      ? warehouseNames
-      : warehouseQuantities.map((item) => `Warehouse ${item.warehouseId}`);
+  // dua data untuk chart
   const data = warehouseQuantities.map((item) => item.totalQuantity);
+  const labels = warehouseNames;
 
   const chartData = {
     labels,

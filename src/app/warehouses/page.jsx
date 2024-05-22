@@ -160,7 +160,7 @@ const WarehousesPage = () => {
 
                       {/* Delete Warehouse */}
                       <button
-                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg"
+                        className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg"
                         onClick={() => handleDeleteWarehouse(warehouse.id)}
                       >
                         <span className="flex items-center justify-center gap-2">
