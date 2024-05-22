@@ -66,7 +66,9 @@ function RowProduct({ product, onOpenModal, onOpenMoveModal }) {
           </button>
           <button
             // onClick={handleDelete}
-            onClick={() => document.getElementById('modal-confirmation-delete').showModal()}
+            onClick={() =>
+              document.getElementById(`modal-confirmation-delete-${product.id}`).showModal()
+            }
             className="mr-2 min-w-28 rounded-md bg-ligtDanger py-1 text-primary hover:bg-danger"
           >
             <span className="flex items-center justify-center">
@@ -77,7 +79,7 @@ function RowProduct({ product, onOpenModal, onOpenMoveModal }) {
           <ModalConfirmation
             action={handleDelete}
             message="Are you sure you want to delete this product?"
-            id="modal-confirmation-delete"
+            id={`modal-confirmation-delete-${product.id}`}
           />
         </div>
       </td>

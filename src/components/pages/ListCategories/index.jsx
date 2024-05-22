@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -65,9 +67,9 @@ function ListCategories() {
       });
 
       // secureUrl ganti dulu jadi secure_url
-      const { secureUrl } = await response.json();
+      const { secure_url } = await response.json();
 
-      const imageUrl = secureUrl;
+      const imageUrl = secure_url;
 
       await asyncAddCategory({ name, description, imageUrl });
       alert('Category added successfully!');

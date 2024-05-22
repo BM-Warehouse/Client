@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 
 import BWMLogo from '@/assets/images/LogoBMW2.png';
 import CartIcon from '@/components/elements/CartIcon';
+import ToggleTheme from '@/components/elements/ToggleTheme';
 import useAuthUserStore from '@/store/authUserStore';
 
 function Navbar() {
@@ -44,6 +45,7 @@ function Navbar() {
         </Link>
       </div>
       <div className="flex-none">
+        <ToggleTheme />
         {role === 'user' && <CartIcon />}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="avatar btn btn-circle btn-ghost">
