@@ -57,7 +57,7 @@ function ListProducts() {
   }
 
   return (
-    <main className="product-page relative h-screen bg-bgColor font-poppins">
+    <main className="product-page relative h-screen  bg-bgColor font-poppins">
       <Navbar />
       <Sidebar />
       <ToggleTheme />
