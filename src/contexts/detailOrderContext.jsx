@@ -6,9 +6,9 @@ const DetailOrderContex = createContext();
 const DetailContexProvider = ({ children }) => {
   const [selectedWarehouses, setSelectedWarehouses] = useState({});
   const [currentCheckoutId, setCurrentCheckoutId] = useState(0);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(0);
   const [productList, setProductList] = useState([]);
   // const [isModalDeleteVerificationOpen, setIsModalDeleteVerificationOpen] = useState(false);
   // const [isModalEditQuantityOpen, setIsModalEditQuantityOpen] = useState(false);

@@ -42,7 +42,8 @@ const ModalEditQuantity = ({ checkoutId }) => {
   };
 
   useEffect(() => {
-    setQuantity(selectedProduct?.quantity);
+    console.log(selectedProduct);
+    if(selectedProduct?.quantity) setQuantity(selectedProduct.quantity);
   }, [selectedProduct]);
 
   return (
