@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 import Navbar from '@/components/parts/Navbar';
@@ -43,8 +44,23 @@ const AddUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+      !fullName ||
+      !email ||
+      !username ||
+      !password ||
+      !phone ||
+      !address ||
+      !gender ||
+      !birthdate ||
+      !roleUser
+    ) {
+      toast.error('Please fill in all fields.');
+      return;
+    }
+
     if (!file) {
-      alert('Please select a file to upload.');
+      toast.error('Please select a file to upload.');
       return;
     }
 
@@ -60,8 +76,7 @@ const AddUser = () => {
 
       const { secureUrl } = await response.json();
 
-      const imageUrl = secureUrl;
-      console.log(imageUrl);
+      const avatar = secureUrl;
 
       await asyncAddUser({
         fullName,
@@ -73,8 +88,10 @@ const AddUser = () => {
         gender,
         birthdate,
         role: roleUser,
-        avatar: imageUrl
+        avatar
       });
+
+      router.push(`/users`);
     } catch (error) {
       console.log(`User added failed: ${error}`);
     }

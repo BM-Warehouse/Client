@@ -9,9 +9,15 @@ import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
 import TableUsers from '@/components/parts/TableUsers';
 import useAuthUserStore from '@/store/authUserStore';
+import useUsersStore from '@/store/userStore';
 
 function ListUsers() {
   const { role } = useAuthUserStore();
+  const { pagination, asyncGetAll } = useUsersStore();
+
+  const onPaginationClick = async (page) => {
+    await asyncGetAll(page);
+  };
 
   if (!role) {
     return null;
@@ -61,7 +67,11 @@ function ListUsers() {
       </div>
 
       <TableUsers />
-      <Pagination />
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPage={pagination.totalPage}
+        onClick={onPaginationClick}
+      />
     </main>
   );
 }
