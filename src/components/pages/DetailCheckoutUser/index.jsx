@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { FaWhatsapp } from 'react-icons/fa';
 
+import Loading from '@/components/parts/Loading';
 import ModalConfirmation from '@/components/parts/ModalConfirmation';
 import Navbar from '@/components/parts/Navbar';
 // import OrderSummary from '@/components/parts/OrderSummary';
@@ -32,25 +33,25 @@ function DetailHistoryCheckout({ params }) {
   }, [asyncGetDetailCheckoutUser, id]);
 
   if (!detailCheckoutUser) {
-    return null;
+    return <Loading />;
   }
 
-  let additionalCost = 0;
-  switch (detailCheckoutUser.courier) {
-    case 'JNE':
-      additionalCost = 54000;
-      break;
-    case 'JNT':
-      additionalCost = 63000;
-      break;
-    case 'SiCepat':
-      additionalCost = 33000;
-      break;
-    default:
-      additionalCost = 0;
-  }
+  // let additionalCost = 0;
+  // switch (detailCheckoutUser.courier) {
+  //   case 'JNE':
+  //     additionalCost = 54000;
+  //     break;
+  //   case 'JNT':
+  //     additionalCost = 63000;
+  //     break;
+  //   case 'SiCepat':
+  //     additionalCost = 33000;
+  //     break;
+  //   default:
+  //     additionalCost = 0;
+  // }
 
-  const fixTotalPrice = +detailCheckoutUser.totalPrice + additionalCost;
+  // const fixTotalPrice = +detailCheckoutUser.totalPrice + additionalCost;
 
   let messageOrder = '';
   switch (detailCheckoutUser.status) {
@@ -123,15 +124,15 @@ function DetailHistoryCheckout({ params }) {
             </label>
             <div className="subtotal mt-3 flex justify-between">
               <p className="text-base">Subtotal</p>
-              <p className="">{formatRupiah(detailCheckoutUser.totalPrice)}</p>
+              <p className="">{formatRupiah(detailCheckoutUser.totalProductPrice)}</p>
             </div>
             <div className="subtotal mt-3 flex justify-between">
               <p className="text-base">Additional Cost</p>
-              <p className="">{formatRupiah(additionalCost)}</p>
+              <p className="">{formatRupiah(detailCheckoutUser.couriers.price)}</p>
             </div>
             <div className="subtotal mt-3 flex justify-between">
               <p className="text-base font-bold">Total Price</p>
-              <p className="font-bold">{formatRupiah(fixTotalPrice)}</p>
+              <p className="font-bold">{formatRupiah(detailCheckoutUser.totalPrice)}</p>
             </div>
           </div>
           <div className="purchase-summary mt-4">
@@ -164,7 +165,7 @@ function DetailHistoryCheckout({ params }) {
             </div>
             <div className="checkout-courier mb-3 flex justify-between">
               <p className="text-base">Courier</p>
-              <p className="text-base">{detailCheckoutUser.courier}</p>
+              <p className="text-base">{detailCheckoutUser.couriers.name}</p>
             </div>
             <div className="checkout-courier mb-3 flex justify-between">
               <p className="text-base">Tracking Number</p>
@@ -183,8 +184,8 @@ function DetailHistoryCheckout({ params }) {
               <div className="main-info ">
                 Please make the payment by transferring to <b>BCA</b> account number{' '}
                 <b>0500673610</b> in the name of <b>KIT HARINGTON </b>for{' '}
-                <span className="font-bold">{formatRupiah(fixTotalPrice)}</span> and send the
-                transfer proof to WhatsApp 0892602833123.
+                <span className="font-bold">{formatRupiah(detailCheckoutUser.totalPrice)}</span> and
+                send the transfer proof to WhatsApp 0892602833123.
               </div>
               <div className="mt-3">
                 <a
