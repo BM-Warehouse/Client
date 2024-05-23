@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { HiOutlineTrash } from 'react-icons/hi';
 
 import Container from '@/components/parts/ContainerWarehouse/warehouse-container';
-import { getWarehouseDetails } from '@/fetching/warehouse';
+import { getWarehouseDetails, fetchBatches } from '@/fetching/warehouse';
 
 const WarehouseDetailPage = () => {
   const params = useParams();
@@ -17,30 +17,34 @@ const WarehouseDetailPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (warehouseId) {
-      const fetchWarehouseDetails = async () => {
-        try {
-          const warehouseDetails = await getWarehouseDetails(warehouseId);
-          setWarehouse(warehouseDetails);
-        } catch (e) {
-          setError(e.message);
-        } finally {
-          setLoading(false);
-        }
-      };
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [warehouseDetails, batches] = await Promise.all([
+          getWarehouseDetails(warehouseId),
+          fetchBatches(warehouseId)
+        ]);
+        setWarehouse({ ...warehouseDetails, batches });
+      } catch (e) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      fetchWarehouseDetails();
+    if (warehouseId) {
+      fetchData();
     }
   }, [warehouseId]);
 
   const handleDeleteWarehouse = () => {
-    toast.success('Deleted Succesfully');
+    toast.success('Deleted Successfully');
   };
   const handleEditStock = () => {
-    toast.success('Edited Product Stocks Succesfully');
+    toast.success('Edited Product Stocks Successfully');
   };
   const handleMoveProduct = () => {
-    toast.success('Moved Products Succesfully');
+    toast.success('Moved Products Successfully');
   };
 
   if (loading) return <p>Loading...</p>;
@@ -51,7 +55,7 @@ const WarehouseDetailPage = () => {
     <div>
       <Container>
         <h1 className="mb-10 text-center text-2xl">{warehouse.name}</h1>
-        <div className="overflow-x-auto ">
+        <div className="overflow-x-auto">
           <table className="table">
             {/* head */}
             <thead>
@@ -59,16 +63,30 @@ const WarehouseDetailPage = () => {
                 <th>Product ID</th>
                 <th>Product Name</th>
                 <th>Quantity</th>
+                <th>Batches</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {console.log(warehouse)}
               {warehouse.products.map((product) => (
-                <tr key={product.id}>
+                <tr key={product.productId}>
                   <td>{product.productId}</td>
                   <td>{product.productName}</td>
                   <td>{product.quantity}</td>
+                  <td>
+                    <ul>
+                      {warehouse.batches
+                        .filter((batch) => batch.productId === product.productId)
+                        .map((batch) => (
+                          <li key={batch.id}>
+                            <p>Batch Name: {batch.batchName}</p>
+                            <p>Created At: {new Date(batch.createdAt).toLocaleDateString()}</p>
+                            <p>Expire Date: {new Date(batch.expireDate).toLocaleDateString()}</p>
+                            <p>Stock: {batch.stock}</p>
+                          </li>
+                        ))}
+                    </ul>
+                  </td>
                   {/* Action Buttons and Forms */}
                   <td>
                     <div className="flex gap-4">

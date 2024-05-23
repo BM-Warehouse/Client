@@ -8,17 +8,22 @@ import { FiArrowUpRight } from 'react-icons/fi';
 import { HiOutlineTrash } from 'react-icons/hi';
 
 import Container from '@/components/parts/ContainerWarehouse/warehouse-container';
+import Pagination from '@/components/parts/Pagination';
 import useWarehouseStore from '@/store/warehouseStore';
 
 const WarehousesPage = () => {
-  const { warehouseData, getWarehouseData, editWarehouse, removeWarehouse } = useWarehouseStore(
-    (state) => ({
+  const { warehouseData, getWarehouseData, editWarehouse, removeWarehouse, pagination } =
+    useWarehouseStore((state) => ({
       warehouseData: state.warehouseData,
       getWarehouseData: state.getWarehouseData,
       editWarehouse: state.editWarehouse,
-      removeWarehouse: state.removeWarehouse
-    })
-  );
+      removeWarehouse: state.removeWarehouse,
+      pagination: state.pagination
+    }));
+
+  const onPaginationClick = async (page) => {
+    await getWarehouseData(page);
+  };
 
   useEffect(() => {
     getWarehouseData();
@@ -176,6 +181,11 @@ const WarehousesPage = () => {
           </table>
         </div>
       </Container>
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPage={pagination.totalPage}
+        onClick={onPaginationClick}
+      />
     </div>
   );
 };

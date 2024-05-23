@@ -1,11 +1,23 @@
 import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
-const getAllWarehouses = async () => {
-  const response = await fetchWithToken(`${BASE_URL}/warehouses`);
-  const data = await response.json();
-  const warehouseData = data.data.warehouses.warehouses;
-  return warehouseData;
+const getAllWarehouses = async (page = 1, limit = 5) => {
+  const url = `${BASE_URL}/warehouses?${new URLSearchParams({
+    page,
+    limit
+  })}`;
+  const response = await fetchWithToken(url);
+  const responseJson = await response.json();
+  const { status, message } = responseJson;
+  if (status !== 'success') {
+    throw new Error(message);
+  }
+  const { data } = responseJson;
+  const warehouseData = data.warehouses;
+  const { warehouses } = warehouseData;
+  const { pagination } = data;
+
+  return { warehouses, pagination };
 };
 
 const getWarehouseDetails = async (id) => {
@@ -34,6 +46,23 @@ const getWarehouseDetails = async (id) => {
     return warehouseDetails;
   } catch (error) {
     console.error('Error fetching warehouse details:', error);
+    throw error;
+  }
+};
+
+const fetchBatches = async (warehouseId, page = 1, limit = 5) => {
+  const url = `${BASE_URL}/warehouses/batches?page=${page}&limit=${limit}`;
+
+  try {
+    const response = await fetchWithToken(url);
+    if (!response.ok) {
+      throw new Error(`Failed to retrieve batches data: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching batches data:', error);
     throw error;
   }
 };
@@ -111,6 +140,7 @@ const getWarehouseQuantities = async () => {
 export {
   getAllWarehouses,
   getWarehouseDetails,
+  fetchBatches,
   addWarehouse,
   getWarehouseName,
   removeWarehouse,

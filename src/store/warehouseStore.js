@@ -11,11 +11,21 @@ import {
 const useWarehouseStore = create((set) => ({
   warehouseData: [],
   warehouseQuantities: [],
+  pagination: {
+    totalPage: null,
+    totalData: null,
+    nextPage: null,
+    prevPage: null,
+    currentPage: 1,
+    limit: null
+  },
 
-  getWarehouseData: async () => {
+  getWarehouseData: async (page = 1) => {
     try {
-      const warehouses = await getAllWarehouses();
-      set((_state) => ({ warehouseData: warehouses }));
+      const warehouses = await getAllWarehouses(page);
+      const { pagination } = warehouses;
+
+      set((_state) => ({ warehouseData: warehouses.warehouses, pagination }));
     } catch (e) {
       console.error('Failed to fetch warehouses', e);
     }
