@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { HiPlus } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 
-import NotFound from '@/app/not-found';
+// import NotFound from '@/app/not-found';
 import ToggleTheme from '@/components/elements/ToggleTheme';
 import ContainerProductsAdmin from '@/components/parts/ContainerProductsAdmin';
 import ContainerProductsUser from '@/components/parts/ContainerProductsUser';
@@ -52,10 +52,6 @@ function ListProducts() {
     params.set('keyword', target.value);
     router.push(`?${params.toString()}`);
   };
-
-  if (!role) {
-    return <NotFound />;
-  }
 
   return (
     <main className="product-page relative h-screen  bg-bgColor font-poppins">
