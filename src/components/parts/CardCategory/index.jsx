@@ -8,7 +8,7 @@ function CardCategory({ category }) {
   return (
     <div>
       <Link href={`/categories/${category.id}`}>
-        <div className="w-30 card mb-10 cursor-pointer bg-base-100 shadow-xl h-52 hover:drop-shadow-2xl xl:w-60">
+        <div className="w-60 card mb-10 cursor-pointer bg-base-100 shadow-xl h-52 hover:drop-shadow-2xl md:w-60">
           <figure>
             <Image
               src={category.imageUrl}
