@@ -14,7 +14,7 @@ function Pagination({ totalPage, currentPage, onClick }) {
     pages.push(i);
   }
 
-  if (!totalPage || !currentPage) return null;
+  if (!totalPage || !currentPage || totalPage <= 1) return null;
 
   return (
     <div className="container-pagination flex items-center justify-center pb-10 ">

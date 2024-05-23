@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 
-import { getAllUsers, getUserDetail, addUser, updateUser, destroyUser } from '@/fetching/user';
+import { getAllUsers, getUserDetail, addUser, updateUser, destroyUserById } from '@/fetching/user';
 
 const useUsersStore = create((set) => ({
   usersData: [],
   userDetail: null,
+  newUser: null,
   pagination: {
     totalPage: null,
     totalData: null,
@@ -105,9 +106,9 @@ const useUsersStore = create((set) => ({
 
   asyncDestroyUser: async (id) => {
     try {
-      const destroyedUser = await destroyUser(id);
-      set((_state) => ({
-        destroyedUser
+      await destroyUserById(id);
+      set((state) => ({
+        usersData: state.usersData.filter((user) => user.id !== id)
       }));
     } catch (error) {
       console.error('Error in asyncFunc:', error);
