@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 
 import ContainerProductCategory from '@/components/parts/ContainerProductCategory';
 import useAuthUserStore from '@/store/authUserStore';
-import useCategryStore from '@/store/categoryStore';
+import useCategoryStore from '@/store/categoryStore';
 
 function DetailCategory({ params }) {
   const { role } = useAuthUserStore();
@@ -19,7 +19,7 @@ function DetailCategory({ params }) {
     asyncGetDetailCategory,
     asyncEditCategory,
     asyncRemoveCategory
-  } = useCategryStore((state) => ({
+  } = useCategoryStore((state) => ({
     productCategories: state.productCategories,
     categoryDetail: state.categoryDetail,
     asyncGetDetailCategory: state.asyncGetDetailCategory,

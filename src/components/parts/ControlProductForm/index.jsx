@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 
 import ModalConfirmation from '@/components/parts/ModalConfirmation';
 import useInput from '@/hooks/useInput';
-import useCategryStore from '@/store/categoryStore';
+import useCategoryStore from '@/store/categoryStore';
 import useProductStore from '@/store/productStore';
 import useWarehouseStore from '@/store/warehouseStore';
 
@@ -24,7 +24,7 @@ function ControlProductForm({ product }) {
   const [desc, onDescChange] = useInput(product ? product.description : '');
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
-  const { categoriesData, asyncGetAllCategory } = useCategryStore();
+  const { categoriesData, asyncGetAllCategory } = useCategoryStore();
   const router = useRouter();
 
   // console.log(categoriesData);

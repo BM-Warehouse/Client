@@ -12,7 +12,7 @@ import ContainerCategory from '@/components/parts/ContainerCategory';
 import Pagination from '@/components/parts/Pagination';
 import useInput from '@/hooks/useInput';
 import useAuthUserStore from '@/store/authUserStore';
-import useCategryStore from '@/store/categoryStore';
+import useCategoryStore from '@/store/categoryStore';
 import useProductStore from '@/store/productStore';
 
 function ListCategories() {
@@ -26,7 +26,7 @@ function ListCategories() {
   const [contains, setContains] = useState('');
   const [searchContain, onSearchContainChange] = useInput('');
 
-  const { categoriesData, asyncGetAllCategory, asyncAddCategory, pagination } = useCategryStore();
+  const { categoriesData, asyncGetAllCategory, asyncAddCategory, pagination } = useCategoryStore();
   const { productsData, asyncGetAll } = useProductStore();
   const [isLoading, setLoading] = useState(true);
 

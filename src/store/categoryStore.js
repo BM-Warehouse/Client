@@ -9,7 +9,7 @@ import {
   setCategoryProduct
 } from '@/fetching/category';
 
-const useCategryStore = create((set) => ({
+const useCategoryStore = create((set) => ({
   categoriesData: [],
   categoryDetail: null,
   productCategories: [],
@@ -101,4 +101,4 @@ const useCategryStore = create((set) => ({
   }
 }));
 
-export default useCategryStore;
+export default useCategoryStore;
