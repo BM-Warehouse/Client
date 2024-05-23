@@ -139,7 +139,7 @@ const AddUser = () => {
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary"
                   >
                     {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                   </button>
