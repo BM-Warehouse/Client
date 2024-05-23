@@ -11,6 +11,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import toast from 'react-hot-toast';
 
 import useInput from '@/hooks/useInput';
+import BASE_URL from '@/lib/baseUrl';
 import useAuthUserStore from '@/store/authUserStore';
 
 const LoginPage = () => {
@@ -30,7 +31,7 @@ const LoginPage = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(`${BASE_URL}/recaptcha/verify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -14,7 +14,6 @@
   "dependencies": {
     "@fullpage/react-fullpage": "^0.1.42",
     "@vercel/analytics": "^1.2.2",
-    "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "chart.js": "^4.4.2",
     "cloudinary": "^2.2.0",
