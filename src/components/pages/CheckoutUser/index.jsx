@@ -20,7 +20,7 @@ import useCheckoutStore from '@/store/checkoutStore';
 
 function CheckoutUser() {
   const { cart, asyncShowCart, asyncResetCartToDefault } = useCartStore();
-  const { asyncAddCartToCheckout } = useCheckoutStore();
+  const { asyncAddCartToCheckout, couriers, asyncGetCouriers } = useCheckoutStore();
   const [shippingCost, setShippingCost] = useState(0);
   const [address, onAddressChange] = useInput('');
   const [selectedShippingMethod, onShippingMethodChange] = useInput('');
@@ -30,7 +30,10 @@ function CheckoutUser() {
 
   useEffect(() => {
     asyncShowCart();
-  }, [asyncShowCart]);
+    asyncGetCouriers();
+  }, [asyncShowCart, asyncGetCouriers]);
+
+  console.log(couriers);
 
   const handleCourierChange = (e) => {
     setSelectedCourier(e.target.value);
