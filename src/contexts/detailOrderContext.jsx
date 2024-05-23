@@ -9,6 +9,7 @@ const DetailContexProvider = ({ children }) => {
   const [data, setData] = useState(null);
   const [page, setPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [productList, setProductList] = useState([]);
   // const [isModalDeleteVerificationOpen, setIsModalDeleteVerificationOpen] = useState(false);
   // const [isModalEditQuantityOpen, setIsModalEditQuantityOpen] = useState(false);
 
@@ -31,7 +32,9 @@ const DetailContexProvider = ({ children }) => {
         page,
         setPage,
         selectedProduct,
-        setSelectedProduct
+        setSelectedProduct,
+        productList,
+        setProductList
       }}
     >
       {children}

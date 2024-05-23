@@ -1,12 +1,14 @@
 import { useState } from 'react';
 
-import useCategryStore from '@/store/categoryStore';
+import toast from 'react-hot-toast';
+
+import useCategoryStore from '@/store/categoryStore';
 import useProductStore from '@/store/productStore';
 // import useWarehouseStore from '@/store/warehouseStore';
 
 function ModalAddCategoryProduct({ product, onClose, categoriesData }) {
   const { asyncGetAll, asyncGetDetail } = useProductStore();
-  const { asyncSetCategoryProduct } = useCategryStore();
+  const { asyncSetCategoryProduct } = useCategoryStore();
 
   const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -21,8 +23,10 @@ function ModalAddCategoryProduct({ product, onClose, categoriesData }) {
       asyncGetAll();
       asyncGetDetail(product.id);
       onClose();
+      toast.success('Category added successfully!');
     } catch (error) {
-      console.error('Error adding stock:', error.message);
+      toast.error('Failed to adding category');
+      console.error('Failed to adding category', error.message);
     }
   };
 

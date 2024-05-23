@@ -27,6 +27,9 @@ function OrderSummary({ cart, shippingCost, handlePlaceOrder }) {
         <button
           type="button"
           onClick={handlePlaceOrder}
+          // onClick={() =>
+          //   document.getElementById(`modal-confirmation-transfer-id-${cart.id}`).showModal()
+          // }
           className="w-full bg-tertiary px-8 py-4 font-bold text-white hover:bg-secondary"
         >
           PLACE ORDER

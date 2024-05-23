@@ -6,6 +6,15 @@ const ListOrderContext = createContext();
 const ListOrderContextProvider = ({ children }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [users, setUsers] = useState([]);
+  const [data, setData] = useState(null);
+  const [pagination, setPagination] = useState({
+    totalPage: null,
+    totalData: null,
+    nextPage: null,
+    prevPage: null,
+    currentPage: 1,
+    limit: null
+  });
 
   return (
     <ListOrderContext.Provider
@@ -13,7 +22,11 @@ const ListOrderContextProvider = ({ children }) => {
         selectedOrder,
         setSelectedOrder,
         users,
-        setUsers
+        setUsers,
+        data,
+        setData,
+        pagination,
+        setPagination
       }}
     >
       {children}

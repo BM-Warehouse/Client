@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from 'react';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import ContainerProductCategory from '@/components/parts/ContainerProductCategory';
-import Navbar from '@/components/parts/Navbar';
-import Sidebar from '@/components/parts/Sidebar';
-import useInput from '@/hooks/useInput';
 import useAuthUserStore from '@/store/authUserStore';
-import useCategryStore from '@/store/categoryStore';
+import useCategoryStore from '@/store/categoryStore';
 
 function DetailCategory({ params }) {
   const { role } = useAuthUserStore();
@@ -17,13 +16,13 @@ function DetailCategory({ params }) {
   const {
     categoryDetail,
     productCategories,
-    asyncGetDetail,
+    asyncGetDetailCategory,
     asyncEditCategory,
     asyncRemoveCategory
-  } = useCategryStore((state) => ({
+  } = useCategoryStore((state) => ({
     productCategories: state.productCategories,
     categoryDetail: state.categoryDetail,
-    asyncGetDetail: state.asyncGetDetail,
+    asyncGetDetailCategory: state.asyncGetDetailCategory,
     asyncEditCategory: state.asyncEditCategory,
     asyncRemoveCategory: state.asyncRemoveCategory
   }));
@@ -33,8 +32,8 @@ function DetailCategory({ params }) {
 
   const id = +params.categoryId;
 
-  const [name, onChangeName] = useInput('');
-  const [description, onChangeDscription] = useInput('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
 
   const handleChange = (e) => {
@@ -43,11 +42,6 @@ function DetailCategory({ params }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!file) {
-      alert('Please select a file to upload');
-      return;
-    }
 
     const formData = new FormData();
     formData.append('file', file);
@@ -60,39 +54,58 @@ function DetailCategory({ params }) {
       });
 
       // secureUrl ganti dulu jadi secure_url
-      const { secureUrl } = await response.json();
+      // eslint-disable-next-line camelcase
+      const { secure_url } = await response.json();
 
-      const imageUrl = secureUrl;
+      // eslint-disable-next-line camelcase
+      const imageUrl = secure_url || categoryDetail.imageUrl;
+
+      if (name === '' || description === '') {
+        setName(categoryDetail.name);
+        setDescription(categoryDetail.description);
+      }
 
       await asyncEditCategory(id, { name, description, imageUrl });
-      console.log(`id:${id}, name:${name}, description:${description}, imageUrl:${imageUrl}`);
-      alert('Category edited successfully!');
+      document.getElementById('my_modal_1').close();
+      toast.success('Category updated successfully!');
+      await asyncGetDetailCategory(id);
     } catch (error) {
       console.log(`category edited failed: ${error}`);
     }
   };
 
   const handleRemove = async () => {
-    await asyncRemoveCategory(id);
-    router.refresh();
+    const removedCategory = await asyncRemoveCategory(id);
+    if (removedCategory.ok) {
+      toast.success('Category removed successfully');
+      router.replace('/categories');
+    }
   };
 
   useEffect(() => {
-    asyncGetDetail(id);
-  }, [asyncGetDetail, id]);
+    asyncGetDetailCategory(id);
+  }, [asyncGetDetailCategory, id]);
 
   if (!categoryDetail || !productCategories) {
     return <div>Loading...</div>;
   }
 
+  if (!role) {
+    return null;
+  }
+
   return (
     <section className="datail-category-page relative min-h-screen bg-bgColor pb-20 font-poppins">
-      <Navbar />
-      <Sidebar />
       <div className="detail-category-page-content flex w-full flex-col items-center px-2 py-10 text-tertiary md:px-10">
-        <div className="detail-category-container mt-20 flex flex-col px-0 md:flex-row md:px-8 xl:px-24">
-          <figure className="max-h-[20rem] w-full max-w-[20rem] p-2 md:w-2/4">
-            <img src={categoryDetail.imageUrl} alt="Susu Bayi" />
+        <div className="detail-category-container mt-20 flex justify-center flex-col px-0 md:flex-row md:px-8 xl:px-24 xl:h-96 xl:w-full">
+          <figure className="p-2">
+            <Image
+              src={categoryDetail.imageUrl}
+              alt="Susu Bayi"
+              width={1000}
+              height={1000}
+              className="w-96 h-full object-cover"
+            />
           </figure>
           <div className="detail-body grid-rows grid w-full px-6 pt-4 md:ml-10 md:w-2/4 md:px-0">
             <div className="container-text">
@@ -115,47 +128,49 @@ function DetailCategory({ params }) {
                   <dialog id="my_modal_1" className="modal">
                     <div className="modal-box bg-primary">
                       <h3 className="text-lg font-bold text-secondary">Edit Category</h3>
-                      <div className="input-container">
-                        <label htmlFor="" className="text-secondary">
-                          Category name:
+                      <form onSubmit={handleSubmit}>
+                        <div className="form-control">
+                          <label htmlFor="" className="text-secondary">
+                            Category name:
+                          </label>
                           <input
                             type="text"
                             defaultValue={categoryDetail.name}
-                            onChange={onChangeName}
-                            className="input w-full max-w-xs ml-3 h-8 mt-5 text-secondary border-secondary"
+                            onChange={(e) => setName(e.target.value)}
+                            className="input input-bordered"
                           />
-                        </label>
-                        <label htmlFor="" className="text-secondary">
-                          Description:
+                        </div>
+                        <div className="form-control">
+                          <label htmlFor="" className="text-secondary">
+                            Description:
+                          </label>
                           <input
                             type="text"
                             defaultValue={categoryDetail.description}
-                            onChange={onChangeDscription}
-                            className="input w-full max-w-xs ml-3 h-8 mt-5 text-secondary border-secondary"
+                            onChange={(e) => setDescription(e.target.value)}
+                            className="input input-bordered"
                           />
-                        </label>
-                        <input
-                          type="file"
-                          onChange={handleChange}
-                          className="file-input file-input-bordered file-input-sm w-full max-w-xs mt-5 text-secondary file:bg-secondary file:border-secondary file:text-white"
-                        />
-                      </div>
-                      <div className="container-btn-action flex items-center justify-between">
-                        <div className="container-btn-submit mt-7">
-                          <button
-                            type="submit"
-                            onClick={handleSubmit}
-                            className="btn bg-secondary text-white"
-                          >
-                            Submit
-                          </button>
                         </div>
-                        <div className="modal-action">
-                          <form method="dialog" className="flex flex-row-reverse justify-between">
-                            <button className="btn bg-secondary text-white">Close</button>
-                          </form>
+                        <div className="form-control">
+                          <input
+                            type="file"
+                            onChange={handleChange}
+                            className="file-input file-input-bordered file-input-sm w-full max-w-xs mt-5 text-secondary file:bg-secondary file:border-secondary file:text-white"
+                          />
                         </div>
-                      </div>
+                        <div className="container-btn-action flex items-center justify-between">
+                          <div className="container-btn-submit mt-7">
+                            <button type="submit" className="btn bg-secondary text-white">
+                              Submit
+                            </button>
+                          </div>
+                          <div className="modal-action">
+                            <form method="dialog" className="flex flex-row-reverse justify-between">
+                              <button className="btn bg-secondary text-white">Close</button>
+                            </form>
+                          </div>
+                        </div>
+                      </form>
                     </div>
                   </dialog>
                 </div>

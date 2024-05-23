@@ -5,12 +5,15 @@
 import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
+import ModalTransfer from '@/components/parts/ModalTransfer';
 import Navbar from '@/components/parts/Navbar';
 import OrderSummary from '@/components/parts/OrderSummary';
 import ProductPurchase from '@/components/parts/ProductPurchase';
 import Sidebar from '@/components/parts/Sidebar';
 import useInput from '@/hooks/useInput';
+import formatRupiah from '@/lib/formatRupiah';
 import useCartStore from '@/store/cartStore';
 import useCheckoutStore from '@/store/checkoutStore';
 
@@ -46,14 +49,17 @@ function CheckoutUser() {
     }
 
     await asyncAddCartToCheckout(+cart.id, selectedCourier, address, selectedShippingMethod);
+    toast.success('Products  checkouted successfully');
 
-    await asyncResetCartToDefault();
-
-    router.push('/products');
-
+    document.getElementById(`modal-confirmation-transfer-id-${cart.id}`).showModal();
     // console.log(selectedCourier, address, selectedShippingMethod);
 
     // console.log(cart.id);
+  };
+
+  const handleResetCart = async () => {
+    router.push('/checkout-history');
+    await asyncResetCartToDefault();
   };
 
   if (!cart) {
@@ -119,6 +125,11 @@ function CheckoutUser() {
         </div>
 
         <OrderSummary cart={cart} shippingCost={shippingCost} handlePlaceOrder={handlePlaceOrder} />
+        <ModalTransfer
+          id={`modal-confirmation-transfer-id-${cart.id}`}
+          totalPrice={formatRupiah(cart.totalPrice + shippingCost)}
+          handleResetCart={handleResetCart}
+        />
       </div>
     </section>
   );

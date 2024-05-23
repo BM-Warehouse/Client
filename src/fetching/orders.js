@@ -104,7 +104,7 @@ async function deleteProductFromCheckout(checkoutId, productId) {
   return resJson;
 }
 
-async function addCheckout({ userId, address, method, courier, status = 'PACKING' }) {
+async function addCheckout({ userId, address, method, courier, status = 'WAIT FOR PAYMENT' }) {
   const data = {
     userId: +userId,
     address,
@@ -129,6 +129,22 @@ async function addCheckout({ userId, address, method, courier, status = 'PACKING
   return resJson;
 }
 
+async function confirmPayment(checkoutId) {
+  const response = await fetchWithToken(`${BASE_URL}/checkout/${checkoutId}/confirm`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (response.status !== 200) {
+    const resJson = await response.json();
+    throw new Error(JSON.stringify(resJson));
+  }
+  const resJson = await response.json();
+  return resJson;
+}
+
 export {
   getAllOrders,
   getDetailOrder,
@@ -136,5 +152,6 @@ export {
   addProductToCheckout,
   deleteProductFromCheckout,
   editProductInCheckout,
+  confirmPayment,
   addCheckout
 };

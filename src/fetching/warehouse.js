@@ -9,17 +9,40 @@ const getAllWarehouses = async () => {
 };
 
 const getWarehouseDetails = async (id) => {
-  const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`);
-  const warehouseDetails = await response.json();
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`);
+    const responseJson = await response.json();
 
-  return warehouseDetails;
+    if (responseJson.status !== 'success') {
+      throw new Error('Failed to retrieve warehouse data');
+    }
+
+    const warehouse = responseJson.data.warehouse[0]; // Access the first (and only) element of the array
+    if (!warehouse && warehouse.id !== id) {
+      throw new Error('Warehouse not found <<<<<< MASUKKKK SINI');
+    }
+
+    const warehouseDetails = {
+      name: warehouse.name,
+      products: warehouse.productsWarehouses.map((productWarehouse) => ({
+        productId: productWarehouse.product.id,
+        productName: productWarehouse.product.name,
+        quantity: productWarehouse.quantity
+      }))
+    };
+
+    return warehouseDetails;
+  } catch (error) {
+    console.error('Error fetching warehouse details:', error);
+    throw error;
+  }
 };
 
 const getWarehouseName = async (id) => {
   const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`);
   const warehouseDetails = await response.json();
 
-  return warehouseDetails.data.warehouse.name;
+  return warehouseDetails.data.warehouse[0].name;
 };
 
 const addWarehouse = async (params) => {
@@ -35,6 +58,35 @@ const addWarehouse = async (params) => {
     return response;
   } catch (error) {
     throw new Error(error);
+  }
+};
+
+const editWarehouse = async (id, name, address, city) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, address, city })
+    });
+
+    const updatedWarehouse = await response.json();
+
+    return updatedWarehouse;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+const removeWarehouse = async (id) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
+      method: 'DELETE'
+    });
+    return response;
+  } catch (error) {
+    throw new Error('Failed to fetch:', error);
   }
 };
 
@@ -56,22 +108,12 @@ const getWarehouseQuantities = async () => {
   }
 };
 
-const removeWarehouse = async (id) => {
-  try {
-    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
-      method: 'DELETE'
-    });
-    return response;
-  } catch (error) {
-    throw new Error('Failed to fetch:', error);
-  }
-};
-
 export {
   getAllWarehouses,
   getWarehouseDetails,
   addWarehouse,
-  getWarehouseQuantities,
   getWarehouseName,
-  removeWarehouse
+  removeWarehouse,
+  editWarehouse,
+  getWarehouseQuantities
 };

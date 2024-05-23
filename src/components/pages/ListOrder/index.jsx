@@ -5,24 +5,16 @@ import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { ButtonPrimary } from '@/components/parts/Button';
-import ContainerOrders from '@/components/parts/ContainerOrders';
 import Pagination from '@/components/parts/Pagination';
 import { getAllOrders } from '@/fetching/orders';
 import { getAllUsers } from '@/fetching/user';
 
+import ContainerOrders from './ContainerOrders';
 import ListOrderContextProvider, { ListOrderContext } from './context';
 import ModalAddOrder, { openModalAddOrder } from './ModalAddOrder';
 
 function Main() {
-  const [data, setData] = useState(null);
-  const [pagination, setPagination] = useState({
-    totalPage: null,
-    totalData: null,
-    nextPage: null,
-    prevPage: null,
-    currentPage: 1,
-    limit: null
-  });
+  const { data, setData, pagination, setPagination } = useContext(ListOrderContext);
   const [isLoading, setLoading] = useState(true);
   const { setUsers } = useContext(ListOrderContext);
 
@@ -37,7 +29,7 @@ function Main() {
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [setData, setPagination]);
 
   const onPaginationClick = (setPage) => {
     getAllOrders(setPage)

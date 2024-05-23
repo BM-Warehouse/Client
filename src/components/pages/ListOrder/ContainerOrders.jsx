@@ -1,10 +1,28 @@
+import { useContext } from 'react';
+
 import { ButtonPrimary } from '@/components/parts/Button';
+import { confirmPayment, getAllOrders } from '@/fetching/orders';
 import formatRupiah from '@/lib/formatRupiah';
 
+import { ListOrderContext } from './context';
+
 function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
+  const { setData, pagination } = useContext(ListOrderContext);
   // function onDetailButtonClick() {
   //   console.log('Here', id);
   // }
+  const handleConfirm = () => {
+    confirmPayment(id).then(() => {
+      getAllOrders(pagination.currentPage)
+        .then((res) => res.json())
+        .then((res) => {
+          setData(res.data.checkouts);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    });
+  };
 
   return (
     <tr>
@@ -17,6 +35,14 @@ function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
       <td>
         <ButtonPrimary icon="chevronR" href={`/orders/${id}`} title="Detail">
           Detail
+        </ButtonPrimary>
+        <ButtonPrimary
+          icon="money"
+          title="Confirm Payment"
+          disable={status !== 'WAIT FOR PAYMENT'}
+          onClick={handleConfirm}
+        >
+          Confirm
         </ButtonPrimary>
       </td>
     </tr>

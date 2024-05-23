@@ -7,33 +7,62 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import ReCAPTCHA from 'react-google-recaptcha';
 import toast from 'react-hot-toast';
 
 import useInput from '@/hooks/useInput';
+import BASE_URL from '@/lib/baseUrl';
 import useAuthUserStore from '@/store/authUserStore';
 
 const LoginPage = () => {
   const [username, onUsernameChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
   const { role } = useAuthUserStore();
-
   const { asyncSetAuthUser } = useAuthUserStore();
-
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState('');
 
   const onLogin = async () => {
+    if (process.env.NEXT_PUBLIC_ENV === 'production' && !recaptchaToken) {
+      toast.error('Please complete the reCAPTCHA');
+      return;
+    }
+
     setLoading(true);
-    console.log(username, password);
     try {
-      await asyncSetAuthUser({ username, password });
-      if (role === 'admin') {
-        toast.success('Login Success!');
-        router.push('/dashboard');
+      let response;
+      if (process.env.NEXT_PUBLIC_ENV === 'production') {
+        response = await fetch(`${BASE_URL}/recaptcha/verify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password, recaptchaToken })
+        });
+      } else {
+        // Mock response for development environment
+        response = { ok: true, json: async () => ({}) };
       }
-      if (role === 'user') {
-        toast.success('Login Success!');
-        router.push('/products');
+
+      const data = await response.json();
+      if (response.ok) {
+        await asyncSetAuthUser({ username, password });
+        if (role === 'admin') {
+          toast.success('Login Success!');
+          router.push('/dashboard');
+          setTimeout(() => {
+            window.location.reload();
+          }, 5000);
+        } else if (role === 'user') {
+          toast.success('Login Success!');
+          router.push('/products');
+          setTimeout(() => {
+            window.location.reload();
+          }, 5000);
+        }
+      } else {
+        toast.error(data.message || 'Login Failed! Please try again!');
       }
     } catch (error) {
       toast.error('Login Failed! Please try again!');
@@ -42,8 +71,12 @@ const LoginPage = () => {
     }
   };
 
+  const onRecaptchaChange = (token) => {
+    setRecaptchaToken(token);
+  };
+
   return (
-    <div className=" md:pb-20 md:pt-10">
+    <div className="md:pb-20 md:pt-10">
       <div className="grid h-[1000px] grid-cols-1 place-items-center justify-items-center bg-secondary pb-10 md:flex md:h-[600px] md:grid-cols-3 md:justify-evenly">
         <Image
           src="/login.svg"
@@ -80,6 +113,12 @@ const LoginPage = () => {
               disabled={loading}
             />
           </div>
+          {process.env.NEXT_PUBLIC_ENV === 'production' && (
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={onRecaptchaChange}
+            />
+          )}
           <div className="flex flex-col gap-y-4 text-white">
             <Link
               href="/"
@@ -88,7 +127,7 @@ const LoginPage = () => {
               Forget Password?
             </Link>
             <button
-              onClick={() => onLogin()}
+              onClick={onLogin}
               type="button"
               className={`my-5 w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
                 loading ? 'cursor-not-allowed opacity-50' : ''
@@ -100,7 +139,7 @@ const LoginPage = () => {
 
             <span>
               Don't have an account yet?{' '}
-              <Link href="/register" className=" font-semibold underline underline-offset-1">
+              <Link href="/register" className="font-semibold underline underline-offset-1">
                 Register Here
               </Link>
             </span>

@@ -1,16 +1,18 @@
-/* eslint-disable no-alert */
+/* eslint-disable react/no-unescaped-entities */
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { toast } from 'react-hot-toast';
 
 import { register } from '@/fetching/auth';
 import useInput from '@/hooks/useInput';
+import BASE_URL from '@/lib/baseUrl';
 
 const RegisterPage = () => {
   const [step, setStep] = useState(1);
@@ -23,26 +25,66 @@ const RegisterPage = () => {
   const [phone, onPhoneChange] = useInput('');
   const [address, onAddressChange] = useInput('');
   const [birthdate, onBirthdateChange] = useInput('');
-  let avatar = '';
-  if (gender === 'Male') {
-    avatar =
-      'https://res.cloudinary.com/denyah3ls/image/upload/v1716033038/profile-avatar_z4huvm.jpg';
-  } else {
-    avatar =
-      'https://res.cloudinary.com/denyah3ls/image/upload/v1716036464/female-profile_hgzl8v.jpg';
-  }
-
   const [loading, setLoading] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState('');
+  const [isStepOneValid, setIsStepOneValid] = useState(false);
+  const [isStepTwoValid, setIsStepTwoValid] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setIsStepOneValid(
+      email.trim() !== '' &&
+        username.trim() !== '' &&
+        password.trim() !== '' &&
+        confirmPassword.trim() !== ''
+    );
+  }, [email, username, password, confirmPassword]);
+
+  useEffect(() => {
+    setIsStepTwoValid(
+      fullName.trim() !== '' &&
+        phone.trim() !== '' &&
+        address.trim() !== '' &&
+        gender.trim() !== '' &&
+        birthdate.trim() !== ''
+    );
+  }, [fullName, phone, address, gender, birthdate]);
+
+  const avatar =
+    gender === 'Male'
+      ? 'https://res.cloudinary.com/denyah3ls/image/upload/v1716033038/profile-avatar_z4huvm.jpg'
+      : 'https://res.cloudinary.com/denyah3ls/image/upload/v1716036464/female-profile_hgzl8v.jpg';
 
   const onRegister = async () => {
     if (password !== confirmPassword) {
-      toast.error(`Password don't match!`);
+      toast.error(`Passwords don't match!`);
+      return;
+    }
+
+    if (process.env.NEXT_PUBLIC_ENV === 'production' && !recaptchaToken) {
+      toast.error('Please complete the reCAPTCHA');
       return;
     }
 
     setLoading(true);
     try {
+      if (process.env.NEXT_PUBLIC_ENV === 'production') {
+        const response = await fetch(`${BASE_URL}/recaptcha/verify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ recaptchaToken })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          toast.error(data.message || 'Registration failed: Invalid reCAPTCHA');
+          setLoading(false);
+          return;
+        }
+      }
+
       await register({
         email,
         username,
@@ -55,7 +97,8 @@ const RegisterPage = () => {
         avatar,
         role: 'user'
       });
-      toast.success('Register Successfull! Please Login!');
+
+      toast.success('Registration Successful! Please Login!');
       router.push('/login');
     } catch (error) {
       console.error('Registration failed:', error);
@@ -63,6 +106,10 @@ const RegisterPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const onRecaptchaChange = (token) => {
+    setRecaptchaToken(token);
   };
 
   const renderStepOne = () => (
@@ -135,20 +182,14 @@ const RegisterPage = () => {
         required
         disabled={loading}
       />
-      {/* <input
-        type="text"
-        placeholder="Enter your gender..."
-        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-        value={gender}
-        onChange={onGenderChange}
-        required
-        disabled={loading}
-      /> */}
       <select
+        value={gender}
         onChange={(e) => setGender(e.target.value)}
         className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
+        required
+        disabled={loading}
       >
-        <option disabled selected className="text-gray-300">
+        <option disabled className="text-gray-300">
           Choose your gender...
         </option>
         <option className="text-secondary">Male</option>
@@ -163,14 +204,6 @@ const RegisterPage = () => {
         required
         disabled={loading}
       />
-      {/* <input
-        type="text"
-        placeholder="Enter your avatar URL..."
-        className="mb-5 border-b-1 border-gray-200 bg-transparent pb-2 text-white transition-none placeholder:text-xl placeholder:text-gray-200 focus:outline-none"
-        value={avatar}
-        onChange={onAvatarChange}
-        disabled={loading}
-      /> */}
     </>
   );
 
@@ -188,15 +221,21 @@ const RegisterPage = () => {
           <div className="flex flex-col justify-center">
             {step === 1 ? renderStepOne() : renderStepTwo()}
           </div>
+          {step === 2 && process.env.NEXT_PUBLIC_ENV === 'production' && (
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={onRecaptchaChange}
+            />
+          )}
           <div className="flex justify-center gap-10 text-white">
             {step === 1 ? (
               <button
                 type="button"
-                className={` w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
-                  loading ? 'cursor-not-allowed opacity-50' : ''
+                className={`w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
+                  loading || !isStepOneValid ? 'cursor-not-allowed opacity-50' : ''
                 }`}
                 onClick={() => setStep(2)}
-                disabled={loading}
+                disabled={loading || !isStepOneValid}
               >
                 Next
               </button>
@@ -204,7 +243,7 @@ const RegisterPage = () => {
               <>
                 <button
                   type="button"
-                  className={` w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
+                  className={`w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
                     loading ? 'cursor-not-allowed opacity-50' : ''
                   }`}
                   onClick={() => setStep(1)}
@@ -215,10 +254,10 @@ const RegisterPage = () => {
                 <button
                   type="submit"
                   className={`my-5 w-fit self-center border border-gray-200 px-8 py-2 hover:bg-tertiary ${
-                    loading ? 'cursor-not-allowed opacity-50' : ''
+                    loading || !isStepTwoValid ? 'cursor-not-allowed opacity-50' : ''
                   }`}
                   onClick={onRegister}
-                  disabled={loading}
+                  disabled={loading || !isStepTwoValid}
                 >
                   {loading ? 'Registering...' : 'Register'}
                 </button>

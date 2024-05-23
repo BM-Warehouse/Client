@@ -1,8 +1,10 @@
 /* eslint-disable no-alert */
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
 
+import ModalConfirmation from '@/components/parts/ModalConfirmation';
 import useProductStore from '@/store/productStore';
 
 function RowProduct({ product, onOpenModal, onOpenMoveModal }) {
@@ -11,10 +13,10 @@ function RowProduct({ product, onOpenModal, onOpenMoveModal }) {
   const handleDelete = async () => {
     try {
       await asyncDeleteProduct(product.id);
-      alert('Product removed successfully!');
+      toast.success('Product removed successfully!');
     } catch (error) {
+      toast.error('Failed to remove product.');
       console.error('Error deleting product:', error.message);
-      alert('Failed to remove product.');
     }
   };
 
@@ -63,14 +65,22 @@ function RowProduct({ product, onOpenModal, onOpenMoveModal }) {
             </span>
           </button>
           <button
-            onClick={handleDelete}
-            className="mr-2 min-w-28 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
+            // onClick={handleDelete}
+            onClick={() =>
+              document.getElementById(`modal-confirmation-delete-${product.id}`).showModal()
+            }
+            className="mr-2 min-w-28 rounded-md bg-ligtDanger py-1 text-primary hover:bg-danger"
           >
             <span className="flex items-center justify-center">
               <HiOutlineTrash className="mr-1" />
               Delete
             </span>
           </button>
+          <ModalConfirmation
+            action={handleDelete}
+            message="Are you sure you want to delete this product?"
+            id={`modal-confirmation-delete-${product.id}`}
+          />
         </div>
       </td>
     </tr>

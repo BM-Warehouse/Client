@@ -27,12 +27,15 @@ import useProductStore from '@/store/productStore';
 import useWarehouseStore from '@/store/warehouseStore';
 import Link from 'next/link';
 import ModalAddCategoryProduct from '@/components/parts/ModalAddCategoryProduct';
-import useCategryStore from '@/store/categoryStore';
+import useCategoryStore from '@/store/categoryStore';
+import toast from 'react-hot-toast';
+import ModalConfirmation from '@/components/parts/ModalConfirmation';
+import ProductChart from '@/components/elements/ProductChart';
 
 function DetailProduct({ params }) {
   const { detailProduct, asyncGetDetail, asyncDeleteProduct } = useProductStore();
   const { warehouseData, getWarehouseData } = useWarehouseStore();
-  const { categoriesData, asyncGetAllWithoutPagination } = useCategryStore();
+  const { categoriesData, asyncGetAllWithoutPagination } = useCategoryStore();
   const { asyncAddProductToCart } = useCartStore();
   const [quantity, setQuantity] = useState(1);
   const [showMoveStockModal, setShowMoveStockModal] = useState(false);
@@ -77,22 +80,22 @@ function DetailProduct({ params }) {
     };
     try {
       await asyncAddProductToCart(payload);
-      alert('Product added to cart successfully!');
+      toast.success('Product added to cart successfully!');
       setQuantity(1);
     } catch (error) {
+      toast.error('Failed to add product to cart.');
       console.error('Error adding product to cart:', error.message);
-      alert('Failed to add product to cart.');
     }
   };
 
   const handleDeleteProduct = async () => {
     try {
       await asyncDeleteProduct(detailProduct.id);
-      alert('Product deleted successfully!');
+      toast.success('Product removed successfully!');
       router.push('/products');
     } catch (error) {
+      toast.error('Failed to remove product.');
       console.error('Error deleting product:', error.message);
-      alert('Failed to delete product.');
     }
   };
 
@@ -232,7 +235,7 @@ function DetailProduct({ params }) {
                 </div>
                 <div className="btn-add mb-1">
                   <button
-                    onClick={handleDeleteProduct}
+                    onClick={() => document.getElementById('modal-confirmation-delete').showModal()}
                     className="w-full bg-ligtDanger px-8 py-4 font-bold text-white hover:bg-danger md:px-2 md:py-3"
                   >
                     <span className="flex items-center justify-center">
@@ -240,11 +243,17 @@ function DetailProduct({ params }) {
                       Delete
                     </span>
                   </button>
+                  <ModalConfirmation
+                    action={handleDeleteProduct}
+                    message="Are you sure you want to delete this product?"
+                    id="modal-confirmation-delete"
+                  />
                 </div>
               </div>
             )}
           </div>
         </div>
+        {role === 'admin' && <ProductChart detailProduct={detailProduct} />}
       </div>
       {showMoveStockModal && (
         <ModalMoveStockProduct

@@ -9,9 +9,11 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import BWMLogo from '@/assets/images/LogoBMW2.png';
 import CartIcon from '@/components/elements/CartIcon';
+import ToggleTheme from '@/components/elements/ToggleTheme';
 import useAuthUserStore from '@/store/authUserStore';
 
 function Navbar() {
@@ -19,9 +21,15 @@ function Navbar() {
   const router = useRouter();
 
   const onLogout = async () => {
-    await asyncUnsetAuthUser();
+    // await asyncUnsetAuthUser();
 
-    router.push('/login');
+    try {
+      await asyncUnsetAuthUser();
+      toast.success('Logout Success!');
+      router.push('/login');
+    } catch (error) {
+      toast.error('Logout Failed! Please try again!');
+    }
   };
   // check role
 
@@ -37,6 +45,7 @@ function Navbar() {
         </Link>
       </div>
       <div className="flex-none">
+        <ToggleTheme />
         {role === 'user' && <CartIcon />}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="avatar btn btn-circle btn-ghost">
@@ -49,7 +58,9 @@ function Navbar() {
             className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-primary p-2 text-secondary shadow"
           >
             <li>
-              <a className="justify-between">Profile</a>
+              <Link href="/my-profile" className="justify-between">
+                Profile
+              </Link>
             </li>
 
             <li>

@@ -1,7 +1,7 @@
 import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
-const getAllCategories = async (contains, page = 1, limit = 10) => {
+const getAllCategories = async (contains, page = 1, limit = 15) => {
   let response = null;
   try {
     if (!contains) {
@@ -58,7 +58,12 @@ const addCategory = async (name, description, imageUrl) => {
       },
       body: JSON.stringify(name, description, imageUrl)
     });
-    return response;
+    const responseJson = await response.json();
+    const { data, status, message } = responseJson;
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    return data;
   } catch (error) {
     console.error('Error fetching data:', error.message);
     throw error;
@@ -81,11 +86,13 @@ const editCategory = async (id, name, description, imageUrl) => {
   }
 };
 
+// eslint-disable-next-line consistent-return
 const removeCategory = async (id) => {
   try {
-    await fetchWithToken(`${BASE_URL}/categories/${id}`, {
+    const removedCategory = await fetchWithToken(`${BASE_URL}/categories/${id}`, {
       method: 'DELETE'
     });
+    return removedCategory;
   } catch (error) {
     console.error('Error fetching data:', error.message);
   }
@@ -113,7 +120,6 @@ const setCategoryProduct = async (productId, categoryId) => {
     }
     return responseJson;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Error fetching data:', error.message);
     throw error;
   }

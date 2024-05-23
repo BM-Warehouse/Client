@@ -9,7 +9,7 @@ import {
   setCategoryProduct
 } from '@/fetching/category';
 
-const useCategryStore = create((set) => ({
+const useCategoryStore = create((set) => ({
   categoriesData: [],
   categoryDetail: null,
   productCategories: [],
@@ -22,7 +22,7 @@ const useCategryStore = create((set) => ({
     currentPage: 1,
     limit: null
   },
-  asyncGetAll: async (contains, page = 1, limit = 10) => {
+  asyncGetAllCategory: async (contains, page = 1, limit = 20) => {
     try {
       const data = await getAllCategories(contains, page, limit);
       set((_state) => ({
@@ -33,7 +33,7 @@ const useCategryStore = create((set) => ({
       console.error('Error in asyncFunc:', error);
     }
   },
-  asyncGetDetail: async (id) => {
+  asyncGetDetailCategory: async (id) => {
     try {
       const pc = await getCategoryDetail(id);
       const { name, description, imageUrl, productCategories } = pc[0];
@@ -45,32 +45,38 @@ const useCategryStore = create((set) => ({
       console.error('Error in asyncFunc:', error);
     }
   },
+  // eslint-disable-next-line consistent-return
   asyncAddCategory: async (name, description, imageUrl) => {
     try {
       const newCategory = await addCategory(name, description, imageUrl);
       set((_state) => ({
         newCategory
       }));
+      return newCategory;
     } catch (error) {
       console.error('Error in asyncFunc:', error);
     }
   },
+  // eslint-disable-next-line consistent-return
   asyncEditCategory: async (id, name, description, imageUrl) => {
     try {
       const editedCategory = await editCategory(id, name, description, imageUrl);
       set((_state) => ({
         editedCategory
       }));
+      return editedCategory;
     } catch (error) {
       console.error('Error in asyncFunc:', error);
     }
   },
+  // eslint-disable-next-line consistent-return
   asyncRemoveCategory: async (id) => {
     try {
       const removedCategory = await removeCategory(id);
       set((_state) => ({
         removedCategory
       }));
+      return removedCategory;
     } catch (error) {
       console.error('Error in asyncFunc:', error);
     }
@@ -95,4 +101,4 @@ const useCategryStore = create((set) => ({
   }
 }));
 
-export default useCategryStore;
+export default useCategoryStore;

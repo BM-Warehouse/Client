@@ -35,8 +35,8 @@ html,
 
 [data-theme='dark'] {
   --primary: #1a1a1a; /* Example dark mode primary color */
-  --secondary: #444444;
-  --tertiary: #cccccc;
+  --secondary: #e0e0e0;
+  --tertiary: #bdbdbd;
   --bgColor: #121212;
   --txt: #ffffff;
   --accent-color: #1a1a1a;
@@ -76,4 +76,21 @@ table tr th:hover span {
 
 .table-zebra tbody tr:nth-child(even) {
   background-color: var(--table-zebra);
+}
+
+.input-border-custom {
+  @apply input;
+  border-color: var(--secondary);
+}
+.input-border-custom:focus,
+.input-custom:focus-within {
+  border-color: var(--secondary);
+  outline-color: var(--secondary);
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
 }
