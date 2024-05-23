@@ -33,16 +33,13 @@ function CheckoutUser() {
     asyncGetCouriers();
   }, [asyncShowCart, asyncGetCouriers]);
 
-  console.log(couriers);
-
   const handleCourierChange = (e) => {
-    setSelectedCourier(e.target.value);
-    if (e.target.value === 'JNE') {
-      setShippingCost(54000);
-    } else if (e.target.value === 'JNT') {
-      setShippingCost(63000);
-    } else if (e.target.value === 'SiCepat') {
-      setShippingCost(33000);
+    const selectedCourierId = e.target.value;
+    setSelectedCourier(selectedCourierId);
+
+    const selectedCourierData = couriers.find((courier) => courier.id === +selectedCourierId);
+    if (selectedCourierData) {
+      setShippingCost(selectedCourierData.price);
     }
   };
 
@@ -53,7 +50,7 @@ function CheckoutUser() {
       return;
     }
 
-    await asyncAddCartToCheckout(+cart.id, selectedCourier, address, selectedShippingMethod);
+    await asyncAddCartToCheckout(+cart.id, +selectedCourier, address, selectedShippingMethod);
     toast.success('Products  checkouted successfully');
 
     document.getElementById(`modal-confirmation-transfer-id-${cart.id}`).showModal();
@@ -67,7 +64,7 @@ function CheckoutUser() {
     await asyncResetCartToDefault();
   };
 
-  if (!cart) {
+  if (!cart || !couriers) {
     return <Loading />;
   }
   return (
@@ -122,9 +119,14 @@ function CheckoutUser() {
               onChange={handleCourierChange}
             >
               <option value="">Choose courier service</option>
-              <option value="JNE">JNE | Rp.54,000, 3-6 days</option>
+              {couriers.map((cou) => (
+                <option value={cou.id} key={cou.id}>
+                  {`${cou.name} | ${formatRupiah(cou.price)}`}
+                </option>
+              ))}
+              {/* <option value="JNE">JNE | Rp.54,000, 3-6 days</option>
               <option value="JNT">JNT | Rp.63,000, 2-3 days</option>
-              <option value="SiCepat">SiCepat | Rp.33,000, 4-7 days</option>
+              <option value="SiCepat">SiCepat | Rp.33,000, 4-7 days</option> */}
             </select>
           </div>
         </div>
