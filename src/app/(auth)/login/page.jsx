@@ -24,20 +24,26 @@ const LoginPage = () => {
   const [recaptchaToken, setRecaptchaToken] = useState('');
 
   const onLogin = async () => {
-    if (!recaptchaToken) {
+    if (process.env.NEXT_PUBLIC_ENV === 'production' && !recaptchaToken) {
       toast.error('Please complete the reCAPTCHA');
       return;
     }
 
     setLoading(true);
     try {
-      const response = await fetch(`${BASE_URL}/recaptcha/verify`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password, recaptchaToken })
-      });
+      let response;
+      if (process.env.NEXT_PUBLIC_ENV === 'production') {
+        response = await fetch(`${BASE_URL}/recaptcha/verify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password, recaptchaToken })
+        });
+      } else {
+        // Mock response for development environment
+        response = { ok: true, json: async () => ({}) };
+      }
 
       const data = await response.json();
       if (response.ok) {
@@ -45,13 +51,16 @@ const LoginPage = () => {
         if (role === 'admin') {
           toast.success('Login Success!');
           router.push('/dashboard');
-        } else {
+          setTimeout(() => {
+            window.location.reload();
+          }, 5000);
+        } else if (role === 'user') {
           toast.success('Login Success!');
           router.push('/products');
+          setTimeout(() => {
+            window.location.reload();
+          }, 5000);
         }
-        setTimeout(() => {
-          window.location.reload();
-        }, 5000);
       } else {
         toast.error(data.message || 'Login Failed! Please try again!');
       }
@@ -104,10 +113,12 @@ const LoginPage = () => {
               disabled={loading}
             />
           </div>
-          <ReCAPTCHA
-            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-            onChange={onRecaptchaChange}
-          />
+          {process.env.NEXT_PUBLIC_ENV === 'production' && (
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={onRecaptchaChange}
+            />
+          )}
           <div className="flex flex-col gap-y-4 text-white">
             <Link
               href="/"
