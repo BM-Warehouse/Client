@@ -11,15 +11,11 @@ const getAllUsers = async (page = 1, limit = 10) => {
     const response = await fetchWithToken(url);
     const responseJson = await response.json();
     const { status, message } = responseJson;
-    // console.log(response);
     if (status !== 'success') {
       throw new Error(message);
     }
-    const {
-      data: { users }
-    } = responseJson;
-    // console.log(response);
-    return users;
+    const { data } = responseJson;
+    return data;
   } catch (error) {
     console.error('Error fetching data:', error.message);
     throw error;
@@ -54,11 +50,11 @@ const addUser = async (
   address,
   gender,
   birthdate,
-  role,
-  avatar
+  avatar,
+  role
 ) => {
   try {
-    const response = await fetchWithToken(`${BASE_URL}/users/`, {
+    const response = await fetchWithToken(`${BASE_URL}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -72,8 +68,8 @@ const addUser = async (
         address,
         gender,
         birthdate,
-        role,
-        avatar
+        avatar,
+        role
       )
     });
     return response;
@@ -93,8 +89,8 @@ const updateUser = async (
   address,
   gender,
   birthdate,
-  role,
-  avatar
+  avatar,
+  role
 ) => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/users/${id}`, {
@@ -111,8 +107,8 @@ const updateUser = async (
         address,
         gender,
         birthdate,
-        role,
-        avatar
+        avatar,
+        role
       )
     });
     return response;
@@ -122,13 +118,27 @@ const updateUser = async (
   }
 };
 
-const destroyUser = async (id) => {
+const destroyUserById = async (id) => {
   try {
-    await fetchWithToken(`${BASE_URL}/users/${id}`, {
-      method: 'DELETE'
+    const response = await fetchWithToken(`${BASE_URL}/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    const {
+      data: { user }
+    } = responseJson;
+    return user;
   } catch (error) {
     console.error('Error fetching data:', error.message);
+    throw error;
   }
 };
 
@@ -154,4 +164,4 @@ const getOwnProfile = async () => {
   }
 };
 
-export { getOwnProfile, getUserDetail, getAllUsers, addUser, updateUser, destroyUser };
+export { getOwnProfile, getUserDetail, getAllUsers, addUser, updateUser, destroyUserById };

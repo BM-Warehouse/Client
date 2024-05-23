@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 import Navbar from '@/components/parts/Navbar';
@@ -22,7 +23,7 @@ function UpdateUser({ params }) {
   const router = useRouter();
 
   const handleBack = async () => {
-    router.back();
+    router.back('/users');
   };
 
   const id = +params.userid;
@@ -53,10 +54,24 @@ function UpdateUser({ params }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    router.push(`/users/${id}`);
+
+    if (
+      !fullName ||
+      !email ||
+      !username ||
+      !password ||
+      !phone ||
+      !address ||
+      !gender ||
+      !birthdate ||
+      !roleUser
+    ) {
+      toast.error('Please fill in all fields.');
+      return;
+    }
 
     if (!file) {
-      alert('Please select a file to upload');
+      toast.error('Please select a file to upload.');
       return;
     }
 
@@ -72,7 +87,7 @@ function UpdateUser({ params }) {
 
       const { secureUrl } = await response.json();
 
-      const imageUrl = secureUrl;
+      const avatar = secureUrl;
 
       await asyncUpdateUser(id, {
         email,
@@ -84,9 +99,11 @@ function UpdateUser({ params }) {
         gender,
         birthdate,
         role: roleUser,
-        avatar: imageUrl
+        avatar
       });
-      alert('User edited successfully!');
+      toast.apply('User edited successfully!');
+
+      router.push(`/users/${id}`);
     } catch (error) {
       console.log(`user edited failed: ${error}`);
     }
@@ -158,7 +175,7 @@ function UpdateUser({ params }) {
                 Phone:
                 <input
                   type="text"
-                  placeholder={userDetail.phone}
+                  defaultValue={userDetail.phone}
                   onChange={onPhoneChange}
                   className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
                 />
@@ -167,7 +184,7 @@ function UpdateUser({ params }) {
                 Address:
                 <input
                   type="text"
-                  placeholder={userDetail.address}
+                  defaultValue={userDetail.address}
                   onChange={onAddressChange}
                   className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
                 />
@@ -176,7 +193,7 @@ function UpdateUser({ params }) {
                 Gender:
                 <select
                   className="input input-bordered w-full h-10 mt-2 rounded-md px-3 text-secondary bg-white"
-                  value={gender}
+                  defaultValue={userDetail.gender}
                   onChange={onGenderChange}
                 >
                   <option value="">Select Gender</option>
@@ -201,7 +218,7 @@ function UpdateUser({ params }) {
                 Role:
                 <select
                   className="input input-bordered w-full h-10 mt-2 rounded-md px-3 text-secondary bg-white"
-                  value={roleUser}
+                  defaultValue={userDetail.roleUser}
                   onChange={onRoleChange}
                 >
                   <option value="">Select Role</option>
