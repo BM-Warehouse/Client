@@ -105,7 +105,7 @@ function ListCategories() {
       <div className="category-title flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Categories</h1>
       </div>
-      <div className="mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
+      <div className="mt-20 flex flex-col-reverse items-center md:justify-between px-5 md:ml-20 md:flex-row">
         <div className="btn-add-product">
           {role === 'admin' ? (
             <>
