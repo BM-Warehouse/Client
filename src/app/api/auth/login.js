@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import axios from 'axios';
 
 const secret = process.env.RECAPTCHA_SECRET_KEY;
