@@ -1,4 +1,4 @@
-/* eslint-disable no-alert */
+/* eslint-disable react/no-unescaped-entities */
 
 'use client';
 
@@ -7,10 +7,12 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { toast } from 'react-hot-toast';
 
 import { register } from '@/fetching/auth';
 import useInput from '@/hooks/useInput';
+import BASE_URL from '@/lib/baseUrl';
 
 const RegisterPage = () => {
   const [step, setStep] = useState(1);
@@ -23,50 +25,11 @@ const RegisterPage = () => {
   const [phone, onPhoneChange] = useInput('');
   const [address, onAddressChange] = useInput('');
   const [birthdate, onBirthdateChange] = useInput('');
-  let avatar = '';
-  if (gender === 'Male') {
-    avatar =
-      'https://res.cloudinary.com/denyah3ls/image/upload/v1716033038/profile-avatar_z4huvm.jpg';
-  } else {
-    avatar =
-      'https://res.cloudinary.com/denyah3ls/image/upload/v1716036464/female-profile_hgzl8v.jpg';
-  }
-
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
-  const onRegister = async () => {
-    if (password !== confirmPassword) {
-      toast.error(`Passwords don't match!`);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await register({
-        email,
-        username,
-        password,
-        fullName,
-        phone,
-        address,
-        gender,
-        birthdate,
-        avatar,
-        role: 'user'
-      });
-      toast.success('Registration Successful! Please Login!');
-      router.push('/login');
-    } catch (error) {
-      console.error('Registration failed:', error);
-      toast.error(`Registration failed: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  const [recaptchaToken, setRecaptchaToken] = useState('');
   const [isStepOneValid, setIsStepOneValid] = useState(false);
   const [isStepTwoValid, setIsStepTwoValid] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsStepOneValid(
@@ -86,6 +49,68 @@ const RegisterPage = () => {
         birthdate.trim() !== ''
     );
   }, [fullName, phone, address, gender, birthdate]);
+
+  const avatar =
+    gender === 'Male'
+      ? 'https://res.cloudinary.com/denyah3ls/image/upload/v1716033038/profile-avatar_z4huvm.jpg'
+      : 'https://res.cloudinary.com/denyah3ls/image/upload/v1716036464/female-profile_hgzl8v.jpg';
+
+  const onRegister = async () => {
+    if (password !== confirmPassword) {
+      toast.error(`Passwords don't match!`);
+      return;
+    }
+
+    if (process.env.NEXT_PUBLIC_ENV === 'production' && !recaptchaToken) {
+      toast.error('Please complete the reCAPTCHA');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      if (process.env.NEXT_PUBLIC_ENV === 'production') {
+        const response = await fetch(`${BASE_URL}/recaptcha/verify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ recaptchaToken })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          toast.error(data.message || 'Registration failed: Invalid reCAPTCHA');
+          setLoading(false);
+          return;
+        }
+      }
+
+      await register({
+        email,
+        username,
+        password,
+        fullName,
+        phone,
+        address,
+        gender,
+        birthdate,
+        avatar,
+        role: 'user'
+      });
+
+      toast.success('Registration Successful! Please Login!');
+      router.push('/login');
+    } catch (error) {
+      console.error('Registration failed:', error);
+      toast.error(`Registration failed: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onRecaptchaChange = (token) => {
+    setRecaptchaToken(token);
+  };
 
   const renderStepOne = () => (
     <>
@@ -196,6 +221,12 @@ const RegisterPage = () => {
           <div className="flex flex-col justify-center">
             {step === 1 ? renderStepOne() : renderStepTwo()}
           </div>
+          {step === 2 && process.env.NEXT_PUBLIC_ENV === 'production' && (
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={onRecaptchaChange}
+            />
+          )}
           <div className="flex justify-center gap-10 text-white">
             {step === 1 ? (
               <button
