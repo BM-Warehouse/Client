@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react';
 import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
 import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
 import RowProduct from '@/components/parts/RowProduct';
+import useSidebarStore from '@/store/sidebarStore';
 import useWarehouseStore from '@/store/warehouseStore';
 
 function ContainerProductsAdmin({ productsData }) {
   const { warehouseData, getWarehouseData } = useWarehouseStore();
+  const { expanded } = useSidebarStore();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isAddStockModalOpen, setIsAddStockModalOpen] = useState(false);
   const [isMoveStockModalOpen, setIsMoveStockModalOpen] = useState(false);
@@ -40,7 +42,7 @@ function ContainerProductsAdmin({ productsData }) {
   }
 
   return (
-    <div className="container-products mt-4 p-4 md:ml-20">
+    <div className={`container-products mt-4 p-4 ${expanded ? 'md:ml-72' : 'md:ml-20'} `}>
       <div className="overflow-x-auto rounded-xl border border-secondary px-7 py-5">
         <table className="table table-zebra">
           <thead className="text-tertiary">

@@ -44,16 +44,12 @@ const QuantitiesChart = () => {
     getWarehouseQuantities();
   }, [getWarehouseQuantities]);
 
-  useEffect(() => {
-    // console.log('Warehouse Quantities:', warehouseQuantities);
-    // console.log('Warehouse Names:', warehouseNames);
-  }, [warehouseQuantities, warehouseNames]);
-
+  // dua data untuk chart
+  const data = warehouseQuantities.map((item) => item.totalQuantity);
   const labels =
     warehouseNames.length > 0
       ? warehouseNames
       : warehouseQuantities.map((item) => `Warehouse ${item.warehouseId}`);
-  const data = warehouseQuantities.map((item) => item.totalQuantity);
 
   const chartData = {
     labels,
@@ -82,7 +78,7 @@ const QuantitiesChart = () => {
   };
 
   return (
-    <div className="h-96 w-full">
+    <div>
       <Bar data={chartData} options={options} />
     </div>
   );
