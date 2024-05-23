@@ -33,9 +33,9 @@ function Navbar() {
   };
   // check role
 
-  if (!role) {
-    return null;
-  }
+  // if (!role) {
+  //   return null;
+  // }
   return (
     <div className="navbar fixed top-0 z-20 bg-primary py-3">
       <div className="flex-1">

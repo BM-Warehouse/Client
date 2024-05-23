@@ -24,14 +24,14 @@ function ControlProductForm({ product }) {
   const [desc, onDescChange] = useInput(product ? product.description : '');
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
-  const { categoriesData, asyncGetAll } = useCategryStore();
+  const { categoriesData, asyncGetAllCategory } = useCategryStore();
   const router = useRouter();
 
   // console.log(categoriesData);
 
   useEffect(() => {
-    asyncGetAll();
-  }, [asyncGetAll]);
+    asyncGetAllCategory();
+  }, [asyncGetAllCategory]);
 
   useEffect(() => {
     getWarehouseData();
