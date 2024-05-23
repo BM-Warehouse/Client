@@ -1,7 +1,12 @@
-/* eslint-disable consistent-return */
+import axios from 'axios';
+
 const secret = process.env.RECAPTCHA_SECRET_KEY;
 
 export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method Not Allowed' });
+  }
+
   const { recaptchaToken } = req.body;
 
   if (!recaptchaToken) {
@@ -9,19 +14,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Verify reCAPTCHA token using Fetch API
-    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${recaptchaToken}`;
-    const response = await fetch(verifyUrl, {
-      method: 'POST'
+    // Verify reCAPTCHA token
+    const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify`, null, {
+      params: {
+        secret,
+        response: recaptchaToken
+      }
     });
 
-    const data = await response.json();
-    const { success } = data;
-
+    const { success } = response.data;
     if (!success) {
       return res.status(400).json({ message: 'reCAPTCHA verification failed' });
     }
 
+    // reCAPTCHA verification succeeded
     res.status(200).json({ message: 'reCAPTCHA verification succeeded' });
   } catch (error) {
     console.error('Error verifying reCAPTCHA', error);
