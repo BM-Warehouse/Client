@@ -17,8 +17,8 @@ function ListCategories() {
   const { role } = useAuthUserStore();
 
   const [name, setName] = useState('');
-  const [orderBy, setOrderBy] = useState('');
-  const [orderType, setOrderType] = useState('');
+  const [orderBy, setOrderBy] = useState('id');
+  const [orderType, setOrderType] = useState('asc');
   const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
   const [isLoading, setLoading] = useState(true);
@@ -37,7 +37,7 @@ function ListCategories() {
   }
 
   const onPaginationClick = async (page) => {
-    await asyncGetAllCategory('', page);
+    await asyncGetAllCategory('', page, 10, orderBy, orderType);
   };
 
   const handleFileChange = (e) => {
