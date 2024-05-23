@@ -11,6 +11,7 @@ import { IoFilterSharp } from 'react-icons/io5';
 import ToggleTheme from '@/components/elements/ToggleTheme';
 import ContainerProductsAdmin from '@/components/parts/ContainerProductsAdmin';
 import ContainerProductsUser from '@/components/parts/ContainerProductsUser';
+import Loading from '@/components/parts/Loading';
 import Navbar from '@/components/parts/Navbar';
 import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
@@ -52,6 +53,13 @@ function ListProducts() {
     params.set('keyword', target.value);
     router.push(`?${params.toString()}`);
   };
+  if (!productsData || !allProductsData) {
+    return <Loading />;
+  }
+
+  if (!role) {
+    return <Loading />;
+  }
 
   return (
     <main className="product-page relative h-screen  bg-bgColor font-poppins">

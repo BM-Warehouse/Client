@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
+import Loading from '@/components/parts/Loading';
 import ModalTransfer from '@/components/parts/ModalTransfer';
 import Navbar from '@/components/parts/Navbar';
 import OrderSummary from '@/components/parts/OrderSummary';
@@ -44,7 +45,8 @@ function CheckoutUser() {
 
   const handlePlaceOrder = async () => {
     if (!address || !selectedShippingMethod || !selectedCourier) {
-      alert('Please fill in all required fields');
+      // alert('Please fill in all required fields');
+      toast.error('Please fill in all required fields');
       return;
     }
 
@@ -63,7 +65,7 @@ function CheckoutUser() {
   };
 
   if (!cart) {
-    return null;
+    return <Loading />;
   }
   return (
     <section className="checkout-page relative min-h-screen bg-bgColor pb-20 font-poppins">
