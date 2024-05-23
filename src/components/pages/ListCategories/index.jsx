@@ -4,7 +4,6 @@
 
 import { useState, useEffect } from 'react';
 
-import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { IoFilterSharp } from 'react-icons/io5';
 
@@ -16,19 +15,16 @@ import useCategoryStore from '@/store/categoryStore';
 import useProductStore from '@/store/productStore';
 
 function ListCategories() {
-  const router = useRouter();
-
   const { role } = useAuthUserStore();
 
   const [name, onNameChange] = useInput('');
   const [description, onDescriptionChange] = useInput('');
   const [file, setFile] = useState(null);
-  const [contains, setContains] = useState('');
-  const [searchContain, onSearchContainChange] = useInput('');
 
   const { categoriesData, asyncGetAllCategory, asyncAddCategory, pagination } = useCategoryStore();
-  const { productsData, asyncGetAll } = useProductStore();
+  const { productsData } = useProductStore();
   const [isLoading, setLoading] = useState(true);
+  let tSearch = null;
 
   useEffect(() => {
     asyncGetAllCategory().then(() => {
@@ -41,18 +37,18 @@ function ListCategories() {
   }
 
   const onPaginationClick = async (page) => {
-    await asyncGetAllCategory(contains, page);
+    await asyncGetAllCategory(page);
   };
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    setContains(searchContain);
-    asyncGetAll(contains);
-    router.refresh();
+  const handleSearchChange = (e) => {
+    clearTimeout(tSearch);
+    tSearch = setTimeout(async () => {
+      await asyncGetAllCategory(e.target.value);
+    }, 1000);
   };
 
   const handleSubmit = async (e) => {
@@ -105,7 +101,7 @@ function ListCategories() {
       <div className="category-title flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Categories</h1>
       </div>
-      <div className="mt-20 flex flex-col-reverse items-center md:justify-between px-5 md:ml-20 md:flex-row">
+      <div className="mt-20 flex flex-col-reverse justify-between px-5 md:ml-20 md:flex-row">
         <div className="btn-add-product">
           {role === 'admin' ? (
             <>
@@ -176,31 +172,25 @@ function ListCategories() {
           )}
         </div>
         <div className="button-categories flex items-center">
-          <label
-            className="input flex h-8 items-center gap-2 border-tertiary"
-            // onSubmit={handleSearchSubmit}
-          >
+          <label className="input flex h-8 items-center gap-2 border-tertiary">
             <input
               type="text"
-              value={searchContain}
-              onChange={onSearchContainChange}
+              onChange={(e) => handleSearchChange(e)}
               className="grow text-sm text-secondary placeholder:text-secondary"
               placeholder="Search category..."
             />
-            <button type="button" onClick={handleSearchSubmit}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="h-4 w-4 text-tertiary opacity-70"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="h-4 w-4 text-tertiary opacity-70"
+            >
+              <path
+                fillRule="evenodd"
+                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                clipRule="evenodd"
+              />
+            </svg>
           </label>
           <div className="btn-filter ml-5 cursor-pointer rounded-lg p-1 hover:bg-secondary">
             <IoFilterSharp className="text-3xl text-secondary hover:text-white" />
