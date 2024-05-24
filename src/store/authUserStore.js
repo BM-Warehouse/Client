@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import toast from 'react-hot-toast';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
@@ -14,6 +15,9 @@ const useAuthUserStore = create(
       asyncSetAuthUser: async ({ username, password }) => {
         try {
           const token = await login({ username, password });
+          if (!token) {
+            toast.error('Incorrect username or password. Please try again!');
+          }
           setAccessToken(token);
           const user = await getOwnProfile();
           // console.log(user);

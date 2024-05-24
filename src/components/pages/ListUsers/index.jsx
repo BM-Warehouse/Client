@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { HiUserAdd } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 
+import Loading from '@/components/parts/Loading';
 import Navbar from '@/components/parts/Navbar';
 import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
@@ -20,10 +21,10 @@ function ListUsers() {
   };
 
   if (!role) {
-    return null;
+    return <Loading />;
   }
   return (
-    <main className="user-page bg-bgg relative h-screen font-poppins ">
+    <main className="user-page bg-bgColor relative h-screen font-poppins ">
       <Navbar />
       <Sidebar />
       <div className="title-page flex justify-center pt-24">
@@ -41,7 +42,7 @@ function ListUsers() {
           </Link>
         </div>
         <div className="search-filter flex items-center justify-between">
-          <label className="input input-bordered  flex h-8 items-center gap-2 ">
+          <label className="input  border-tertiary bg-bgColor flex h-8 items-center gap-2 ">
             <input
               type="text"
               className="grow text-sm text-tertiary transition-none placeholder:text-secondary"
