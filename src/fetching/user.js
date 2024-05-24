@@ -1,14 +1,35 @@
 import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
-const getAllUsers = async (page = 1, limit = 10) => {
+const getAllUsers = async (
+  contains = '',
+  page = 1,
+  limit = 10,
+  orderBy = 'id',
+  orderType = 'asc'
+) => {
+  let response = null;
   try {
-    const url = `${BASE_URL}/users?${new URLSearchParams({
-      page,
-      limit
-    })}`;
+    if (!contains) {
+      response = await fetchWithToken(
+        `${BASE_URL}/users?${new URLSearchParams({
+          page,
+          limit,
+          orderBy,
+          orderType
+        })}`
+      );
+    } else {
+      const url = `${BASE_URL}/users?${new URLSearchParams({
+        page,
+        limit,
+        orderBy,
+        orderType,
+        contains
+      })}`;
 
-    const response = await fetchWithToken(url);
+      response = await fetchWithToken(url);
+    }
     const responseJson = await response.json();
     const { status, message } = responseJson;
     if (status !== 'success') {

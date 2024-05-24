@@ -73,10 +73,10 @@ const AddUser = () => {
         method: 'POST',
         body: formData
       });
-
-      const { secureUrl } = await response.json();
-
-      const avatar = secureUrl;
+      // eslint-disable-next-line camelcase
+      const { secure_url } = await response.json();
+      // eslint-disable-next-line camelcase
+      const avatar = secure_url;
 
       await asyncAddUser({
         fullName,
@@ -107,7 +107,7 @@ const AddUser = () => {
       <div className="add-user-page-content flex w-full flex-col items-center px-4 md:px-10 py-10 text-primary">
         <div className="add-user-container mt-10 md:mt-20 flex flex-col items-center bg-tertiary px-4 md:px-8 xl:px-24 rounded-lg shadow-lg py-10 w-full max-w-2xl">
           <h1 className="text-3xl font-bold mb-6">Add User</h1>
-          <form className="flex flex-col w-full" onSubmit={handleSubmit}>
+          <form className="flex flex-col w-full">
             <div className="input-container space-y-4">
               <label className="text-secondary w-full">
                 Name:
