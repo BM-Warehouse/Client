@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -22,6 +22,22 @@ const LoginPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState('');
+
+  useEffect(() => {
+    if (role) {
+      if (role === 'admin') {
+        router.replace('/dashboard');
+        setTimeout(() => {
+          window.location.reload();
+        }, 5000);
+      } else if (role === 'user') {
+        router.replace('/products');
+        setTimeout(() => {
+          window.location.reload();
+        }, 5000);
+      }
+    }
+  }, [role, router]);
 
   const onLogin = async () => {
     if (process.env.NEXT_PUBLIC_ENV === 'production' && !recaptchaToken) {
@@ -48,19 +64,7 @@ const LoginPage = () => {
       const data = await response.json();
       if (response.ok) {
         await asyncSetAuthUser({ username, password });
-        if (role === 'admin') {
-          toast.success('Login Success!');
-          router.push('/dashboard');
-          setTimeout(() => {
-            window.location.reload();
-          }, 5000);
-        } else if (role === 'user') {
-          toast.success('Login Success!');
-          router.push('/products');
-          setTimeout(() => {
-            window.location.reload();
-          }, 5000);
-        }
+        toast.success('Login Success!');
       } else {
         toast.error(data.message || 'Login Failed! Please try again!');
       }
