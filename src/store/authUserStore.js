@@ -29,6 +29,7 @@ const useAuthUserStore = create(
           }));
         } catch (error) {
           console.error('Error in asyncSetAuthUser:', error.message);
+          throw error;
         }
       },
       asyncUnsetAuthUser: async () => {
