@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { HiOutlineTrash } from 'react-icons/hi';
@@ -105,7 +106,13 @@ const WarehouseDetailPage = () => {
               {warehouse.products.map((product) => (
                 <tr key={product.productId}>
                   <td>{product.productId}</td>
-                  <td>{product.productName}</td>
+                  <td>
+                    <Link
+                      href={`/warehouses/${warehouseId}/warehouse-products/${product.productId}`}
+                    >
+                      {product.productName}
+                    </Link>
+                  </td>
                   <td>{product.quantity}</td>
                   <td>
                     <div className="flex gap-4">
