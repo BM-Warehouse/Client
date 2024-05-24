@@ -11,9 +11,14 @@ import {
 } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
+import Loading from '@/components/parts/Loading';
+
 ChartJS.register(CategoryScale, ArcElement, LinearScale, Title, Tooltip, Legend);
 
 const ProductChart = ({ detailProduct }) => {
+  if (!detailProduct.productWarehouses) {
+    return <Loading />;
+  }
   const labels = detailProduct.productWarehouses.map((warehouse) => warehouse.warehouse.name);
   const datasets = detailProduct.productWarehouses.map((warehouse) => warehouse.quantity);
 

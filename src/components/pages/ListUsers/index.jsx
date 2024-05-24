@@ -41,7 +41,7 @@ function ListUsers() {
     return null;
   }
   return (
-    <main className="user-page bg-bgg relative h-screen font-poppins ">
+    <main className="user-page bg-bgColor relative h-screen font-poppins ">
       <Navbar />
       <Sidebar />
       <div className="title-page flex justify-center pt-24">
@@ -59,7 +59,7 @@ function ListUsers() {
           </Link>
         </div>
         <div className="search-filter flex items-center justify-between">
-          <label className="input input-bordered  flex h-8 items-center gap-2 ">
+          <label className="input border-tertiary bg-bgColor  flex h-8 items-center gap-2 ">
             <input
               type="text"
               onChange={(e) => handleSearchChange(e)}

@@ -4,7 +4,7 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,27 +14,35 @@ import toast from 'react-hot-toast';
 import BWMLogo from '@/assets/images/LogoBMW2.png';
 import CartIcon from '@/components/elements/CartIcon';
 import ToggleTheme from '@/components/elements/ToggleTheme';
+import Loading from '@/components/parts/Loading';
 import useAuthUserStore from '@/store/authUserStore';
 
 function Navbar() {
   const { asyncUnsetAuthUser, role, authUser } = useAuthUserStore();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const onLogout = async () => {
     // await asyncUnsetAuthUser();
 
     try {
+      setLoading(true);
       await asyncUnsetAuthUser();
       toast.success('Logout Success!');
       router.push('/login');
+      setLoading(false);
     } catch (error) {
       toast.error('Logout Failed! Please try again!');
     }
   };
   // check role
 
+  if (loading) {
+    return <Loading />;
+  }
+
   if (!role) {
-    return null;
+    return <Loading />;
   }
   return (
     <div className="navbar fixed top-0 z-20 bg-primary py-3">
