@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
+import Loading from '@/components/parts/Loading';
 import ModalConfirmation from '@/components/parts/ModalConfirmation';
 import useInput from '@/hooks/useInput';
 import useCategoryStore from '@/store/categoryStore';
@@ -38,11 +39,11 @@ function ControlProductForm({ product }) {
   }, [getWarehouseData]);
 
   if (!warehouseData) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!categoriesData) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const handleFileChange = (e) => {
@@ -90,10 +91,10 @@ function ControlProductForm({ product }) {
     e.preventDefault();
     console.log('submit diklik');
 
-    if (!selectedImage) {
-      alert('Please select a file to upload.');
-      return;
-    }
+    // if (!selectedImage) {
+    //   alert('Please select a file to upload.');
+    //   return;
+    // }
 
     const formData = new FormData();
     formData.append('file', selectedImage);

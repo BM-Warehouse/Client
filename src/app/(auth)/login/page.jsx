@@ -64,7 +64,7 @@ const LoginPage = () => {
       const data = await response.json();
       if (response.ok) {
         await asyncSetAuthUser({ username, password });
-        toast.success('Login Success!');
+        // toast.success('Login Success!');
       } else {
         toast.error(data.message || 'Login Failed! Please try again!');
       }
