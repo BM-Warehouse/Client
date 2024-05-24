@@ -22,9 +22,9 @@ const useCategoryStore = create((set) => ({
     currentPage: 1,
     limit: null
   },
-  asyncGetAllCategory: async (contains, page = 1, limit = 20) => {
+  asyncGetAllCategory: async (contains, page, limit, orderBy, orderType) => {
     try {
-      const data = await getAllCategories(contains, page, limit);
+      const data = await getAllCategories(contains, page, limit, orderBy, orderType);
       set((_state) => ({
         categoriesData: data.categories,
         pagination: data.pagination

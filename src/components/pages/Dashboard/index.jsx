@@ -1,7 +1,9 @@
 'use client';
 
 // import CheckoutInfo from './components/CheckoutInfo';
-import NotFound from '@/app/not-found';
+// import NotFound from '@/app/not-found';
+
+import Loading from '@/components/parts/Loading';
 import useAuthUserStore from '@/store/authUserStore';
 
 import CheckoutInfoButton from './components/CheckoutInfo';
@@ -11,7 +13,7 @@ import QuantitiesChart from './components/QuantitiesChart';
 function Dashboard() {
   const { role } = useAuthUserStore();
   if (!role) {
-    return <NotFound />;
+    return <Loading />;
   }
 
   return (

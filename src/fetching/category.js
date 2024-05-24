@@ -1,14 +1,22 @@
 import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
-const getAllCategories = async (contains, page = 1, limit = 15) => {
+const getAllCategories = async (
+  contains = '',
+  page = 1,
+  limit = 10,
+  orderBy = 'id',
+  orderType = 'asc'
+) => {
   let response = null;
   try {
     if (!contains) {
       response = await fetchWithToken(
         `${BASE_URL}/categories?${new URLSearchParams({
           page,
-          limit
+          limit,
+          orderBy,
+          orderType
         })}`
       );
     } else {
@@ -16,6 +24,8 @@ const getAllCategories = async (contains, page = 1, limit = 15) => {
         `${BASE_URL}/categories?${new URLSearchParams({
           page,
           limit,
+          orderBy,
+          orderType,
           contains
         })}`
       );

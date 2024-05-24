@@ -116,4 +116,31 @@ const setFeedback = async (checkoutId, feedback) => {
   }
 };
 
-export { addCartToCheckout, getCheckoutsUser, getDetailCheckoutUser, getAllCheckout, setFeedback };
+const getCouriers = async () => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/couriers`);
+    const responseJson = await response.json();
+    const { status, message } = responseJson;
+
+    if (status !== 'success') {
+      throw new Error(message);
+    }
+    const {
+      data: { couriers }
+    } = responseJson;
+    return couriers;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error fetching data:', error.message);
+    throw error;
+  }
+};
+
+export {
+  addCartToCheckout,
+  getCheckoutsUser,
+  getDetailCheckoutUser,
+  getAllCheckout,
+  setFeedback,
+  getCouriers
+};
