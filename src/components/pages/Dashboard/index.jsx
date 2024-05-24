@@ -7,6 +7,7 @@ import Loading from '@/components/parts/Loading';
 import useAuthUserStore from '@/store/authUserStore';
 
 import CheckoutInfoButton from './components/CheckoutInfo';
+import ExpireInfo from './components/ExpireInfo';
 import AreaChart from './components/ProfitChart';
 import QuantitiesChart from './components/QuantitiesChart';
 
@@ -27,7 +28,7 @@ function Dashboard() {
         <div className="flex justify-center">
           <CheckoutInfoButton />
         </div>
-        <h1>test</h1>
+        <ExpireInfo />
       </div>
     </main>
   );
