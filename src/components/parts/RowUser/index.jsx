@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { HiOutlineTrash } from 'react-icons/hi';
 
@@ -12,13 +13,10 @@ function RowUser({ user }) {
 
   const handleDestroy = async () => {
     try {
-      console.log(user.id);
       await asyncDestroyUser(user.id);
-
-      alert('User removed successfully!');
+      toast.success('User removed successfully!');
     } catch (error) {
-      console.error('Error deleting product:', error.message);
-      alert('Failed to remove user.');
+      toast.error('Failed to remove user.', error.message);
     }
   };
 
@@ -65,7 +63,7 @@ function RowUser({ user }) {
               <div className="flex justify-end space-x-4">
                 <button
                   className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
-                  onClick={() => document.getElementById('my_modal_1').close()}
+                  onClick={() => document.getElementById(`my_modal_${user.id}`).close()}
                 >
                   Cancel
                 </button>

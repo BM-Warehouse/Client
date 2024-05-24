@@ -84,10 +84,10 @@ function UpdateUser({ params }) {
         method: 'POST',
         body: formData
       });
-
-      const { secureUrl } = await response.json();
-
-      const avatar = secureUrl;
+      // eslint-disable-next-line camelcase
+      const { secure_url } = await response.json();
+      // eslint-disable-next-line camelcase
+      const avatar = secure_url;
 
       await asyncUpdateUser(id, {
         email,
