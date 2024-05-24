@@ -39,11 +39,11 @@ const getAllCheckout = async () => {
   }
 };
 
-const addCartToCheckout = async (cartId, courier, address, method) => {
+const addCartToCheckout = async (cartId, courierId, address, method) => {
   try {
     const requestBody = {
       cartId,
-      courier,
+      courierId,
       address,
       method
     };
@@ -61,7 +61,10 @@ const addCartToCheckout = async (cartId, courier, address, method) => {
     if (status !== 'success') {
       throw new Error(message);
     }
-    return responseJson;
+    const {
+      data: { checkout }
+    } = responseJson;
+    return checkout;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error fetching data:', error.message);

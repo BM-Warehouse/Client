@@ -24,8 +24,6 @@ function DetailHistoryCheckout({ params }) {
   const { detailCheckoutUser, asyncGetDetailCheckoutUser, asyncSetFeedback } = useCheckoutStore();
   const { authUser } = useAuthUserStore();
 
-  console.log(authUser);
-
   const id = +params.checkoutId;
 
   useEffect(() => {
