@@ -12,7 +12,7 @@ function ToggleTheme() {
           {theme === 'light' ? (
             <FaMoon className="text-tertiary" />
           ) : (
-            <FaSun className="text-tertiary" />
+            <FaSun className="text-tertiary " />
           )}
         </button>
       </div>
@@ -22,7 +22,7 @@ function ToggleTheme() {
             {theme === 'light' ? (
               <FaMoon className="text-bgColor" />
             ) : (
-              <FaSun className="text-white" />
+              <FaSun className="text-white " />
             )}
           </button>
         </div>
