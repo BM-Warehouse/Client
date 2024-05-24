@@ -13,6 +13,7 @@ const Container = ({ children }) => {
   const { warehouseId } = params;
   const path = usePathname();
   const isDetailsPage = path === `/warehouses/${warehouseId}`;
+  // const isProductWarehousePage = path === `/warehouses/${warehouseId}/warehouse-products`;
 
   const [newWarehouse, setNewWarehouse] = useState({ name: '', city: '', address: '' });
 

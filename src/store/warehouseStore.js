@@ -5,12 +5,14 @@ import {
   getWarehouseQuantities,
   addWarehouse,
   editWarehouse,
-  removeWarehouse
+  removeWarehouse,
+  getWarehouseDetails
 } from '@/fetching/warehouse';
 
 const useWarehouseStore = create((set) => ({
   warehouseData: [],
   warehouseQuantities: [],
+  productWarehouseData: [],
   pagination: {
     totalPage: null,
     totalData: null,
@@ -26,6 +28,16 @@ const useWarehouseStore = create((set) => ({
       const { pagination } = warehouses;
 
       set((_state) => ({ warehouseData: warehouses.warehouses, pagination }));
+    } catch (e) {
+      console.error('Failed to fetch warehouses', e);
+    }
+  },
+  getWarehouseDetailsData: async (id, page = 1) => {
+    try {
+      const warehouseDetails = await getWarehouseDetails(id, page);
+      const { pagination } = warehouseDetails;
+      console.log(warehouseDetails, '<<<<<<<');
+      set((_state) => ({ productWarehouseData: warehouseDetails, pagination }));
     } catch (e) {
       console.error('Failed to fetch warehouses', e);
     }

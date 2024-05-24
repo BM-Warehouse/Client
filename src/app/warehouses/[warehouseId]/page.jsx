@@ -7,45 +7,81 @@ import toast from 'react-hot-toast';
 import { HiOutlineTrash } from 'react-icons/hi';
 
 import Container from '@/components/parts/ContainerWarehouse/warehouse-container';
-import { getWarehouseDetails, fetchBatches } from '@/fetching/warehouse';
+import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
+import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
+import Pagination from '@/components/parts/Pagination';
+import { getWarehouseDetails } from '@/fetching/warehouse';
+import useWarehouseStore from '@/store/warehouseStore';
 
 const WarehouseDetailPage = () => {
   const params = useParams();
+  const { warehouseData, getWarehouseData } = useWarehouseStore();
   const { warehouseId } = params;
   const [warehouse, setWarehouse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [pagination, setPagination] = useState({ currentPage: 1, totalPage: 1 });
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isAddStockModalOpen, setIsAddStockModalOpen] = useState(false);
+  const [isMoveStockModalOpen, setIsMoveStockModalOpen] = useState(false);
+
+  const handleOpenAddStockModal = (product) => {
+    setSelectedProduct(product);
+    setIsAddStockModalOpen(true);
+  };
+
+  const handleCloseAddStockModal = () => {
+    setIsAddStockModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const handleOpenMoveStockModal = (product) => {
+    setSelectedProduct(product);
+    setIsMoveStockModalOpen(true);
+  };
+
+  const handleCloseMoveStockModal = () => {
+    setIsMoveStockModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const handleDeleteProductFromWarehouse = () => {
+    toast.success('Product Deleted Successfully!');
+  };
+
+  const fetchWarehouseDetails = async (id, page) => {
+    setLoading(true);
+    try {
+      const { warehouseDetails, pagination } = await getWarehouseDetails(id, page);
+      console.log(pagination, '<<<<<<<');
+      setWarehouse(warehouseDetails);
+      setPagination(pagination);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const [warehouseDetails, batches] = await Promise.all([
-          getWarehouseDetails(warehouseId),
-          fetchBatches(warehouseId)
-        ]);
-        setWarehouse({ ...warehouseDetails, batches });
-      } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (warehouseId) {
-      fetchData();
+      fetchWarehouseDetails(warehouseId, pagination.currentPage);
+      getWarehouseData();
     }
-  }, [warehouseId]);
+  }, [warehouseId, pagination.currentPage, getWarehouseData]);
 
-  const handleDeleteWarehouse = () => {
-    toast.success('Deleted Successfully');
-  };
-  const handleEditStock = () => {
-    toast.success('Edited Product Stocks Successfully');
-  };
-  const handleMoveProduct = () => {
-    toast.success('Moved Products Successfully');
-  };
+  // const handleDeleteProduct = async (productId) => {
+  //   try {
+  //     await deleteProductWarehouse(warehouseId, productId);
+  //     setWarehouse((prev) => ({
+  //       ...prev,
+  //       products: prev.products.filter((product) => product.productId !== productId)
+  //     }));
+  //     toast.success('Deleted Successfully');
+  //   } catch (error) {
+  //     toast.error('Failed to delete product');
+  //   }
+  // };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -57,13 +93,11 @@ const WarehouseDetailPage = () => {
         <h1 className="mb-10 text-center text-2xl">{warehouse.name}</h1>
         <div className="overflow-x-auto">
           <table className="table">
-            {/* head */}
             <thead>
               <tr>
                 <th>Product ID</th>
                 <th>Product Name</th>
                 <th>Quantity</th>
-                <th>Batches</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -74,25 +108,10 @@ const WarehouseDetailPage = () => {
                   <td>{product.productName}</td>
                   <td>{product.quantity}</td>
                   <td>
-                    <ul>
-                      {warehouse.batches
-                        .filter((batch) => batch.productId === product.productId)
-                        .map((batch) => (
-                          <li key={batch.id}>
-                            <p>Batch Name: {batch.batchName}</p>
-                            <p>Created At: {new Date(batch.createdAt).toLocaleDateString()}</p>
-                            <p>Expire Date: {new Date(batch.expireDate).toLocaleDateString()}</p>
-                            <p>Stock: {batch.stock}</p>
-                          </li>
-                        ))}
-                    </ul>
-                  </td>
-                  {/* Action Buttons and Forms */}
-                  <td>
                     <div className="flex gap-4">
                       <button
                         className="bg-tertiary hover:bg-secondary px-4 py-2 text-white rounded-lg"
-                        onClick={() => handleEditStock()}
+                        onClick={handleOpenAddStockModal}
                       >
                         <span className="flex items-center justify-center gap-2">
                           <HiOutlineTrash />
@@ -101,17 +120,16 @@ const WarehouseDetailPage = () => {
                       </button>
                       <button
                         className="bg-tertiary hover:bg-secondary px-4 py-2 text-white rounded-lg"
-                        onClick={() => handleMoveProduct()}
+                        onClick={handleOpenMoveStockModal}
                       >
                         <span className="flex items-center justify-center gap-2">
                           <HiOutlineTrash />
                           Move Product
                         </span>
                       </button>
-                      {/* Delete Warehouse */}
                       <button
                         className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg"
-                        onClick={() => handleDeleteWarehouse()}
+                        onClick={handleDeleteProductFromWarehouse}
                       >
                         <span className="flex items-center justify-center gap-2">
                           <HiOutlineTrash />
@@ -126,6 +144,27 @@ const WarehouseDetailPage = () => {
           </table>
         </div>
       </Container>
+
+      {isAddStockModalOpen && (
+        <ModalAddStockProduct
+          product={selectedProduct}
+          onClose={handleCloseAddStockModal}
+          warehouseData={warehouseData}
+        />
+      )}
+
+      {isMoveStockModalOpen && (
+        <ModalMoveStockProduct
+          product={selectedProduct}
+          onClose={handleCloseMoveStockModal}
+          warehouseData={warehouseData}
+        />
+      )}
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPage={pagination.totalPage}
+        onClick={(page) => setPagination((prev) => ({ ...prev, currentPage: page }))}
+      />
     </div>
   );
 };

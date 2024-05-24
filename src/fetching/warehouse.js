@@ -20,18 +20,25 @@ const getAllWarehouses = async (page = 1, limit = 5) => {
   return { warehouses, pagination };
 };
 
-const getWarehouseDetails = async (id) => {
+const getWarehouseDetails = async (id, page = 1, limit = 10) => {
   try {
-    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`);
+    const url = `${BASE_URL}/warehouses/${id}?${new URLSearchParams({
+      page,
+      limit
+    })}`;
+    const response = await fetchWithToken(url);
     const responseJson = await response.json();
 
     if (responseJson.status !== 'success') {
       throw new Error('Failed to retrieve warehouse data');
     }
 
-    const warehouse = responseJson.data.warehouse[0]; // Access the first (and only) element of the array
-    if (!warehouse && warehouse.id !== id) {
-      throw new Error('Warehouse not found <<<<<< MASUKKKK SINI');
+    const warehouseArray = responseJson.data.warehouse.warehouse;
+    const warehouse = warehouseArray[0];
+    const { pagination } = responseJson.data;
+
+    if (!warehouse && warehouse.id !== +id) {
+      throw new Error('Warehouse not found');
     }
 
     const warehouseDetails = {
@@ -43,14 +50,14 @@ const getWarehouseDetails = async (id) => {
       }))
     };
 
-    return warehouseDetails;
+    return { warehouseDetails, pagination };
   } catch (error) {
     console.error('Error fetching warehouse details:', error);
     throw error;
   }
 };
 
-const fetchBatches = async (warehouseId, page = 1, limit = 5) => {
+const fetchBatches = async (productId, warehouseId, page = 1, limit = 5) => {
   const url = `${BASE_URL}/warehouses/batches?page=${page}&limit=${limit}`;
 
   try {
@@ -137,6 +144,17 @@ const getWarehouseQuantities = async () => {
   }
 };
 
+const deleteProductFromWarehouse = async (id) => {
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
+      method: 'DELETE'
+    });
+    return response;
+  } catch (error) {
+    throw new Error('Failed to fetch:', error);
+  }
+};
+
 export {
   getAllWarehouses,
   getWarehouseDetails,
@@ -145,5 +163,6 @@ export {
   getWarehouseName,
   removeWarehouse,
   editWarehouse,
-  getWarehouseQuantities
+  getWarehouseQuantities,
+  deleteProductFromWarehouse
 };
