@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo -e 'PRE-PUSH\n'
+
+# If everything passes... push to remote
+echo 'Trying to build now'
+pnpm build ||
+(
+  echo 'Next build failed: View the errors above to see why.'
+  false;
+)
+
+
+echo '✅✅ Build success ✅✅'Deleting .next
