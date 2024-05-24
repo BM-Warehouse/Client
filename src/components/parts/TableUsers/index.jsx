@@ -22,7 +22,7 @@ function TableUsers() {
   return (
     <div className="table-users mt-4  p-4 md:ml-20 ">
       <div className="overflow-x-auto rounded-xl border border-secondary px-7 py-5 ">
-        <table className="table table-zebra ">
+        <table className="table table-zebra">
           <thead className="text-tertiary ">
             <tr className="overflow-hidden text-center text-base">
               <th>ID</th>
