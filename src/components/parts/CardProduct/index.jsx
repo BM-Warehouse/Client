@@ -13,7 +13,7 @@ function CardProduct({ product }) {
   return (
     <Link href={`/products/${product.id}`}>
       <div className="w-30 card mb-10 h-64 cursor-pointer bg-primary shadow-xl text-txt hover:drop-shadow-2xl md:h-80 xl:w-60">
-        <figure>
+        <figure className="h-3/5">
           <img src={product.imageUrl} alt={product.name} />
         </figure>
         <div className="card-body gap-0 px-6 py-2">
