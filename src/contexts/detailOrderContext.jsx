@@ -10,6 +10,16 @@ const DetailContexProvider = ({ children }) => {
   const [page, setPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(0);
   const [productList, setProductList] = useState([]);
+  const [status, setStatus] = useState('');
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [pagination, setPagination] = useState({
+    totalPage: null,
+    totalData: null,
+    nextPage: null,
+    prevPage: null,
+    currentPage: 1,
+    limit: null
+  });
   // const [isModalDeleteVerificationOpen, setIsModalDeleteVerificationOpen] = useState(false);
   // const [isModalEditQuantityOpen, setIsModalEditQuantityOpen] = useState(false);
 
@@ -34,7 +44,13 @@ const DetailContexProvider = ({ children }) => {
         selectedProduct,
         setSelectedProduct,
         productList,
-        setProductList
+        setProductList,
+        status,
+        setStatus,
+        totalPrice,
+        setTotalPrice,
+        pagination,
+        setPagination
       }}
     >
       {children}

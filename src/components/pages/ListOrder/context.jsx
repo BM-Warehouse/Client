@@ -15,7 +15,7 @@ const ListOrderContextProvider = ({ children }) => {
     currentPage: 1,
     limit: null
   });
-  const [ couriers, setCouriers ] = useState([]);
+  const [couriers, setCouriers] = useState([]);
 
   return (
     <ListOrderContext.Provider

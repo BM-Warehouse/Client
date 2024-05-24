@@ -69,9 +69,9 @@ const ModalAddOrder = () => {
     closeModalAddOrder();
   };
 
-  useEffect(()=>{
-    console.log(couriers)
-  }, [couriers]);
+  useEffect(() => {
+    console.log(users);
+  }, [users]);
 
   return (
     <dialog id={modalId} className="modal">
@@ -136,7 +136,9 @@ const ModalAddOrder = () => {
                 >
                   <option value=""> </option>
                   {couriers.map((i) => (
-                    <option key={i.id} value={i.id}>{i.name}</option>
+                    <option key={i.id} value={i.id}>
+                      {i.name}
+                    </option>
                   ))}
                 </select>
               </label>
