@@ -60,6 +60,7 @@ function CheckoutUser() {
       );
       toast.success('Products checked out successfully');
       setNewCheckout(newCheckout);
+      // open modal
       document.getElementById('modal-confirmation-transfer-id').showModal();
     } catch (error) {
       toast.error(`Checkout failed: ${error.message}`);
