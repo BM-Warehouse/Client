@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import Loading from '@/components/parts/Loading';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import formatDate from '@/lib/formatBirthdate';
@@ -25,7 +26,7 @@ function DetailUser({ params }) {
   }, [asyncGetDetail, id]);
 
   if (!userDetail) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const handleDestroy = async () => {
@@ -44,18 +45,19 @@ function DetailUser({ params }) {
     <section className="detail-user-page relative min-h-screen bg-bgColor pb-20 font-poppins">
       <Navbar />
       <Sidebar />
-      <div className="detail-user-page-content flex w-full flex-col items-center px-56 py-10 text-primary md:px-10">
-        <div className="detail-user-container mt-20 flex flex-col items-center px-0 md:px-8 xl:px-24">
-          <div className="detail-title mb-6 text-center">
-            <h1 className="text-3xl font-bold text-tertiary">User Detail</h1>
+      <div className="title-detailpage flex justify-center pt-24">
+        <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">User Detail</h1>
+      </div>
+      <div className="detail-user-page-content flex w-full justify-center  mt-20 text-primary">
+        <div className="detail-user-container">
+          <div className="header-profile">
+            <div className="avatar">
+              <div className="w-52 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt={userDetail.username} src={userDetail.avatar} />
+              </div>
+            </div>
           </div>
-          <figure className="w-[500px] h-[500px] p-2">
-            <img
-              src={userDetail.avatar}
-              alt={userDetail.username}
-              className="w-full h-full object-cover"
-            />
-          </figure>
           <div className="detail-body w-full px-6 pt-4">
             <div className="detail-description bg-tertiary border border-primary rounded-lg shadow-lg p-6">
               <p className="mb-3 text-base">Name : {userDetail.fullName}</p>
