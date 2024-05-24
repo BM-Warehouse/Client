@@ -73,7 +73,7 @@ function Main() {
   if (!data) return <p className="ml-36">No Detail Order</p>;
 
   return (
-    <main className="product-page bg-bgg relative h-screen font-poppins">
+    <main className="product-page bg-bgColor relative h-screen font-poppins">
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Orders</h1>
       </div>
@@ -82,7 +82,7 @@ function Main() {
           Add Order
         </ButtonPrimary>
         <div className="search-filter flex items-center justify-center">
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input border-tertiary bg-bgColor flex items-center gap-2">
             <input type="text" className="grow" placeholder="Search" />
             <svg
               xmlns="http://www.w3.org/2000/svg"

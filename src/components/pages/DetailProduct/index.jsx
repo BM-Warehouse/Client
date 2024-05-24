@@ -27,15 +27,16 @@ import useProductStore from '@/store/productStore';
 import useWarehouseStore from '@/store/warehouseStore';
 import Link from 'next/link';
 import ModalAddCategoryProduct from '@/components/parts/ModalAddCategoryProduct';
-import useCategryStore from '@/store/categoryStore';
+import useCategoryStore from '@/store/categoryStore';
 import toast from 'react-hot-toast';
 import ModalConfirmation from '@/components/parts/ModalConfirmation';
 import ProductChart from '@/components/elements/ProductChart';
+import Loading from '@/components/parts/Loading';
 
 function DetailProduct({ params }) {
   const { detailProduct, asyncGetDetail, asyncDeleteProduct } = useProductStore();
   const { warehouseData, getWarehouseData } = useWarehouseStore();
-  const { categoriesData, asyncGetAllWithoutPagination } = useCategryStore();
+  const { categoriesData, asyncGetAllWithoutPagination } = useCategoryStore();
   const { asyncAddProductToCart } = useCartStore();
   const [quantity, setQuantity] = useState(1);
   const [showMoveStockModal, setShowMoveStockModal] = useState(false);
@@ -100,11 +101,11 @@ function DetailProduct({ params }) {
   };
 
   if (!detailProduct) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!role) {
-    return null;
+    return <Loading />;
   }
 
   return (

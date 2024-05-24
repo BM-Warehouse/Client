@@ -1,7 +1,9 @@
 import ListCategories from '@/components/pages/ListCategories';
 
-function Categories() {
-  return <ListCategories />;
-}
+const Categories = () => (
+  <div>
+    <ListCategories />
+  </div>
+);
 
 export default Categories;

@@ -5,17 +5,19 @@ import { create } from 'zustand';
 import {
   addCartToCheckout,
   getCheckoutsUser,
+  getCouriers,
   getDetailCheckoutUser,
   setFeedback
 } from '@/fetching/checkout';
 
 const useCheckoutStore = create((set) => ({
   userCheckouts: [],
+  couriers: [],
   detailCheckoutUser: null,
 
-  asyncAddCartToCheckout: async (cartId, courier, address, method) => {
+  asyncAddCartToCheckout: async (cartId, courierId, address, method) => {
     try {
-      await addCartToCheckout(cartId, courier, address, method);
+      await addCartToCheckout(cartId, courierId, address, method);
     } catch (error) {
       console.error('Error in asyncAddCartToCheckout:', error.message);
     }
@@ -43,6 +45,16 @@ const useCheckoutStore = create((set) => ({
       await setFeedback(checkoutId, feedbackId);
     } catch (error) {
       console.error('Error in asyncSetFeedback:', error.message);
+    }
+  },
+  asyncGetCouriers: async () => {
+    try {
+      const data = await getCouriers();
+      set((_state) => ({
+        couriers: data.couriers
+      }));
+    } catch (error) {
+      console.error('Error in asyncGetCouriers:', error.message);
     }
   }
 }));

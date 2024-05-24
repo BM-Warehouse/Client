@@ -4,7 +4,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 import { login } from '@/fetching/auth';
 import { getOwnProfile } from '@/fetching/user';
-import { setAccessToken } from '@/lib/fetchLib';
+import { removeAccessToken, setAccessToken } from '@/lib/fetchLib';
 
 const useAuthUserStore = create(
   persist(
@@ -14,6 +14,10 @@ const useAuthUserStore = create(
       asyncSetAuthUser: async ({ username, password }) => {
         try {
           const token = await login({ username, password });
+          if (!token) {
+            // toast.error('Incorrect username or password. Please try again!');
+            throw new Error('Incorrect username or password. Please try again!');
+          }
           setAccessToken(token);
           const user = await getOwnProfile();
           // console.log(user);
@@ -23,6 +27,7 @@ const useAuthUserStore = create(
           }));
         } catch (error) {
           console.error('Error in asyncSetAuthUser:', error.message);
+          throw error;
         }
       },
       asyncUnsetAuthUser: async () => {
@@ -32,6 +37,7 @@ const useAuthUserStore = create(
             role: null
           }));
           setAccessToken('');
+          removeAccessToken();
         } catch (error) {
           console.error('Error in asyncUnsetAuthUser:', error.message);
         }

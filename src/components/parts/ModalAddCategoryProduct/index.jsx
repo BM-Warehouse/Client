@@ -2,13 +2,13 @@ import { useState } from 'react';
 
 import toast from 'react-hot-toast';
 
-import useCategryStore from '@/store/categoryStore';
+import useCategoryStore from '@/store/categoryStore';
 import useProductStore from '@/store/productStore';
 // import useWarehouseStore from '@/store/warehouseStore';
 
 function ModalAddCategoryProduct({ product, onClose, categoriesData }) {
   const { asyncGetAll, asyncGetDetail } = useProductStore();
-  const { asyncSetCategoryProduct } = useCategryStore();
+  const { asyncSetCategoryProduct } = useCategoryStore();
 
   const [selectedCategory, setSelectedCategory] = useState('');
 

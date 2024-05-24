@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 import Navbar from '@/components/parts/Navbar';
@@ -43,8 +44,23 @@ const AddUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+      !fullName ||
+      !email ||
+      !username ||
+      !password ||
+      !phone ||
+      !address ||
+      !gender ||
+      !birthdate ||
+      !roleUser
+    ) {
+      toast.error('Please fill in all fields.');
+      return;
+    }
+
     if (!file) {
-      alert('Please select a file to upload.');
+      toast.error('Please select a file to upload.');
       return;
     }
 
@@ -57,11 +73,10 @@ const AddUser = () => {
         method: 'POST',
         body: formData
       });
-
-      const { secureUrl } = await response.json();
-
-      const imageUrl = secureUrl;
-      console.log(imageUrl);
+      // eslint-disable-next-line camelcase
+      const { secure_url } = await response.json();
+      // eslint-disable-next-line camelcase
+      const avatar = secure_url;
 
       await asyncAddUser({
         fullName,
@@ -73,8 +88,10 @@ const AddUser = () => {
         gender,
         birthdate,
         role: roleUser,
-        avatar: imageUrl
+        avatar
       });
+
+      router.push(`/users`);
     } catch (error) {
       console.log(`User added failed: ${error}`);
     }
@@ -90,7 +107,7 @@ const AddUser = () => {
       <div className="add-user-page-content flex w-full flex-col items-center px-4 md:px-10 py-10 text-primary">
         <div className="add-user-container mt-10 md:mt-20 flex flex-col items-center bg-tertiary px-4 md:px-8 xl:px-24 rounded-lg shadow-lg py-10 w-full max-w-2xl">
           <h1 className="text-3xl font-bold mb-6">Add User</h1>
-          <form className="flex flex-col w-full" onSubmit={handleSubmit}>
+          <form className="flex flex-col w-full">
             <div className="input-container space-y-4">
               <label className="text-secondary w-full">
                 Name:
@@ -139,7 +156,7 @@ const AddUser = () => {
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary"
                   >
                     {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                   </button>
