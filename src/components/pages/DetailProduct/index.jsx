@@ -31,6 +31,7 @@ import useCategoryStore from '@/store/categoryStore';
 import toast from 'react-hot-toast';
 import ModalConfirmation from '@/components/parts/ModalConfirmation';
 import ProductChart from '@/components/elements/ProductChart';
+import Loading from '@/components/parts/Loading';
 
 function DetailProduct({ params }) {
   const { detailProduct, asyncGetDetail, asyncDeleteProduct } = useProductStore();
@@ -100,11 +101,11 @@ function DetailProduct({ params }) {
   };
 
   if (!detailProduct) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!role) {
-    return null;
+    return <Loading />;
   }
 
   return (
