@@ -13,6 +13,7 @@ import Navbar from '@/components/parts/Navbar';
 import OrderSummary from '@/components/parts/OrderSummary';
 import ProductPurchase from '@/components/parts/ProductPurchase';
 import Sidebar from '@/components/parts/Sidebar';
+import { addCartToCheckout } from '@/fetching/checkout';
 import useInput from '@/hooks/useInput';
 import formatRupiah from '@/lib/formatRupiah';
 import useCartStore from '@/store/cartStore';
@@ -20,11 +21,12 @@ import useCheckoutStore from '@/store/checkoutStore';
 
 function CheckoutUser() {
   const { cart, asyncShowCart, asyncResetCartToDefault } = useCartStore();
-  const { asyncAddCartToCheckout, couriers, asyncGetCouriers } = useCheckoutStore();
+  const { couriers, asyncGetCouriers } = useCheckoutStore();
   const [shippingCost, setShippingCost] = useState(0);
   const [address, onAddressChange] = useInput('');
   const [selectedShippingMethod, onShippingMethodChange] = useInput('');
   const [selectedCourier, setSelectedCourier] = useState('');
+  const [newCheckout, setNewCheckout] = useState('');
 
   const router = useRouter();
 
@@ -45,22 +47,27 @@ function CheckoutUser() {
 
   const handlePlaceOrder = async () => {
     if (!address || !selectedShippingMethod || !selectedCourier) {
-      // alert('Please fill in all required fields');
       toast.error('Please fill in all required fields');
       return;
     }
 
-    await asyncAddCartToCheckout(+cart.id, +selectedCourier, address, selectedShippingMethod);
-    toast.success('Products  checkouted successfully');
-
-    document.getElementById(`modal-confirmation-transfer-id-${cart.id}`).showModal();
-    // console.log(selectedCourier, address, selectedShippingMethod);
-
-    // console.log(cart.id);
+    try {
+      const newCheckout = await addCartToCheckout(
+        +cart.id,
+        +selectedCourier,
+        address,
+        selectedShippingMethod
+      );
+      toast.success('Products checked out successfully');
+      setNewCheckout(newCheckout);
+      document.getElementById('modal-confirmation-transfer-id').showModal();
+    } catch (error) {
+      toast.error(`Checkout failed: ${error.message}`);
+    }
   };
 
   const handleResetCart = async () => {
-    router.push('/checkout-history');
+    router.push(`/checkout-history/${newCheckout.id}`);
     await asyncResetCartToDefault();
   };
 
@@ -124,17 +131,14 @@ function CheckoutUser() {
                   {`${cou.name} | ${formatRupiah(cou.price)}`}
                 </option>
               ))}
-              {/* <option value="JNE">JNE | Rp.54,000, 3-6 days</option>
-              <option value="JNT">JNT | Rp.63,000, 2-3 days</option>
-              <option value="SiCepat">SiCepat | Rp.33,000, 4-7 days</option> */}
             </select>
           </div>
         </div>
 
         <OrderSummary cart={cart} shippingCost={shippingCost} handlePlaceOrder={handlePlaceOrder} />
         <ModalTransfer
-          id={`modal-confirmation-transfer-id-${cart.id}`}
-          totalPrice={formatRupiah(cart.totalPrice + shippingCost)}
+          id="modal-confirmation-transfer-id"
+          totalPrice={formatRupiah(newCheckout.totalPrice)}
           handleResetCart={handleResetCart}
         />
       </div>
