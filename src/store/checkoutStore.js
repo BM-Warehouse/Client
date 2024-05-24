@@ -15,9 +15,9 @@ const useCheckoutStore = create((set) => ({
   couriers: [],
   detailCheckoutUser: null,
 
-  asyncAddCartToCheckout: async (cartId, courier, address, method) => {
+  asyncAddCartToCheckout: async (cartId, courierId, address, method) => {
     try {
-      await addCartToCheckout(cartId, courier, address, method);
+      await addCartToCheckout(cartId, courierId, address, method);
     } catch (error) {
       console.error('Error in asyncAddCartToCheckout:', error.message);
     }
