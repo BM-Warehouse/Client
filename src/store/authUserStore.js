@@ -17,6 +17,8 @@ const useAuthUserStore = create(
           const token = await login({ username, password });
           if (!token) {
             toast.error('Incorrect username or password. Please try again!');
+          } else {
+            toast.success('Login Success!');
           }
           setAccessToken(token);
           const user = await getOwnProfile();
