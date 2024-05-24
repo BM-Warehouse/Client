@@ -14,9 +14,9 @@ const useUsersStore = create((set) => ({
     currentPage: 1,
     limit: null
   },
-  asyncGetAll: async (page = 1) => {
+  asyncGetAll: async (contains, page, limit, orderBy, orderType) => {
     try {
-      const users = await getAllUsers(page);
+      const users = await getAllUsers(contains, page, limit, orderBy, orderType);
       set((_state) => ({
         usersData: users.users,
         pagination: users.pagination
