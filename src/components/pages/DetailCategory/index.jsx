@@ -85,7 +85,7 @@ function DetailCategory({ params }) {
                 <div className="btn-delete mt-5">
                   <button
                     onClick={handleRemove}
-                    className="w-full bg-slate-500 px-8 py-4 font-bold text-white hover:bg-red-500 rounded-lg h-11 text-sm"
+                    className="btn w-full bg-rose-400 font-bold text-white hover:bg-rose-500"
                   >
                     Remove Category
                   </button>
