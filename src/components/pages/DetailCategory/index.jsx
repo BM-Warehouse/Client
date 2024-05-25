@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 
 import ContainerProductCategory from '@/components/parts/ContainerProductCategory';
 import useAuthUserStore from '@/store/authUserStore';
-import useCategoryStore from '@/store/categoryStore';
+import useCategryStore from '@/store/categoryStore';
 
 function DetailCategory({ params }) {
   const { role } = useAuthUserStore();
@@ -19,7 +19,7 @@ function DetailCategory({ params }) {
     asyncGetDetailCategory,
     asyncEditCategory,
     asyncRemoveCategory
-  } = useCategoryStore((state) => ({
+  } = useCategryStore((state) => ({
     productCategories: state.productCategories,
     categoryDetail: state.categoryDetail,
     asyncGetDetailCategory: state.asyncGetDetailCategory,
@@ -32,25 +32,33 @@ function DetailCategory({ params }) {
 
   const id = +params.categoryId;
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState(categoryDetail.name);
+  const [description, setDescription] = useState(categoryDetail.description);
   const [file, setFile] = useState(null);
 
-  const handleChange = (e) => {
+  const handleChangeName = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleChangeDescription = (e) => {
+    setDescription(e.target.value);
+  };
+
+  const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'rwheysjo');
+    const formImage = new FormData();
+    formImage.append('file', file);
+    formImage.append('upload_preset', 'rwheysjo');
 
     try {
       const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
         method: 'POST',
-        body: formData
+        body: formImage
       });
 
       // secureUrl ganti dulu jadi secure_url
@@ -59,11 +67,6 @@ function DetailCategory({ params }) {
 
       // eslint-disable-next-line camelcase
       const imageUrl = secure_url || categoryDetail.imageUrl;
-
-      if (name === '' || description === '') {
-        setName(categoryDetail.name);
-        setDescription(categoryDetail.description);
-      }
 
       await asyncEditCategory(id, { name, description, imageUrl });
       document.getElementById('my_modal_1').close();
@@ -88,10 +91,6 @@ function DetailCategory({ params }) {
 
   if (!categoryDetail || !productCategories) {
     return <div>Loading...</div>;
-  }
-
-  if (!role) {
-    return null;
   }
 
   return (
@@ -135,8 +134,8 @@ function DetailCategory({ params }) {
                           </label>
                           <input
                             type="text"
-                            defaultValue={categoryDetail.name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={name}
+                            onChange={handleChangeName}
                             className="input input-bordered"
                           />
                         </div>
@@ -146,15 +145,15 @@ function DetailCategory({ params }) {
                           </label>
                           <input
                             type="text"
-                            defaultValue={categoryDetail.description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            defaultValue={description}
+                            onChange={handleChangeDescription}
                             className="input input-bordered"
                           />
                         </div>
                         <div className="form-control">
                           <input
                             type="file"
-                            onChange={handleChange}
+                            onChange={handleFileChange}
                             className="file-input file-input-bordered file-input-sm w-full max-w-xs mt-5 text-secondary file:bg-secondary file:border-secondary file:text-white"
                           />
                         </div>

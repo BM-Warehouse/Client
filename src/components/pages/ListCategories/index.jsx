@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { IoFilterSharp } from 'react-icons/io5';
 
 import ContainerCategory from '@/components/parts/ContainerCategory';
+// import Loading from '@/components/parts/Loading';
 import Pagination from '@/components/parts/Pagination';
 import useAuthUserStore from '@/store/authUserStore';
 import useCategoryStore from '@/store/categoryStore';
@@ -29,6 +30,7 @@ function ListCategories() {
   useEffect(() => {
     asyncGetAllCategory().then(() => {
       setLoading(false);
+      // return <Loading />;
     });
   }, [asyncGetAllCategory]);
 
@@ -193,7 +195,7 @@ function ListCategories() {
             <div> </div>
           )}
         </div>
-        <div className="button-categories flex items-center">
+        <div className="button-categories flex justify-between items-center">
           <label className="input flex h-8 items-center gap-2 border-tertiary">
             <input
               type="text"
