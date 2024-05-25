@@ -1,26 +1,25 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable react/no-array-index-key */
 import { useState, useEffect } from 'react';
+
+import { useRouter } from 'next/navigation';
 
 import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
-const ExpireInfo = () => {
+const ExpireNotification = () => {
   const [expireInfo, setExpireInfo] = useState([]);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchExp = async () => {
       try {
-        const response = await fetchWithToken(`${BASE_URL}/batch/expBatch?limit=10`, {
+        const response = await fetchWithToken(`${BASE_URL}/batch/expBatch?limit=100000`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
           }
         });
         const data = await response.json();
-        setExpireInfo(data.data.batches); // Store all fetched items
+        setExpireInfo(data.data.batches);
       } catch (e) {
         console.error('Failed to fetch expired product', e);
       }
@@ -29,47 +28,42 @@ const ExpireInfo = () => {
     fetchExp();
   }, []);
 
-  const handleToggle = () => {
-    setIsExpanded(!isExpanded);
+  const handleSeeClick = () => {
+    router.push('/expireinfo');
   };
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Expiring Products</h2>
-      {expireInfo.length === 0 ? (
-        <p>No expiring products available.</p>
-      ) : (
+      <div
+        role="alert"
+        className={`alert shadow-lg ${
+          expireInfo.length > 0 ? 'bg-danger text-white' : 'bg-green-500 text-white'
+        }`}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          className="stroke-info shrink-0 w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            color="bg-red-500"
+          />
+        </svg>
         <div>
-          <div onClick={handleToggle} className="p-4 border rounded shadow cursor-pointer">
-            <h3 className="text-xl font-semibold">{expireInfo[0].product.name}</h3>
-            <p className="text-gray-600">Batch: {expireInfo[0].batchName}</p>
-            <p className="text-gray-600">Warehouse: {expireInfo[0].warehouse.name}</p>
-            <p className="text-gray-600">
-              Expires on: {new Date(expireInfo[0].expireDate).toLocaleDateString()}
-            </p>
-            <div className="text-blue-500 mt-2">{isExpanded ? 'Show Less' : 'Show More'}</div>
-          </div>
-          {isExpanded && (
-            <div className="mt-4">
-              <h3 className="text-xl font-semibold mb-4">More Expiring Products</h3>
-              <div className="grid grid-cols-1 gap-4">
-                {expireInfo.slice(1).map((batch, index) => (
-                  <div key={index} className="p-4 border rounded shadow">
-                    <h3 className="text-xl font-semibold">{batch.product.name}</h3>
-                    <p className="text-gray-600">Batch: {batch.batchName}</p>
-                    <p className="text-gray-600">Warehouse: {batch.warehouse.name}</p>
-                    <p className="text-gray-600">
-                      Expires on: {new Date(batch.expireDate).toLocaleDateString()}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          <h3 className="font-bold">Expiring Products!</h3>
+          <div className="text-xs">You have {expireInfo.length} expiring products</div>
         </div>
-      )}
+        <button className="btn btn-sm" onClick={handleSeeClick}>
+          See
+        </button>
+      </div>
     </div>
   );
 };
 
-export default ExpireInfo;
+export default ExpireNotification;
