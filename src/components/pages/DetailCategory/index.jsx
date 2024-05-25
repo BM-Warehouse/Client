@@ -43,28 +43,32 @@ function DetailCategory({ params }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'rwheysjo');
-
     try {
-      const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
-        method: 'POST',
-        body: formData
-      });
-
-      // secureUrl ganti dulu jadi secure_url
-      // eslint-disable-next-line camelcase
-      const { secure_url } = await response.json();
-
-      // eslint-disable-next-line camelcase
-      const imageUrl = secure_url || categoryDetail.imageUrl;
-
-      if (name === '' || description === '') {
-        setName(categoryDetail.name);
-        setDescription(categoryDetail.description);
+      let imageUrl = null;
+      if (file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'rwheysjo');
+        const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
+          method: 'POST',
+          body: formData
+        });
+        // secureUrl ganti dulu jadi secure_url
+        // eslint-disable-next-line camelcase
+        const { secure_url } = await response.json();
+        // eslint-disable-next-line camelcase
+        imageUrl = secure_url;
       }
 
+      // eslint-disable-next-line camelcase
+      imageUrl = imageUrl || categoryDetail.imageUrl;
+
+      // if (name === '' || description === '') {
+      //   setName(categoryDetail.name);
+      //   setDescription(categoryDetail.description);
+      // }
+
+      // console.log(id, { name, description, imageUrl });
       await asyncEditCategory(id, { name, description, imageUrl });
       document.getElementById('my_modal_1').close();
       toast.success('Category updated successfully!');
@@ -86,6 +90,13 @@ function DetailCategory({ params }) {
     asyncGetDetailCategory(id);
   }, [asyncGetDetailCategory, id]);
 
+  useEffect(() => {
+    if (categoryDetail) {
+      setName(categoryDetail.name);
+      setDescription(categoryDetail.description);
+    }
+  }, [categoryDetail]);
+
   if (!categoryDetail || !productCategories) {
     return <div>Loading...</div>;
   }
@@ -105,6 +116,7 @@ function DetailCategory({ params }) {
               width={1000}
               height={1000}
               className="w-96 h-full object-cover"
+              priority
             />
           </figure>
           <div className="detail-body grid-rows grid w-full px-6 pt-4 md:ml-10 md:w-2/4 md:px-0">
@@ -138,6 +150,7 @@ function DetailCategory({ params }) {
                             defaultValue={categoryDetail.name}
                             onChange={(e) => setName(e.target.value)}
                             className="input input-bordered"
+                            required
                           />
                         </div>
                         <div className="form-control">
@@ -165,9 +178,13 @@ function DetailCategory({ params }) {
                             </button>
                           </div>
                           <div className="modal-action">
-                            <form method="dialog" className="flex flex-row-reverse justify-between">
-                              <button className="btn bg-secondary text-white">Close</button>
-                            </form>
+                            <button
+                              type="button"
+                              className="btn bg-secondary text-white"
+                              onClick={() => document.getElementById('my_modal_1').close()}
+                            >
+                              Close
+                            </button>
                           </div>
                         </div>
                       </form>
