@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import useCategoryStore from '@/store/categoryStore';
+import { Input, InputFile, Modal, TextArea } from '@/components/parts/Modal';
+import { ButtonPrimary } from '@/components/parts/Button';
 
 const modalId = 'modal-edit-category';
 
@@ -136,4 +138,81 @@ const ModalEditCategory = ({ id }) => {
   );
 };
 
-export { ModalEditCategory, openModalEditCategory, closeModalEditCategory };
+const ModalEditCategory2 = ({ id }) => {
+  const { categoryDetail, asyncGetDetailCategory, asyncEditCategory } = useCategoryStore(
+    (state) => ({
+      productCategories: state.productCategories,
+      categoryDetail: state.categoryDetail,
+      asyncGetDetailCategory: state.asyncGetDetailCategory,
+      asyncEditCategory: state.asyncEditCategory,
+      asyncRemoveCategory: state.asyncRemoveCategory
+    })
+  );
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [file, setFile] = useState(null);
+
+  useEffect(() => {
+    if (categoryDetail) {
+      setName(categoryDetail.name);
+      setDescription(categoryDetail.description);
+    }
+  }, [categoryDetail]);
+
+  const handleChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      let imageUrl = null;
+      if (file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'rwheysjo');
+        const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
+          method: 'POST',
+          body: formData
+        });
+        // secureUrl ganti dulu jadi secure_url
+        // eslint-disable-next-line camelcase
+        const { secure_url } = await response.json();
+        // eslint-disable-next-line camelcase
+        imageUrl = secure_url;
+      }
+
+      // eslint-disable-next-line camelcase
+      imageUrl = imageUrl || categoryDetail.imageUrl;
+
+      // if (name === '' || description === '') {
+      //   setName(categoryDetail.name);
+      //   setDescription(categoryDetail.description);
+      // }
+
+      // console.log(id, { name, description, imageUrl });
+      await asyncEditCategory(id, { name, description, imageUrl });
+      closeModalEditCategory();
+      toast.success('Category updated successfully!');
+      await asyncGetDetailCategory(id);
+    } catch (error) {
+      console.log(`category edited failed: ${error}`);
+    }
+  };
+
+  return(
+    <Modal id={modalId} title='Edit Category' onSubmit={handleSubmit}>
+      <Input label='Category Name' defaultValue={categoryDetail.name} onChange={(e) => setName(e.target.value)}/>
+      <TextArea label='Description' defaultValue={categoryDetail.description} onChange={(e) => setDescription(e.target.value)}/>
+      <InputFile label='Category Picture' onChange={handleChange}/>
+      <div className='flex justify-center w-full'>
+        <ButtonPrimary className="mr-5" type='submit'>Submit</ButtonPrimary>
+        <ButtonPrimary className="ml-5" type='button' onClick={closeModalEditCategory}>Close</ButtonPrimary>
+      </div>
+    </Modal>
+  );
+};
+
+export { ModalEditCategory, ModalEditCategory2, openModalEditCategory, closeModalEditCategory };

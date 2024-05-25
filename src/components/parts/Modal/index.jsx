@@ -35,7 +35,7 @@ const Form = ({ children, onSubmit, action }) => (
   </form>
 );
 
-const Input = ({ label, name, type, onChange, className, value, placeholder }) => (
+const Input = ({ label, name, type, onChange, className, value, placeholder, defaultValue, ...rest }) => (
   <label className="form-control w-full">
     <div className="label">
       <span className="label-text text-secondary">{label}</span>
@@ -49,6 +49,8 @@ const Input = ({ label, name, type, onChange, className, value, placeholder }) =
       value={value}
       onChange={onChange}
       placeholder={placeholder}
+      defaultValue={defaultValue}
+      {...rest}
     />
   </label>
 );
@@ -82,7 +84,7 @@ const InputFile = ({ label, name, onChange, className, value, placeholder }) => 
   </label>
 );
 
-const TextArea = ({ className, name, label, value, onChange }) => (
+const TextArea = ({ className, name, label, value, onChange, defaultValue }) => (
   <label className="form-control w-full">
     <div className="label">
       <span className="label-text text-secondary">{label}</span>
@@ -96,6 +98,7 @@ const TextArea = ({ className, name, label, value, onChange }) => (
         className || ''
       }`}
       onChange={onChange}
+      defaultValue={defaultValue}
     />
   </label>
 );
