@@ -1,6 +1,6 @@
-/* eslint-disable no-alert */
 // import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 
 // import SusuBayik from '@/assets/images/susu-bayik.png';
@@ -19,11 +19,11 @@ function ProductPurchase({ product }) {
   const handleDelete = async () => {
     try {
       await asyncDeleteCartProduct(product.product.id);
-      alert('Product removed from cart successfully!');
+      toast.success('Product removed from cart successfully!');
       await asyncShowCart();
     } catch (error) {
       console.error('Error deleting product from cart:', error.message);
-      alert('Failed to remove product from cart.');
+      toast.error('Failed to remove product from cart.');
     }
   };
   return (

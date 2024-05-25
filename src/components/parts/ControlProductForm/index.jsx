@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-/* eslint-disable no-alert */
 
 'use client';
 
@@ -57,7 +56,7 @@ function ControlProductForm({ product }) {
     console.log('submit diklik');
 
     if (!selectedImage) {
-      alert('Please select a file to upload.');
+      toast.error('Please select a file to upload.');
       return;
     }
 

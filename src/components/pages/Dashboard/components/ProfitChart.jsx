@@ -93,7 +93,7 @@ const AreaChart = () => {
   }, []);
 
   return (
-    <div className="h-96 w-full">
+    <div className="h-80 w-full">
       <Line options={options} data={chartData} />
     </div>
   );
