@@ -10,31 +10,36 @@ import ContainerProductCategory from '@/components/parts/ContainerProductCategor
 import useAuthUserStore from '@/store/authUserStore';
 import useCategoryStore from '@/store/categoryStore';
 
-function DetailCategory({ params }) {
-  const { role } = useAuthUserStore();
+const modalId = 'modal-edit-category';
 
-  const {
-    categoryDetail,
-    productCategories,
-    asyncGetDetailCategory,
-    asyncEditCategory,
-    asyncRemoveCategory
-  } = useCategoryStore((state) => ({
-    productCategories: state.productCategories,
-    categoryDetail: state.categoryDetail,
-    asyncGetDetailCategory: state.asyncGetDetailCategory,
-    asyncEditCategory: state.asyncEditCategory,
-    asyncRemoveCategory: state.asyncRemoveCategory
-  }));
+const openModalEditCategory = () => {
+  document.getElementById(modalId).showModal();
+};
+const closeModalEditCategory = () => {
+  document.getElementById(modalId).close();
+};
 
-  const router = useRouter();
-  // console.log(productCategories.productCategories);
-
-  const id = +params.categoryId;
+const ModalEditCategory = ({ id }) => {
+  const { categoryDetail, asyncGetDetailCategory, asyncEditCategory } = useCategoryStore(
+    (state) => ({
+      productCategories: state.productCategories,
+      categoryDetail: state.categoryDetail,
+      asyncGetDetailCategory: state.asyncGetDetailCategory,
+      asyncEditCategory: state.asyncEditCategory,
+      asyncRemoveCategory: state.asyncRemoveCategory
+    })
+  );
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
+
+  useEffect(() => {
+    if (categoryDetail) {
+      setName(categoryDetail.name);
+      setDescription(categoryDetail.description);
+    }
+  }, [categoryDetail]);
 
   const handleChange = (e) => {
     setFile(e.target.files[0]);
@@ -70,13 +75,87 @@ function DetailCategory({ params }) {
 
       // console.log(id, { name, description, imageUrl });
       await asyncEditCategory(id, { name, description, imageUrl });
-      document.getElementById('my_modal_1').close();
+      closeModalEditCategory();
       toast.success('Category updated successfully!');
       await asyncGetDetailCategory(id);
     } catch (error) {
       console.log(`category edited failed: ${error}`);
     }
   };
+
+  return (
+    <dialog id={modalId} className="modal">
+      <div className="modal-box bg-primary">
+        <h3 className="text-lg font-bold text-secondary">Edit Category</h3>
+        <form onSubmit={handleSubmit}>
+          <div className="form-control">
+            <label htmlFor="" className="text-secondary">
+              Category name:
+            </label>
+            <input
+              type="text"
+              defaultValue={categoryDetail.name}
+              onChange={(e) => setName(e.target.value)}
+              className="input input-bordered"
+              required
+            />
+          </div>
+          <div className="form-control">
+            <label htmlFor="" className="text-secondary">
+              Description:
+            </label>
+            <input
+              type="text"
+              defaultValue={categoryDetail.description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="input input-bordered"
+            />
+          </div>
+          <div className="form-control">
+            <input
+              type="file"
+              onChange={handleChange}
+              className="file-input file-input-bordered file-input-sm w-full max-w-xs mt-5 text-secondary file:bg-secondary file:border-secondary file:text-white"
+            />
+          </div>
+          <div className="container-btn-action flex items-center justify-between">
+            <div className="container-btn-submit mt-7">
+              <button type="submit" className="btn bg-secondary text-white">
+                Submit
+              </button>
+            </div>
+            <div className="modal-action">
+              <button
+                type="button"
+                className="btn bg-secondary text-white"
+                onClick={closeModalEditCategory}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </dialog>
+  );
+};
+
+function DetailCategory({ params }) {
+  const { role } = useAuthUserStore();
+
+  const { categoryDetail, productCategories, asyncGetDetailCategory, asyncRemoveCategory } =
+    useCategoryStore((state) => ({
+      productCategories: state.productCategories,
+      categoryDetail: state.categoryDetail,
+      asyncGetDetailCategory: state.asyncGetDetailCategory,
+      asyncEditCategory: state.asyncEditCategory,
+      asyncRemoveCategory: state.asyncRemoveCategory
+    }));
+
+  const router = useRouter();
+  // console.log(productCategories.productCategories);
+
+  const id = +params.categoryId;
 
   const handleRemove = async () => {
     const removedCategory = await asyncRemoveCategory(id);
@@ -89,13 +168,6 @@ function DetailCategory({ params }) {
   useEffect(() => {
     asyncGetDetailCategory(id);
   }, [asyncGetDetailCategory, id]);
-
-  useEffect(() => {
-    if (categoryDetail) {
-      setName(categoryDetail.name);
-      setDescription(categoryDetail.description);
-    }
-  }, [categoryDetail]);
 
   if (!categoryDetail || !productCategories) {
     return <div>Loading...</div>;
@@ -133,63 +205,10 @@ function DetailCategory({ params }) {
                 <div className="btn-edit mt-5">
                   <button
                     className="btn w-full bg-tertiary text-white hover:bg-secondary"
-                    onClick={() => document.getElementById('my_modal_1').showModal()}
+                    onClick={openModalEditCategory}
                   >
                     Edit Category
                   </button>
-                  <dialog id="my_modal_1" className="modal">
-                    <div className="modal-box bg-primary">
-                      <h3 className="text-lg font-bold text-secondary">Edit Category</h3>
-                      <form onSubmit={handleSubmit}>
-                        <div className="form-control">
-                          <label htmlFor="" className="text-secondary">
-                            Category name:
-                          </label>
-                          <input
-                            type="text"
-                            defaultValue={categoryDetail.name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="input input-bordered"
-                            required
-                          />
-                        </div>
-                        <div className="form-control">
-                          <label htmlFor="" className="text-secondary">
-                            Description:
-                          </label>
-                          <input
-                            type="text"
-                            defaultValue={categoryDetail.description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            className="input input-bordered"
-                          />
-                        </div>
-                        <div className="form-control">
-                          <input
-                            type="file"
-                            onChange={handleChange}
-                            className="file-input file-input-bordered file-input-sm w-full max-w-xs mt-5 text-secondary file:bg-secondary file:border-secondary file:text-white"
-                          />
-                        </div>
-                        <div className="container-btn-action flex items-center justify-between">
-                          <div className="container-btn-submit mt-7">
-                            <button type="submit" className="btn bg-secondary text-white">
-                              Submit
-                            </button>
-                          </div>
-                          <div className="modal-action">
-                            <button
-                              type="button"
-                              className="btn bg-secondary text-white"
-                              onClick={() => document.getElementById('my_modal_1').close()}
-                            >
-                              Close
-                            </button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </dialog>
                 </div>
                 <div className="btn-delete mt-5">
                   <button
@@ -209,6 +228,7 @@ function DetailCategory({ params }) {
           <ContainerProductCategory productCategories={productCategories} />
         </div>
       </div>
+      <ModalEditCategory id={id} />
     </section>
   );
 }
