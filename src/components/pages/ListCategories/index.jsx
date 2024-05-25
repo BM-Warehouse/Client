@@ -269,7 +269,11 @@ function ListCategories() {
         </div>
       </div>
       {/* <div className="container-products mt-24 grid grid-cols-2 gap-4 p-4 md:ml-20 md:grid-cols-3 xl:grid-cols-5"> */}
-      <ContainerCategory categoriesData={categoriesData} />
+      {/* <div className="container-products w-full">
+      </div> */}
+      <div className="detail-category-page-content flex w-full justify-center">
+        <ContainerCategory categoriesData={categoriesData} />
+      </div>
       {/* </div> */}
       <Pagination
         currentPage={pagination.currentPage}

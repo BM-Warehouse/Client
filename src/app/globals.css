@@ -15,6 +15,7 @@ html,
   --background-end-rgb: 255, 255, 255;
   --primary: #f7f3ce;
   --secondary: #7fb4ba;
+  --bgInput: #fff;
   --tertiary: #04b0c4;
   --black: #000000;
   --white: #ffffff;
@@ -38,6 +39,7 @@ html,
   --secondary: #e0e0e0;
   --tertiary: #bdbdbd;
   --bgColor: #121212;
+  --bgInput: #333;
   --txt: #ffffff;
   --accent-color: #1a1a1a;
   --table-zebra: #191e24;
