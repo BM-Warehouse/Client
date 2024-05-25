@@ -35,13 +35,23 @@ const Form = ({ children, onSubmit, action }) => (
   </form>
 );
 
-const Input = ({ label, name, type, onChange, className, value, placeholder, defaultValue, ...rest }) => (
+const Input = ({
+  label,
+  name,
+  type,
+  onChange,
+  className,
+  value,
+  placeholder,
+  defaultValue,
+  ...rest
+}) => (
   <label className="form-control w-full">
     <div className="label">
       <span className="label-text text-secondary">{label}</span>
     </div>
     <input
-      className={`input input-border-custom placeholder:text-secondary text-secondary ${
+      className={`input input-border-custom placeholder:text-secondary text-secondary !bg-bgInput ${
         className || ''
       }`}
       type={type}
@@ -70,6 +80,7 @@ const InputFile = ({ label, name, onChange, className, value, placeholder }) => 
           file:text-primary
           file:cursor-pointer
           
+          !bg-bgInput 
           border
           border-secondary
           rounded-lg
@@ -94,7 +105,7 @@ const TextArea = ({ className, name, label, value, onChange, defaultValue }) => 
       value={value}
       name={name}
       placeholder="Type here"
-      className={`block p-2.5 w-full text-sm text-secondary rounded-lg border border-secondary focus:ring-secondary focus:border-secondary focus:outline  focus:outline-offset-1  ${
+      className={`block p-2.5 w-full text-sm text-secondary rounded-lg border border-secondary focus:ring-secondary focus:border-secondary focus:outline  focus:outline-offset-1 !bg-bgInput ${
         className || ''
       }`}
       onChange={onChange}
@@ -105,7 +116,7 @@ const TextArea = ({ className, name, label, value, onChange, defaultValue }) => 
 
 const Modal = ({ children, title, description, id, className, onSubmit, action }) => (
   <dialog id={id} className="modal">
-    <div className={`modal-box h-auto max-w-3xl p-12 ${className}`}>
+    <div className={`modal-box h-auto max-w-3xl p-12 bg-bgColor ${className}`}>
       <div className="flex flex-col items-center">
         <h2 className="font-bold text-2xl mb-5 text-secondary">{title}</h2>
         {description && <p className="py-4">{description}</p>}

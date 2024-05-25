@@ -10,7 +10,7 @@ import ContainerProductCategory from '@/components/parts/ContainerProductCategor
 import useAuthUserStore from '@/store/authUserStore';
 import useCategoryStore from '@/store/categoryStore';
 
-import { ModalEditCategory, ModalEditCategory2, openModalEditCategory } from './ModalEditCategory';
+import { ModalEditCategory2, openModalEditCategory } from './ModalEditCategory';
 
 function DetailCategory({ params }) {
   const { role } = useAuthUserStore();
@@ -100,7 +100,6 @@ function DetailCategory({ params }) {
           <ContainerProductCategory productCategories={productCategories} />
         </div>
       </div>
-      {/* <ModalEditCategory id={id} /> */}
       <ModalEditCategory2 id={id} />
     </section>
   );

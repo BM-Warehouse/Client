@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 
 import toast from 'react-hot-toast';
 
-import useCategoryStore from '@/store/categoryStore';
-import { Input, InputFile, Modal, TextArea } from '@/components/parts/Modal';
 import { ButtonPrimary } from '@/components/parts/Button';
+import { Input, InputFile, Modal, TextArea } from '@/components/parts/Modal';
+import useCategoryStore from '@/store/categoryStore';
 
 const modalId = 'modal-edit-category';
 
@@ -202,14 +202,26 @@ const ModalEditCategory2 = ({ id }) => {
     }
   };
 
-  return(
-    <Modal id={modalId} title='Edit Category' onSubmit={handleSubmit}>
-      <Input label='Category Name' defaultValue={categoryDetail.name} onChange={(e) => setName(e.target.value)}/>
-      <TextArea label='Description' defaultValue={categoryDetail.description} onChange={(e) => setDescription(e.target.value)}/>
-      <InputFile label='Category Picture' onChange={handleChange}/>
-      <div className='flex justify-center w-full'>
-        <ButtonPrimary className="mr-5" type='submit'>Submit</ButtonPrimary>
-        <ButtonPrimary className="ml-5" type='button' onClick={closeModalEditCategory}>Close</ButtonPrimary>
+  return (
+    <Modal id={modalId} title="Edit Category" onSubmit={handleSubmit}>
+      <Input
+        label="Category Name"
+        defaultValue={categoryDetail.name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <TextArea
+        label="Description"
+        defaultValue={categoryDetail.description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <InputFile label="Category Picture" onChange={handleChange} />
+      <div className="flex justify-center w-full">
+        <ButtonPrimary className="mr-5" type="submit">
+          Submit
+        </ButtonPrimary>
+        <ButtonPrimary className="ml-5" type="button" onClick={closeModalEditCategory}>
+          Close
+        </ButtonPrimary>
       </div>
     </Modal>
   );

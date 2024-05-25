@@ -32,6 +32,7 @@ module.exports = {
         darkblue: 'var(--darkblue)',
         txt: 'var(--txt)',
         bgColor: 'var(--bgColor)',
+        bgInput: 'var(--bgInput)',
         danger: 'var(--danger)',
         ligtDanger: 'var(--ligtDanger)'
       },
