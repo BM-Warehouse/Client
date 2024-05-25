@@ -9,8 +9,8 @@ import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { getAllWarehouses } from '@/fetching/warehouse';
 import formatRupiah from '@/lib/formatRupiah';
 
-function Row({ productId, no, productName, amount, price, warehouses }) {
-  const { updateSelectedWarehouse, selectedWarehouses, setSelectedProduct } =
+function Row({ productId, no, productName, amount, price, warehouses, selectedWarehouseId }) {
+  const { updateSelectedWarehouse, selectedWarehouses, setSelectedProduct, status } =
     useContext(DetailOrderContex);
   const product = {
     id: productId,
@@ -30,6 +30,10 @@ function Row({ productId, no, productName, amount, price, warehouses }) {
     openModalEditQuantity();
   };
 
+  // useEffect(()=>{
+  //   console.log(data);
+  // }, []);
+
   return (
     <tr>
       <td>{no || '-'}</td>
@@ -39,7 +43,8 @@ function Row({ productId, no, productName, amount, price, warehouses }) {
       <td>
         <select
           className="select select-bordered h-9 min-h-9 min-w-48"
-          value={selectedWarehouses[productId] || ''}
+          disabled={!!selectedWarehouseId}
+          value={selectedWarehouseId || selectedWarehouses[productId] || ''}
           id="warehouseSelect"
           onChange={(e) => {
             updateSelectedWarehouse(productId, e.target.value);
@@ -54,8 +59,18 @@ function Row({ productId, no, productName, amount, price, warehouses }) {
         </select>
       </td>
       <td>
-        <ButtonPrimary icon="edit" title="Edit Quantity" onClick={handleEditButtonClick} />
-        <ButtonStrong icon="delete" title="Delete Product" onClick={handleDeleteButtonClick} />
+        <ButtonPrimary
+          icon="edit"
+          title="Edit Quantity"
+          disable={status !== 'WAIT FOR PAYMENT'}
+          onClick={handleEditButtonClick}
+        />
+        <ButtonStrong
+          icon="delete"
+          title="Delete Product"
+          disable={status !== 'WAIT FOR PAYMENT'}
+          onClick={handleDeleteButtonClick}
+        />
       </td>
     </tr>
   );
@@ -65,10 +80,10 @@ function ContainerOrderDetail({ checkoutId, data }) {
   const [warehouses, setWarehouses] = useState(null);
 
   useEffect(() => {
-    getAllWarehouses()
+    getAllWarehouses(1, 10000)
       .then((res) => {
         // console.log('>>>', res);
-        setWarehouses(res);
+        setWarehouses(res.warehouses);
       })
       .catch((error) => {
         console.log('Error:', error);
@@ -80,7 +95,7 @@ function ContainerOrderDetail({ checkoutId, data }) {
   // }, [warehouses]);
 
   return (
-    <div className="container-detail-order mt-4  p-4 md:ml-20 ">
+    <div className="container-detail-order p-4 md:ml-20 ">
       <div className="overflow-x-auto rounded-xl border border-secondary px-7 py-5 ">
         <table className="table table-zebra ">
           {/* head */}
@@ -104,6 +119,7 @@ function ContainerOrderDetail({ checkoutId, data }) {
                 amount={d.quantityItem}
                 price={formatRupiah(d.productPrice)}
                 warehouses={warehouses}
+                selectedWarehouseId={d.warehouseId}
               />
             ))}
           </tbody>

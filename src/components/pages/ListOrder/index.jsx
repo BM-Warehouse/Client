@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 
 import { ButtonPrimary } from '@/components/parts/Button';
 import Pagination from '@/components/parts/Pagination';
+import { getAllCouriers } from '@/fetching/courier';
 import { getAllOrders } from '@/fetching/orders';
 import { getAllUsers } from '@/fetching/user';
 
@@ -16,7 +17,7 @@ import ModalAddOrder, { openModalAddOrder } from './ModalAddOrder';
 function Main() {
   const { data, setData, pagination, setPagination } = useContext(ListOrderContext);
   const [isLoading, setLoading] = useState(true);
-  const { setUsers } = useContext(ListOrderContext);
+  const { setUsers, setCouriers } = useContext(ListOrderContext);
 
   useEffect(() => {
     getAllOrders()
@@ -44,10 +45,13 @@ function Main() {
       });
   };
 
-  const handleAddOrderClick = () => {
-    getAllUsers(1, 10000)
+  const handleAddOrderClick = async () => {
+    getAllUsers('', 1, 10000)
       .then((r) => {
-        setUsers(r);
+        setUsers(r.users);
+        getAllCouriers().then((r) => {
+          setCouriers(r.data.couriers.couriers);
+        });
       })
       .catch((e) => {
         toast.error(`fail to fet user: ${e}`);
@@ -62,7 +66,7 @@ function Main() {
   if (isLoading)
     return (
       <div className="flex h-screen items-center justify-center">
-        <span className="loading loading-bars loading-lg text-tertiary"> </span>;
+        <span className="loading loading-bars loading-lg text-tertiary"> </span>
       </div>
     );
   if (!data) return <p className="ml-36">No Detail Order</p>;

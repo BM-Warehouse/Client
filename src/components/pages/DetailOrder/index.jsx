@@ -8,27 +8,23 @@ import { FaSearch } from 'react-icons/fa';
 
 import { ButtonPrimary } from '@/components/parts/Button';
 import ContainerOrderDetail from '@/components/parts/ContainerDetailOrder';
+import Loading from '@/components/parts/Loading';
+import OrderSteps from '@/components/parts/OrderSteps';
 import Pagination from '@/components/parts/Pagination';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { sendOrder, getDetailOrder, confirmPayment } from '@/fetching/orders';
 import { getAllProducts } from '@/fetching/product';
+import formatRupiah from '@/lib/formatRupiah';
 
 import ModalAddProduct from './ModalAddProduct';
 import ModalDeleteVerification from './ModalDeleteVerification';
 import ModalEditQuantity from './ModalEditQuantity';
 
 const DetailOrder = ({ id }) => {
-  const { data, setData } = useContext(DetailOrderContex);
-  const [pagination, setPagination] = useState({
-    totalPage: null,
-    totalData: null,
-    nextPage: null,
-    prevPage: null,
-    currentPage: 1,
-    limit: null
-  });
+  const { data, setData, status, setStatus, totalPrice, setTotalPrice, pagination, setPagination } =
+    useContext(DetailOrderContex);
+
   const [isLoading, setLoading] = useState(true);
-  const [status, setStatus] = useState('');
   const router = useRouter();
   const { selectedWarehouses, setCurrentCheckoutId, setPage, setProductList } =
     useContext(DetailOrderContex);
@@ -47,6 +43,7 @@ const DetailOrder = ({ id }) => {
         router.push('/orders');
       })
       .catch((e) => {
+        toast.error('Something Wrong!');
         console.log(e);
       });
   };
@@ -84,12 +81,13 @@ const DetailOrder = ({ id }) => {
         setData(detailOrderData.data.checkout.productCheckout);
         setStatus(detailOrderData.data.checkout.status);
         setPagination(detailOrderData.data.pagination);
+        setTotalPrice(detailOrderData.data.checkout.totalPrice);
         setLoading(false);
       })
       .catch((error) => {
         console.log('Error:', error);
       });
-  }, [id, setCurrentCheckoutId, setData]);
+  }, [id, setCurrentCheckoutId, setData, setPagination, setTotalPrice, setStatus]);
 
   // useEffect(() => {
   //   console.log('delete---', isModalDeleteVerificationOpen, selectedProductId);
@@ -99,12 +97,7 @@ const DetailOrder = ({ id }) => {
   //   console.log('edit---', isModalEditQuantityOpen, selectedProductId);
   // }, [isModalEditQuantityOpen]);
 
-  if (isLoading)
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <span className="loading loading-bars loading-lg text-tertiary"> </span>;
-      </div>
-    );
+  if (isLoading) return <Loading />;
   if (!data) return <p className="ml-36">No Detail Order</p>;
 
   const onPaginationClick = (page) => {
@@ -151,7 +144,7 @@ const DetailOrder = ({ id }) => {
   };
 
   return (
-    <main className="product-page bg-bgg relative h-screen font-poppins">
+    <main className="product-page bg-bgColor relative h-screen font-poppins">
       <div className="title-page flex justify-center pt-24">
         <h1 className="text-4xl font-semibold text-tertiary xl:font-bold">Order Detail</h1>
       </div>
@@ -172,11 +165,13 @@ const DetailOrder = ({ id }) => {
         >
           Confirm
         </ButtonPrimary>
-        {status !== 'SENT' && (
-          <ButtonPrimary icon="add" onClick={openProductSelectionDialog}>
-            Add Product
-          </ButtonPrimary>
-        )}
+        <ButtonPrimary
+          icon="add"
+          onClick={openProductSelectionDialog}
+          disable={status !== 'WAIT FOR PAYMENT'}
+        >
+          Add Product
+        </ButtonPrimary>
 
         <div className="grow"> </div>
         <div className="search-filter flex items-center justify-center">
@@ -186,7 +181,10 @@ const DetailOrder = ({ id }) => {
           </label>
         </div>
       </div>
-
+      <OrderSteps status={status} />
+      <p className="text-black ml-28 mt-10 text-lg font-bold">{`Total Price: ${formatRupiah(
+        totalPrice
+      )}`}</p>
       <ContainerOrderDetail checkoutId={id} data={data} />
       <ModalAddProduct onClose={closeProductSelectionDialog} show={isProductSelectOpen} />
       <ModalDeleteVerification checkoutId={id} />

@@ -17,7 +17,8 @@ const closeModalDeleteVerification = () => {
 };
 
 const ModalDeleteVerification = ({ checkoutId }) => {
-  const { selectedProduct, setData, page } = useContext(DetailOrderContex);
+  const { selectedProduct, setData, page, setTotalPrice, setPagination } =
+    useContext(DetailOrderContex);
 
   const handleDelete = () => {
     console.log(`Deleteting product id ${selectedProduct.id}`);
@@ -27,6 +28,8 @@ const ModalDeleteVerification = ({ checkoutId }) => {
           .then((res) => res.json())
           .then((res) => {
             setData(res.data.checkout.productCheckout);
+            setPagination(res.data.pagination);
+            setTotalPrice(res.data.checkout.totalPrice);
           })
           .catch((e) => {
             toast.error('getDetailOrder Error', e);

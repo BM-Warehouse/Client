@@ -49,7 +49,13 @@ const ButtonPrimary = ({
       </button>
     </Link>
   ) : (
-    <button className={mergedClassName} onClick={onClick} title={title} {...rest}>
+    <button
+      className={mergedClassName}
+      onClick={onClick}
+      title={title}
+      disabled={disable}
+      {...rest}
+    >
       <span className="flex items-center justify-center">
         {selectedIcon}
         {children}
@@ -84,7 +90,13 @@ const ButtonStrong = ({
       </button>
     </Link>
   ) : (
-    <button className={mergedClassName} onClick={onClick} title={title} {...rest}>
+    <button
+      className={mergedClassName}
+      onClick={onClick}
+      title={title}
+      disabled={disable}
+      {...rest}
+    >
       <span className="flex items-center justify-center">
         {selectedIcon}
         {children}
