@@ -10,10 +10,12 @@ const uploadV1 = async (file) => {
   formUpload.append('upload_preset', 'rwheysjo');
 
   try {
+    console.log('masukk sini upload');
     const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
       method: 'POST',
       body: formUpload
     });
+    console.log(response);
 
     const res = await response.json();
     return res;

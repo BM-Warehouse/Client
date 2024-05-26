@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 
 import ContainerProductCategory from '@/components/parts/ContainerProductCategory';
 import useAuthUserStore from '@/store/authUserStore';
-import useCategryStore from '@/store/categoryStore';
+import useCategoryStore from '@/store/categoryStore';
 
 import { ModalEditCategory2, openModalEditCategory } from './ModalEditCategory';
 
