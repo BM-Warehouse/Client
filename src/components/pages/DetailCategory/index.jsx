@@ -96,6 +96,7 @@ function DetailCategory({ params }) {
           <ContainerProductCategory productCategories={productCategories} />
         </div>
       </div>
+      {/* <ModalEditCategory id={id} /> */}
       <ModalEditCategory2 id={id} />
     </section>
   );

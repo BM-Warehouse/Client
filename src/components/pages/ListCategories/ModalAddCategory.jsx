@@ -24,7 +24,7 @@ const ModalAddCategory = () => {
     let imageUrl;
     try {
       const form = new FormData(e.target);
-      const categoryName = form.get('categoryName');
+      const name = form.get('categoryName');
       const description = form.get('description');
       const image = form.get('image');
       if (image.size) {
@@ -34,9 +34,8 @@ const ModalAddCategory = () => {
         imageUrl = secure_url;
         console.log(imageUrl);
       }
-      if (categoryName && description && imageUrl) {
-        console.log(categoryName, description, imageUrl);
-        await asyncAddCategory(categoryName, description, imageUrl);
+      if (name && description && imageUrl) {
+        await asyncAddCategory({ name, description, imageUrl });
         toast.success('Category Added Successfully!');
         await asyncGetAllCategory();
         closeModalAddCategory();
@@ -50,7 +49,7 @@ const ModalAddCategory = () => {
   };
 
   return (
-    <Modal id={modalId} title="Edit Category" onSubmit={handleSubmit}>
+    <Modal id={modalId} title="Add Category" onSubmit={handleSubmit}>
       <Input label="Category Name" name="categoryName" />
       <TextArea label="Description" name="description" />
       <InputFile label="Category Picture" name="image" />

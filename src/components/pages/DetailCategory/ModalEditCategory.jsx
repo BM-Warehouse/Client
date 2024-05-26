@@ -53,10 +53,15 @@ const ModalEditCategory = ({ id }) => {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', 'rwheysjo');
+        const fileGet = formData.get('file');
+        const filePreset = formData.get('upload_preset');
+        console.log(fileGet);
+        console.log(filePreset);
         const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
           method: 'POST',
           body: formData
         });
+
         // secureUrl ganti dulu jadi secure_url
         // eslint-disable-next-line camelcase
         const { secure_url } = await response.json();
@@ -155,7 +160,7 @@ const ModalEditCategory2 = ({ id }) => {
     let imageUrl;
     try {
       const form = new FormData(e.target);
-      const categoryName = form.get('categoryName');
+      const name = form.get('categoryName');
       const description = form.get('description');
       const image = form.get('image');
       if (image.size) {
@@ -165,7 +170,9 @@ const ModalEditCategory2 = ({ id }) => {
         imageUrl = secure_url;
       }
       imageUrl = imageUrl || categoryDetail.imageUrl;
-      await asyncEditCategory(id, { categoryName, description, imageUrl });
+      const editdata = await asyncEditCategory(id, { name, description, imageUrl });
+      const a = await editdata.json();
+      console.log(a);
       toast.success('Category Updated Successfully!');
       await asyncGetDetailCategory(id);
       closeModalEditCategory();

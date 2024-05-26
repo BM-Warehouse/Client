@@ -46,9 +46,9 @@ const useCategoryStore = create((set) => ({
     }
   },
   // eslint-disable-next-line consistent-return
-  asyncAddCategory: async (name, description, imageUrl) => {
+  asyncAddCategory: async (payload) => {
     try {
-      const newCategory = await addCategory(name, description, imageUrl);
+      const newCategory = await addCategory(payload);
       set((_state) => ({
         newCategory
       }));
@@ -58,9 +58,9 @@ const useCategoryStore = create((set) => ({
     }
   },
   // eslint-disable-next-line consistent-return
-  asyncEditCategory: async (id, name, description, imageUrl) => {
+  asyncEditCategory: async (id, payload) => {
     try {
-      const editedCategory = await editCategory(id, name, description, imageUrl);
+      const editedCategory = await editCategory(id, payload);
       set((_state) => ({
         editedCategory
       }));
