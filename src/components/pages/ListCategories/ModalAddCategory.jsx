@@ -1,10 +1,13 @@
 'use client';
 
+import { useState } from 'react';
+
 import toast from 'react-hot-toast';
 
 import { ButtonPrimary } from '@/components/parts/Button';
 import { Input, InputFile, Modal, TextArea } from '@/components/parts/Modal';
-import { uploadV1 } from '@/lib/upload';
+import ProgressBar from '@/components/parts/ProgressBar';
+import { uploadV3 } from '@/lib/upload';
 import useCategoryStore from '@/store/categoryStore';
 
 const modalId = 'modal-add-category';
@@ -18,6 +21,17 @@ const closeModalAddCategory = () => {
 
 const ModalAddCategory = () => {
   const { asyncAddCategory, asyncGetAllCategory } = useCategoryStore();
+  const [progress, setProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleProgressChange = (percentage) => {
+    console.log(percentage);
+    setProgress(percentage);
+  };
+
+  // useEffect(()=>{
+  //   console.log(progress);
+  // }, [progress]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,8 +42,9 @@ const ModalAddCategory = () => {
       const description = form.get('description');
       const image = form.get('image');
       if (image.size) {
+        setIsUploading(true);
         // eslint-disable-next-line camelcase
-        const { secure_url } = await uploadV1(image);
+        const { secure_url } = await uploadV3(image, handleProgressChange);
         // eslint-disable-next-line camelcase
         imageUrl = secure_url;
         console.log(imageUrl);
@@ -37,6 +52,8 @@ const ModalAddCategory = () => {
       if (name && description && imageUrl) {
         await asyncAddCategory({ name, description, imageUrl });
         toast.success('Category Added Successfully!');
+        setProgress(0);
+        setIsUploading(false);
         await asyncGetAllCategory();
         closeModalAddCategory();
       } else {
@@ -53,6 +70,7 @@ const ModalAddCategory = () => {
       <Input label="Category Name" name="categoryName" />
       <TextArea label="Description" name="description" />
       <InputFile label="Category Picture" name="image" />
+      {isUploading && <ProgressBar progress={progress} />}
       <div className="flex justify-center w-full">
         <ButtonPrimary className="mr-5" type="submit">
           Submit
