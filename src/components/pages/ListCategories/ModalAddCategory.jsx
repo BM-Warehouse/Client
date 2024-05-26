@@ -70,7 +70,12 @@ const ModalAddCategory = () => {
       <Input label="Category Name" name="categoryName" />
       <TextArea label="Description" name="description" />
       <InputFile label="Category Picture" name="image" />
-      {isUploading && <ProgressBar progress={progress} />}
+      {isUploading && (
+        <>
+          <ProgressBar progress={progress} />
+          <span className="mx-auto">{progress} %</span>
+        </>
+      )}
       <div className="flex justify-center w-full">
         <ButtonPrimary className="mr-5" type="submit">
           Submit
