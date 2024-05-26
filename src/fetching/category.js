@@ -82,7 +82,8 @@ const addCategory = async (name, description, imageUrl) => {
 
 const editCategory = async (id, name, description, imageUrl) => {
   try {
-    const response = await fetchWithToken(`${BASE_URL}/categories/${id}`, {
+    const url = `${BASE_URL}/categories/${id}`;
+    const response = await fetchWithToken(url, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

@@ -1,4 +1,3 @@
-/* eslint-disable no-alert */
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { FiArrowUpRight } from 'react-icons/fi';
