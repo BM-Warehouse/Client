@@ -17,7 +17,7 @@ const closeModalDeleteVerification = () => {
 };
 
 const ModalDeleteVerification = ({ checkoutId }) => {
-  const { selectedProduct, setData, page, setTotalPrice, setPagination } =
+  const { selectedProduct, setData, page, setTotalPrice, setPagination, setTotalProductPrice } =
     useContext(DetailOrderContex);
 
   const handleDelete = () => {
@@ -30,6 +30,7 @@ const ModalDeleteVerification = ({ checkoutId }) => {
             setData(res.data.checkout.productCheckout);
             setPagination(res.data.pagination);
             setTotalPrice(res.data.checkout.totalPrice);
+            setTotalProductPrice(res.data.checkout.totalProductPrice);
           })
           .catch((e) => {
             toast.error('getDetailOrder Error', e);
