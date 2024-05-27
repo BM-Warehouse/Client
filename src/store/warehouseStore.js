@@ -12,7 +12,7 @@ import {
 const useWarehouseStore = create((set) => ({
   warehouseData: [],
   warehouseQuantities: [],
-  productWarehouseData: [],
+  productsWarehouses: [],
   pagination: {
     totalPage: null,
     totalData: null,
@@ -32,12 +32,26 @@ const useWarehouseStore = create((set) => ({
       console.error('Failed to fetch warehouses', e);
     }
   },
-  getWarehouseDetailsData: async (id, page = 1) => {
+  // getWarehouseDetailsData: async (id, page = 1) => {
+  //   try {
+  //     const warehouseDetails = await getWarehouseDetails(id, page);
+  //     const { pagination } = warehouseDetails;
+  //     console.log(warehouseDetails, '<<<<<<<');
+  //     set((_state) => ({ productWarehouseData: warehouseDetails, pagination }));
+  //   } catch (e) {
+  //     console.error('Failed to fetch warehouses', e);
+  //   }
+  // },
+  warehouseDetails: null,
+  getWarehouseDetails: async (id, page, limit) => {
     try {
-      const warehouseDetails = await getWarehouseDetails(id, page);
-      const { pagination } = warehouseDetails;
-      console.log(warehouseDetails, '<<<<<<<');
-      set((_state) => ({ productWarehouseData: warehouseDetails, pagination }));
+      const { w, pagination } = await getWarehouseDetails(id, page, limit);
+      const { name, address, city, productsWarehouses } = w;
+      set((_state) => ({
+        warehouseDetails: { name, address, city },
+        productsWarehouses,
+        pagination
+      }));
     } catch (e) {
       console.error('Failed to fetch warehouses', e);
     }

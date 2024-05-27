@@ -6,7 +6,8 @@ import toast from 'react-hot-toast';
 
 import { ButtonPrimary } from '@/components/parts/Button';
 import { Input, InputFile, Modal, TextArea } from '@/components/parts/Modal';
-import { uploadV1 } from '@/lib/upload';
+import ProgressBar from '@/components/parts/ProgressBar';
+import { uploadV3 } from '@/lib/upload';
 import useCategoryStore from '@/store/categoryStore';
 
 const modalId = 'modal-edit-category';
@@ -53,10 +54,15 @@ const ModalEditCategory = ({ id }) => {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', 'rwheysjo');
+        const fileGet = formData.get('file');
+        const filePreset = formData.get('upload_preset');
+        console.log(fileGet);
+        console.log(filePreset);
         const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
           method: 'POST',
           body: formData
         });
+
         // secureUrl ganti dulu jadi secure_url
         // eslint-disable-next-line camelcase
         const { secure_url } = await response.json();
@@ -150,23 +156,35 @@ const ModalEditCategory2 = ({ id }) => {
     })
   );
 
+  const [progress, setProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleProgressChange = (percentage) => {
+    console.log(percentage);
+    setProgress(percentage);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let imageUrl;
     try {
       const form = new FormData(e.target);
-      const categoryName = form.get('categoryName');
+      const name = form.get('categoryName');
       const description = form.get('description');
       const image = form.get('image');
       if (image.size) {
+        setIsUploading(true);
         // eslint-disable-next-line camelcase
-        const { secure_url } = await uploadV1(image);
+        const { secure_url } = await uploadV3(image, handleProgressChange);
         // eslint-disable-next-line camelcase
         imageUrl = secure_url;
       }
       imageUrl = imageUrl || categoryDetail.imageUrl;
-      await asyncEditCategory(id, { categoryName, description, imageUrl });
+      const editdata = await asyncEditCategory(id, { name, description, imageUrl });
+      const a = await editdata.json();
+      console.log(a);
       toast.success('Category Updated Successfully!');
+      setProgress(0);
       await asyncGetDetailCategory(id);
       closeModalEditCategory();
     } catch (e) {
@@ -179,6 +197,12 @@ const ModalEditCategory2 = ({ id }) => {
       <Input label="Category Name" defaultValue={categoryDetail.name} name="categoryName" />
       <TextArea label="Description" defaultValue={categoryDetail.description} name="description" />
       <InputFile label="Category Picture" name="image" />
+      {isUploading && (
+        <>
+          <ProgressBar progress={progress} />
+          <span className="mx-auto text-secondary">{progress} %</span>
+        </>
+      )}
       <div className="flex justify-center w-full">
         <ButtonPrimary className="mr-5" type="submit">
           Submit

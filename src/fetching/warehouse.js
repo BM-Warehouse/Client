@@ -20,6 +20,44 @@ const getAllWarehouses = async (page = 1, limit = 5) => {
   return { warehouses, pagination };
 };
 
+// const getWarehouseDetails = async (id, page = 1, limit = 10) => {
+//   try {
+//     const url = `${BASE_URL}/warehouses/${id}?${new URLSearchParams({
+//       page,
+//       limit
+//     })}`;
+//     const response = await fetchWithToken(url);
+//     const responseJson = await response.json();
+
+//     if (responseJson.status !== 'success') {
+//       throw new Error('Failed to retrieve warehouse data');
+//     }
+
+//     const warehouseArray = responseJson.data.warehouse.warehouse;
+//     const warehouse = warehouseArray[0];
+//     const { pagination } = responseJson.data;
+//     console.log(warehouseArray);
+
+//     if (!warehouse && warehouse?.id !== +id) {
+//       throw new Error('Warehouse not found');
+//     }
+
+//     const warehouseDetails = {
+//       name: warehouse.name,
+//       products: warehouse.productsWarehouses.map((productWarehouse) => ({
+//         productId: productWarehouse.product.id,
+//         productName: productWarehouse.product.name,
+//         quantity: productWarehouse.quantity
+//       }))
+//     };
+
+//     return { warehouseDetails, pagination };
+//   } catch (error) {
+//     console.error('Error fetching warehouse details:', error);
+//     throw error;
+//   }
+// };
+
 const getWarehouseDetails = async (id, page = 1, limit = 10) => {
   try {
     const url = `${BASE_URL}/warehouses/${id}?${new URLSearchParams({
@@ -29,28 +67,12 @@ const getWarehouseDetails = async (id, page = 1, limit = 10) => {
     const response = await fetchWithToken(url);
     const responseJson = await response.json();
 
-    if (responseJson.status !== 'success') {
-      throw new Error('Failed to retrieve warehouse data');
-    }
+    const { data } = responseJson;
+    const { warehouse, pagination } = data;
+    console.log(warehouse.warehouse[0]);
+    const w = warehouse.warehouse[0];
 
-    const warehouseArray = responseJson.data.warehouse.warehouse;
-    const warehouse = warehouseArray[0];
-    const { pagination } = responseJson.data;
-
-    if (!warehouse && warehouse.id !== +id) {
-      throw new Error('Warehouse not found');
-    }
-
-    const warehouseDetails = {
-      name: warehouse.name,
-      products: warehouse.productsWarehouses.map((productWarehouse) => ({
-        productId: productWarehouse.product.id,
-        productName: productWarehouse.product.name,
-        quantity: productWarehouse.quantity
-      }))
-    };
-
-    return { warehouseDetails, pagination };
+    return { w, pagination };
   } catch (error) {
     console.error('Error fetching warehouse details:', error);
     throw error;

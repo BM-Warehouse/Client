@@ -45,10 +45,6 @@ function DetailCategory({ params }) {
     return <div>Loading...</div>;
   }
 
-  if (!role) {
-    return null;
-  }
-
   return (
     <section className="datail-category-page relative min-h-screen bg-bgColor pb-20 font-poppins">
       <div className="detail-category-page-content flex w-full flex-col items-center px-2 py-10 text-tertiary md:px-10">
@@ -100,6 +96,7 @@ function DetailCategory({ params }) {
           <ContainerProductCategory productCategories={productCategories} />
         </div>
       </div>
+      {/* <ModalEditCategory id={id} /> */}
       <ModalEditCategory2 id={id} />
     </section>
   );

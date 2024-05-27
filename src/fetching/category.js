@@ -59,14 +59,15 @@ const getCategoryDetail = async (id) => {
   }
 };
 
-const addCategory = async (name, description, imageUrl) => {
+const addCategory = async (payload) => {
   try {
-    const response = await fetchWithToken(`${BASE_URL}/categories`, {
+    const url = `${BASE_URL}/categories`;
+    const response = await fetchWithToken(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(name, description, imageUrl)
+      body: JSON.stringify(payload)
     });
     const responseJson = await response.json();
     const { data, status, message } = responseJson;
@@ -80,7 +81,8 @@ const addCategory = async (name, description, imageUrl) => {
   }
 };
 
-const editCategory = async (id, name, description, imageUrl) => {
+const editCategory = async (id, payload) => {
+  console.log(payload);
   try {
     const url = `${BASE_URL}/categories/${id}`;
     const response = await fetchWithToken(url, {
@@ -88,7 +90,7 @@ const editCategory = async (id, name, description, imageUrl) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(name, description, imageUrl)
+      body: JSON.stringify(payload)
     });
     return response;
   } catch (error) {
