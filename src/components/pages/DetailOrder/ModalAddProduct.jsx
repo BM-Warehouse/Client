@@ -10,6 +10,7 @@ import { ButtonPrimary } from '@/components/parts/Button';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { addProductToCheckout, getDetailOrder } from '@/fetching/orders';
 import { getAllProducts } from '@/fetching/product';
+import formatRupiah from '@/lib/formatRupiah';
 
 const generateCategoriesString = (product) => {
   let categoriesString = '';
@@ -31,7 +32,7 @@ const generateCategoriesString = (product) => {
 
 const Row = ({ product }) => {
   const [quantity, setQuantity] = useState(0);
-  const { currentCheckoutId, setData, page, setPagination, setTotalPrice } =
+  const { currentCheckoutId, setData, page, setPagination, setTotalPrice, setTotalProductPrice } =
     useContext(DetailOrderContex);
 
   const handleQuantity = (event) => {
@@ -47,6 +48,7 @@ const Row = ({ product }) => {
               setData(res.data.checkout.productCheckout);
               setPagination(res.data.pagination);
               setTotalPrice(res.data.checkout.totalPrice);
+              setTotalProductPrice(res.data.checkout.totalProductPrice);
             })
             .catch((e) => {
               toast.error('getDetailOrder Error', e);
@@ -84,6 +86,7 @@ const Row = ({ product }) => {
         </div>
       </td>
       <td>{generateCategoriesString(product)}</td>
+      <td>{formatRupiah(product?.price)}</td>
       <td>
         <input
           type="number"
@@ -114,6 +117,7 @@ const Table = () => {
           <tr>
             <th>Product Name</th>
             <th>Categories</th>
+            <th>Price</th>
             <th>Quantity</th>
             <th>Action</th>
           </tr>

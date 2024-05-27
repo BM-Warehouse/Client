@@ -12,6 +12,9 @@ const DetailContexProvider = ({ children }) => {
   const [productList, setProductList] = useState([]);
   const [status, setStatus] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
+  const [totalProductPrice, setTotalProductPrice] = useState(0);
+  const [courierPrice, setCourierPrice] = useState(0);
+
   const [pagination, setPagination] = useState({
     totalPage: null,
     totalData: null,
@@ -50,7 +53,11 @@ const DetailContexProvider = ({ children }) => {
         totalPrice,
         setTotalPrice,
         pagination,
-        setPagination
+        setPagination,
+        totalProductPrice,
+        setTotalProductPrice,
+        courierPrice,
+        setCourierPrice
       }}
     >
       {children}
