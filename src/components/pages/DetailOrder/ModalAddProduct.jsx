@@ -32,7 +32,7 @@ const generateCategoriesString = (product) => {
 
 const Row = ({ product }) => {
   const [quantity, setQuantity] = useState(0);
-  const { currentCheckoutId, setData, page, setPagination, setTotalPrice } =
+  const { currentCheckoutId, setData, page, setPagination, setTotalPrice, setTotalProductPrice } =
     useContext(DetailOrderContex);
 
   const handleQuantity = (event) => {
@@ -48,6 +48,7 @@ const Row = ({ product }) => {
               setData(res.data.checkout.productCheckout);
               setPagination(res.data.pagination);
               setTotalPrice(res.data.checkout.totalPrice);
+              setTotalProductPrice(res.data.checkout.totalProductPrice);
             })
             .catch((e) => {
               toast.error('getDetailOrder Error', e);

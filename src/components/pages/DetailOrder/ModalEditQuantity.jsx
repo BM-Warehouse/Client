@@ -16,7 +16,8 @@ const closeModalEditQuantity = () => {
 
 const ModalEditQuantity = ({ checkoutId }) => {
   const [quantity, setQuantity] = useState(0);
-  const { selectedProduct, setData, page, setTotalPrice } = useContext(DetailOrderContex);
+  const { selectedProduct, setData, page, setTotalPrice, setTotalProductPrice } =
+    useContext(DetailOrderContex);
 
   const handleSubmit = () => {
     console.log(`Submitting quantity for product id ${selectedProduct.id}`);
@@ -26,6 +27,7 @@ const ModalEditQuantity = ({ checkoutId }) => {
         .then((res) => {
           setData(res.data.checkout.productCheckout);
           setTotalPrice(res.data.checkout.totalPrice);
+          setTotalProductPrice(res.data.checkout.totalProductPrice);
         })
         .catch((e) => {
           window.alert('getDetailOrder Error', e);
@@ -43,7 +45,6 @@ const ModalEditQuantity = ({ checkoutId }) => {
   };
 
   useEffect(() => {
-    console.log(selectedProduct);
     if (selectedProduct?.quantity) setQuantity(selectedProduct.quantity);
   }, [selectedProduct]);
 
