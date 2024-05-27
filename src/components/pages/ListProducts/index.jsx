@@ -115,7 +115,9 @@ function ListProducts() {
       {role === 'admin' ? (
         <ContainerProductsAdmin productsData={keyword ? filteredProducts : productsData} />
       ) : (
-        <ContainerProductsUser productsData={keyword ? filteredProducts : productsData} />
+        <div className="flex justify-center">
+          <ContainerProductsUser productsData={keyword ? filteredProducts : productsData} />
+        </div>
       )}
 
       <Pagination

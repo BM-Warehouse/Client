@@ -73,7 +73,7 @@ const ModalAddCategory = () => {
       {isUploading && (
         <>
           <ProgressBar progress={progress} />
-          <span className="mx-auto">{progress} %</span>
+          <span className="mx-auto text-secondary">{progress} %</span>
         </>
       )}
       <div className="flex justify-center w-full">
