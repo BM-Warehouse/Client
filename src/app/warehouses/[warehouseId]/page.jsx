@@ -11,45 +11,45 @@ import { HiOutlineTrash } from 'react-icons/hi';
 
 import { ModalAddProductToWarehouse } from '@/app/warehouses/[warehouseId]/ModalAddProductToWarehouse';
 import Container from '@/app/warehouses/[warehouseId]/warehouse-container';
-import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
-import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
 import Pagination from '@/components/parts/Pagination';
 // import { getWarehouseDetails } from '@/fetching/warehouse';
 import useWarehouseStore from '@/store/warehouseStore';
 
+import {
+  ModalReduceProductWarehouse,
+  openModalReduceProductWarehouse
+} from './ModalReduceProductWarehouse';
+
 const WarehouseDetailPage = ({ params }) => {
   // const params = useParams();
-  const { warehouseData, getWarehouseDetails, warehouseDetails, pagination, productsWarehouses } =
+  const { _warehouseData, getWarehouseDetails, warehouseDetails, pagination, productsWarehouses } =
     useWarehouseStore();
   // const { warehouseId } = params;
   // const [warehouse, setWarehouse] = useState(null);
   const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
   // const [pagination, setPagination] = useState({ currentPage: 1, totalPage: 1 });
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isAddStockModalOpen, setIsAddStockModalOpen] = useState(false);
-  const [isMoveStockModalOpen, setIsMoveStockModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
   const id = +params.warehouseId;
 
-  const handleOpenAddStockModal = (product) => {
-    setSelectedProduct(product);
-    setIsAddStockModalOpen(true);
+  const handleOpenReduceStockModal = (productId) => {
+    setSelectedProductId(productId);
+    openModalReduceProductWarehouse();
   };
 
-  const handleCloseAddStockModal = () => {
-    setIsAddStockModalOpen(false);
-    setSelectedProduct(null);
+  // const handleCloseAddStockModal = () => {
+  //   setIsAddStockModalOpen(false);
+  //   setSelectedProduct(null);
+  // };
+
+  const handleOpenMoveStockModal = (productId) => {
+    setSelectedProductId(productId);
   };
 
-  const handleOpenMoveStockModal = (product) => {
-    setSelectedProduct(product);
-    setIsMoveStockModalOpen(true);
-  };
-
-  const handleCloseMoveStockModal = () => {
-    setIsMoveStockModalOpen(false);
-    setSelectedProduct(null);
-  };
+  // const handleCloseMoveStockModal = () => {
+  //   setIsMoveStockModalOpen(false);
+  //   setSelectedProduct(null);
+  // };
 
   const handleDeleteProductFromWarehouse = () => {
     toast.success('Product Deleted Successfully!');
@@ -136,7 +136,9 @@ const WarehouseDetailPage = ({ params }) => {
                       <div className="flex gap-4">
                         <button
                           className="bg-tertiary hover:bg-secondary px-4 py-2 text-white rounded-lg"
-                          onClick={handleOpenAddStockModal}
+                          onClick={() => {
+                            handleOpenReduceStockModal(product.product.id);
+                          }}
                         >
                           <span className="flex items-center justify-center gap-2">
                             <FiArrowDownRight />
@@ -170,7 +172,7 @@ const WarehouseDetailPage = ({ params }) => {
           </div>
         </Container>
 
-        {isAddStockModalOpen && (
+        {/* {isAddStockModalOpen && (
           <ModalAddStockProduct
             product={selectedProduct}
             onClose={handleCloseAddStockModal}
@@ -184,9 +186,10 @@ const WarehouseDetailPage = ({ params }) => {
             onClose={handleCloseMoveStockModal}
             warehouseData={warehouseData}
           />
-        )}
+        )} */}
 
         <ModalAddProductToWarehouse warehouseId={id} />
+        <ModalReduceProductWarehouse warehouseId={id} productId={selectedProductId} />
 
         <Pagination
           currentPage={pagination.currentPage}
