@@ -193,16 +193,11 @@ function UpdateUser({ params }) {
                 Gender:
                 <select
                   className="input input-bordered w-full h-10 mt-2 rounded-md px-3 text-secondary bg-white"
-                  defaultValue={userDetail.gender}
                   onChange={onGenderChange}
                 >
                   <option value="">Select Gender</option>
-                  <option value="male" selected={userDetail.gender === 'male'}>
-                    Male
-                  </option>
-                  <option value="female" selected={userDetail.gender === 'female'}>
-                    Female
-                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
                 </select>
               </label>
               <label className="text-secondary w-full">
@@ -218,16 +213,11 @@ function UpdateUser({ params }) {
                 Role:
                 <select
                   className="input input-bordered w-full h-10 mt-2 rounded-md px-3 text-secondary bg-white"
-                  defaultValue={userDetail.roleUser}
                   onChange={onRoleChange}
                 >
                   <option value="">Select Role</option>
-                  <option value="user" selected={userDetail.role === 'user'}>
-                    User
-                  </option>
-                  <option value="admin" selected={userDetail.role === 'admin'}>
-                    Admin
-                  </option>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
                 </select>
               </label>
               <label className="text-secondary w-full">

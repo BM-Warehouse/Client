@@ -193,12 +193,8 @@ const AddUser = () => {
                   className="input input-bordered w-full h-10 mt-2 rounded-md px-3 text-secondary bg-white"
                 >
                   <option value="">Select Gender</option>
-                  <option value="male" selected={gender === 'male'}>
-                    Male
-                  </option>
-                  <option value="female" selected={gender === 'female'}>
-                    Female
-                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
                 </select>
               </label>
               <label className="text-secondary w-full">
@@ -220,12 +216,8 @@ const AddUser = () => {
                   className="input input-bordered w-full h-10 mt-2 rounded-md px-3 text-secondary bg-white"
                 >
                   <option value="">Select Role</option>
-                  <option value="user" selected={roleUser === 'user'}>
-                    User
-                  </option>
-                  <option value="admin" selected={roleUser === 'admin'}>
-                    Admin
-                  </option>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
                 </select>
               </label>
               <label className="text-secondary w-full">
