@@ -21,8 +21,20 @@ import ModalDeleteVerification from './ModalDeleteVerification';
 import ModalEditQuantity from './ModalEditQuantity';
 
 const DetailOrder = ({ id }) => {
-  const { data, setData, status, setStatus, totalPrice, setTotalPrice, pagination, setPagination } =
-    useContext(DetailOrderContex);
+  const {
+    data,
+    setData,
+    status,
+    setStatus,
+    totalPrice,
+    setTotalPrice,
+    pagination,
+    setPagination,
+    setTotalProductPrice,
+    totalProductPrice,
+    courierPrice,
+    setCourierPrice
+  } = useContext(DetailOrderContex);
 
   const [isLoading, setLoading] = useState(true);
   const router = useRouter();
@@ -82,12 +94,23 @@ const DetailOrder = ({ id }) => {
         setStatus(detailOrderData.data.checkout.status);
         setPagination(detailOrderData.data.pagination);
         setTotalPrice(detailOrderData.data.checkout.totalPrice);
+        setTotalProductPrice(detailOrderData.data.checkout.totalProductPrice);
+        setCourierPrice(detailOrderData.data.checkout.couriers.price);
         setLoading(false);
       })
       .catch((error) => {
         console.log('Error:', error);
       });
-  }, [id, setCurrentCheckoutId, setData, setPagination, setTotalPrice, setStatus]);
+  }, [
+    id,
+    setCurrentCheckoutId,
+    setData,
+    setPagination,
+    setTotalPrice,
+    setStatus,
+    setTotalProductPrice,
+    setCourierPrice
+  ]);
 
   // useEffect(() => {
   //   console.log('delete---', isModalDeleteVerificationOpen, selectedProductId);
@@ -182,9 +205,22 @@ const DetailOrder = ({ id }) => {
         </div>
       </div>
       <OrderSteps status={status} />
-      <p className="text-black ml-28 mt-10 text-lg font-bold">{`Total Price: ${formatRupiah(
-        totalPrice
-      )}`}</p>
+      <div className="flex justify-end mr-4">
+        <div className="right-3 ml-28 mt-10 w-64">
+          <div className="flex items-center justify-between">
+            <span className="text-secondary text-md">Product Price:</span>
+            <span className="text-secondary text-md">{formatRupiah(totalProductPrice)}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-secondary text-md">Delivery:</span>
+            <span className="text-secondary text-md">{formatRupiah(courierPrice)}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-secondary text-md">Total Price:</span>
+            <span className="text-secondary text-xl font-bold">{formatRupiah(totalPrice)}</span>
+          </div>
+        </div>
+      </div>
       <ContainerOrderDetail checkoutId={id} data={data} />
       <ModalAddProduct onClose={closeProductSelectionDialog} show={isProductSelectOpen} />
       <ModalDeleteVerification checkoutId={id} />

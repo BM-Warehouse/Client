@@ -26,15 +26,9 @@ const LoginPage = () => {
   useEffect(() => {
     if (role) {
       if (role === 'admin') {
-        router.replace('/dashboard');
-        setTimeout(() => {
-          window.location.reload();
-        }, 5000);
+        window.location.href = '/dashboard';
       } else if (role === 'user') {
-        router.replace('/products');
-        setTimeout(() => {
-          window.location.reload();
-        }, 5000);
+        window.location.href = '/products';
       }
     }
   }, [role, router]);
