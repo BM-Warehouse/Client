@@ -26,7 +26,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (role) {
       if (role === 'admin') {
-        window.location.href ='/dashboard';
+        window.location.href = '/dashboard';
       } else if (role === 'user') {
         window.location.href = '/products';
       }

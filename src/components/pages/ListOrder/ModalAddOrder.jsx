@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
