@@ -7,6 +7,7 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { HiOutlineTrash } from 'react-icons/hi';
 
+import { ModalAddProductToWarehouse } from '@/components/parts/ContainerWarehouse/ModalAddProductToWarehouse';
 import Container from '@/components/parts/ContainerWarehouse/warehouse-container';
 import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
 import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
@@ -102,7 +103,7 @@ const WarehouseDetailPage = ({ params }) => {
   if (!warehouseDetails || !productsWarehouses) {
     return null;
   }
-  console.log(productsWarehouses);
+  console.log(id);
 
   return (
     <main className="category-page bg-bgColor relative h-screen font-poppins">
@@ -182,6 +183,9 @@ const WarehouseDetailPage = ({ params }) => {
             warehouseData={warehouseData}
           />
         )}
+
+        <ModalAddProductToWarehouse warehouseId={id} />
+
         <Pagination
           currentPage={pagination.currentPage}
           totalPage={pagination.totalPage}
