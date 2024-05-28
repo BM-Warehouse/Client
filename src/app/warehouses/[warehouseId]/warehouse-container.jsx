@@ -35,17 +35,6 @@ const Container = ({ children }) => {
     }
   };
 
-  const handleAddProductWarehouse = async (e) => {
-    e.preventDefault();
-    try {
-      toast.success('Product added to warehouse successfully!');
-      getWarehouseData(); // Refresh the warehouse data
-      document.getElementById('add_product_warehouse_modal').close();
-    } catch (error) {
-      toast.error('Failed to add warehouse!');
-    }
-  };
-
   return (
     <div className="mx-4 mb-10 max-w-7xl md:mx-6 lg:mx-10 xl:mx-auto mt-32">
       {!isDetailsPage ? (

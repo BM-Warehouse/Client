@@ -5,10 +5,12 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 // import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { FaArrowRightArrowLeft } from 'react-icons/fa6';
+import { FiArrowDownRight } from 'react-icons/fi';
 import { HiOutlineTrash } from 'react-icons/hi';
 
-import { ModalAddProductToWarehouse } from '@/components/parts/ContainerWarehouse/ModalAddProductToWarehouse';
-import Container from '@/components/parts/ContainerWarehouse/warehouse-container';
+import { ModalAddProductToWarehouse } from '@/app/warehouses/[warehouseId]/ModalAddProductToWarehouse';
+import Container from '@/app/warehouses/[warehouseId]/warehouse-container';
 import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
 import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
 import Pagination from '@/components/parts/Pagination';
@@ -103,7 +105,7 @@ const WarehouseDetailPage = ({ params }) => {
   if (!warehouseDetails || !productsWarehouses) {
     return null;
   }
-  console.log(id);
+  // console.log(id);
 
   return (
     <main className="category-page bg-bgColor relative h-screen font-poppins">
@@ -137,8 +139,8 @@ const WarehouseDetailPage = ({ params }) => {
                           onClick={handleOpenAddStockModal}
                         >
                           <span className="flex items-center justify-center gap-2">
-                            <HiOutlineTrash />
-                            Edit Stock
+                            <FiArrowDownRight />
+                            Reduce
                           </span>
                         </button>
                         <button
@@ -146,7 +148,7 @@ const WarehouseDetailPage = ({ params }) => {
                           onClick={handleOpenMoveStockModal}
                         >
                           <span className="flex items-center justify-center gap-2">
-                            <HiOutlineTrash />
+                            <FaArrowRightArrowLeft />
                             Move Product
                           </span>
                         </button>

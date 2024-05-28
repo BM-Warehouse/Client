@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { ButtonPrimary } from '@/components/parts/Button';
 import { Input, Modal, Select } from '@/components/parts/Modal';
 import { addProductToWarehouse, getAllProducts } from '@/fetching/product';
+import useWarehouseStore from '@/store/warehouseStore';
 
 const modalId = 'modal-add-product-to-warehouse';
 
@@ -17,6 +18,7 @@ const openModalAddProductToWarehouse = () => {
 };
 
 const ModalAddProductToWarehouse = ({ warehouseId }) => {
+  const { getWarehouseDetails } = useWarehouseStore();
   const [products, setProducts] = useState([]);
   useEffect(() => {
     getAllProducts(1, 9999)
@@ -35,12 +37,10 @@ const ModalAddProductToWarehouse = ({ warehouseId }) => {
     const productId = form.get('product');
     const quantity = form.get('quantity');
 
-    console.log(productId, quantity, warehouseId);
-
     addProductToWarehouse(productId, warehouseId, quantity)
-      .then((r) => {
-        console.log(r);
+      .then(() => {
         toast.success('The Product has been succesfully added');
+        getWarehouseDetails(warehouseId);
         closeModalAddProductToWarehouse();
       })
       .catch((e) => {
