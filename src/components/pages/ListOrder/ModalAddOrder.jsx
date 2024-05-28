@@ -69,9 +69,9 @@ const ModalAddOrder = () => {
     closeModalAddOrder();
   };
 
-  useEffect(() => {
-    console.log(users);
-  }, [users]);
+  // useEffect(() => {
+  //   console.log(users);
+  // }, [users]);
 
   return (
     <dialog id={modalId} className="modal">
