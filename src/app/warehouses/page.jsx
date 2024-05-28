@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { HiOutlineTrash } from 'react-icons/hi';
 
-import Container from '@/components/parts/ContainerWarehouse/warehouse-container';
+import Container from '@/app/warehouses/[warehouseId]/warehouse-container';
 import Pagination from '@/components/parts/Pagination';
 import useWarehouseStore from '@/store/warehouseStore';
 

@@ -69,7 +69,7 @@ const getWarehouseDetails = async (id, page = 1, limit = 10) => {
 
     const { data } = responseJson;
     const { warehouse, pagination } = data;
-    console.log(warehouse.warehouse[0]);
+    // console.log(warehouse.warehouse[0]);
     const w = warehouse.warehouse[0];
 
     return { w, pagination };

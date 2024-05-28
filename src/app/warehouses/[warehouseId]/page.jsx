@@ -3,75 +3,50 @@
 import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
-// import { useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { FaArrowRightArrowLeft } from 'react-icons/fa6';
+import { FiArrowDownRight } from 'react-icons/fi';
 import { HiOutlineTrash } from 'react-icons/hi';
 
-import Container from '@/components/parts/ContainerWarehouse/warehouse-container';
-import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
-import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
+import { ModalAddProductToWarehouse } from '@/app/warehouses/[warehouseId]/ModalAddProductToWarehouse';
+import Container from '@/app/warehouses/[warehouseId]/warehouse-container';
 import Pagination from '@/components/parts/Pagination';
-// import { getWarehouseDetails } from '@/fetching/warehouse';
 import useWarehouseStore from '@/store/warehouseStore';
 
+import {
+  ModalMoveProductToWarehouse,
+  openModalMoveProductToWarehouse
+} from './ModalMoveProductToWarehouse';
+import {
+  ModalReduceProductWarehouse,
+  openModalReduceProductWarehouse
+} from './ModalReduceProductWarehouse';
+
 const WarehouseDetailPage = ({ params }) => {
-  // const params = useParams();
-  const { warehouseData, getWarehouseDetails, warehouseDetails, pagination, productsWarehouses } =
+  const { _warehouseData, getWarehouseDetails, warehouseDetails, pagination, productsWarehouses } =
     useWarehouseStore();
-  // const { warehouseId } = params;
-  // const [warehouse, setWarehouse] = useState(null);
   const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // const [pagination, setPagination] = useState({ currentPage: 1, totalPage: 1 });
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isAddStockModalOpen, setIsAddStockModalOpen] = useState(false);
-  const [isMoveStockModalOpen, setIsMoveStockModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
   const id = +params.warehouseId;
 
-  const handleOpenAddStockModal = (product) => {
-    setSelectedProduct(product);
-    setIsAddStockModalOpen(true);
+  const handleOpenReduceStockModal = (productId) => {
+    setSelectedProductId(productId);
+    openModalReduceProductWarehouse();
   };
 
-  const handleCloseAddStockModal = () => {
-    setIsAddStockModalOpen(false);
-    setSelectedProduct(null);
-  };
-
-  const handleOpenMoveStockModal = (product) => {
-    setSelectedProduct(product);
-    setIsMoveStockModalOpen(true);
-  };
-
-  const handleCloseMoveStockModal = () => {
-    setIsMoveStockModalOpen(false);
-    setSelectedProduct(null);
+  const handleOpenMoveStockModal = (productId) => {
+    setSelectedProductId(productId);
+    openModalMoveProductToWarehouse();
   };
 
   const handleDeleteProductFromWarehouse = () => {
     toast.success('Product Deleted Successfully!');
   };
 
-  // const fetchWarehouseDetails = async (id, page) => {
-  //   setLoading(true);
-  //   try {
-  //     const { warehouseDetails, pagination } = await getWarehouseDetails(id, page);
-  //     console.log(pagination, '<<<<<<<');
-  //     setWarehouse(warehouseDetails);
-  //     setPagination(pagination);
-  //   } catch (e) {
-  //     setError(e.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   useEffect(() => {
-    // if (id) {
     getWarehouseDetails(id).then(() => {
       setLoading(false);
     });
-    // getWarehouseData();
-    // }
   }, [getWarehouseDetails, id]);
 
   const onPaginationClick = async (page) => {
@@ -97,12 +72,10 @@ const WarehouseDetailPage = ({ params }) => {
         <span className="loading loading-bars loading-lg text-tertiary"> </span>;
       </div>
     );
-  // if (error) return <p>Error: {error}</p>;
-  // if (!warehouse) return <p>No warehouse details found.</p>;
+
   if (!warehouseDetails || !productsWarehouses) {
     return null;
   }
-  console.log(productsWarehouses);
 
   return (
     <main className="category-page bg-bgColor relative h-screen font-poppins">
@@ -133,19 +106,23 @@ const WarehouseDetailPage = ({ params }) => {
                       <div className="flex gap-4">
                         <button
                           className="bg-tertiary hover:bg-secondary px-4 py-2 text-white rounded-lg"
-                          onClick={handleOpenAddStockModal}
+                          onClick={() => {
+                            handleOpenReduceStockModal(product.product.id);
+                          }}
                         >
                           <span className="flex items-center justify-center gap-2">
-                            <HiOutlineTrash />
-                            Edit Stock
+                            <FiArrowDownRight />
+                            Reduce
                           </span>
                         </button>
                         <button
                           className="bg-tertiary hover:bg-secondary px-4 py-2 text-white rounded-lg"
-                          onClick={handleOpenMoveStockModal}
+                          onClick={() => {
+                            handleOpenMoveStockModal(product.product.id);
+                          }}
                         >
                           <span className="flex items-center justify-center gap-2">
-                            <HiOutlineTrash />
+                            <FaArrowRightArrowLeft />
                             Move Product
                           </span>
                         </button>
@@ -167,25 +144,13 @@ const WarehouseDetailPage = ({ params }) => {
           </div>
         </Container>
 
-        {isAddStockModalOpen && (
-          <ModalAddStockProduct
-            product={selectedProduct}
-            onClose={handleCloseAddStockModal}
-            warehouseData={warehouseData}
-          />
-        )}
+        <ModalAddProductToWarehouse warehouseId={id} />
+        <ModalReduceProductWarehouse warehouseId={id} productId={selectedProductId} />
+        <ModalMoveProductToWarehouse warehouseId={id} productId={selectedProductId} />
 
-        {isMoveStockModalOpen && (
-          <ModalMoveStockProduct
-            product={selectedProduct}
-            onClose={handleCloseMoveStockModal}
-            warehouseData={warehouseData}
-          />
-        )}
         <Pagination
           currentPage={pagination.currentPage}
           totalPage={pagination.totalPage}
-          // onClick={(page) => setPagination((prev) => ({ ...prev, currentPage: page }))}
           onClick={onPaginationClick}
         />
       </div>

@@ -3,6 +3,7 @@ import React, { cloneElement } from 'react';
 import Link from 'next/link';
 import { CgChevronRight } from 'react-icons/cg';
 import { FaMoneyBillWave, FaRegEdit, FaRegTrashAlt } from 'react-icons/fa';
+import { FaArrowRightArrowLeft } from 'react-icons/fa6';
 import { IoMdAdd } from 'react-icons/io';
 import { TbTruckDelivery } from 'react-icons/tb';
 import { TiCancel } from 'react-icons/ti';
@@ -14,7 +15,8 @@ const iconCollection = {
   edit: <FaRegEdit />,
   cancel: <TiCancel />,
   truck: <TbTruckDelivery />,
-  money: <FaMoneyBillWave />
+  money: <FaMoneyBillWave />,
+  move: <FaArrowRightArrowLeft />
 };
 
 const ButtonPrimary = ({

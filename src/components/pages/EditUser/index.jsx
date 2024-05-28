@@ -11,6 +11,7 @@ import Sidebar from '@/components/parts/Sidebar';
 import useInput from '@/hooks/useInput';
 import useAuthUserStore from '@/store/authUserStore';
 import useUsersStore from '@/store/userStore';
+// import ProgressBar from '@/components/parts/ProgressBar';
 
 function UpdateUser({ params }) {
   const { role } = useAuthUserStore();
@@ -122,10 +123,10 @@ function UpdateUser({ params }) {
       <Navbar />
       <Sidebar />
       <div className="update-user-page-content flex w-full flex-col items-center px-4 md:px-10 py-10 text-primary">
-        <div className="update-user-container mt-10 md:mt-20 flex flex-col items-center bg-tertiary px-4 md:px-8 xl:px-24 rounded-lg shadow-lg py-10 w-full max-w-2xl">
-          <h1 className="text-3xl font-bold mb-6">Update User</h1>
+        <div className="update-user-container mt-10 md:mt-20 flex flex-col items-center bg-primary px-4 md:px-8 xl:px-24 rounded-lg shadow-lg py-10 w-full max-w-2xl">
+          <h1 className="text-3xl font-bold text-secondary mb-6">Update User</h1>
           <form className="flex flex-col w-full">
-            <div className="input-container space-y-4">
+            <div className="input-container flex flex-col space-y-4">
               <label className="text-secondary w-full">
                 Name:
                 <input
@@ -138,7 +139,7 @@ function UpdateUser({ params }) {
               <label className="text-secondary w-full">
                 Email:
                 <input
-                  type="text"
+                  type="email"
                   defaultValue={userDetail.email}
                   onChange={onEmailChange}
                   className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
@@ -174,7 +175,7 @@ function UpdateUser({ params }) {
               <label className="text-secondary w-full">
                 Phone:
                 <input
-                  type="text"
+                  type="tel"
                   defaultValue={userDetail.phone}
                   onChange={onPhoneChange}
                   className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
@@ -182,11 +183,12 @@ function UpdateUser({ params }) {
               </label>
               <label className="text-secondary w-full">
                 Address:
-                <input
+                <textarea
+                  rows={3}
                   type="text"
                   defaultValue={userDetail.address}
                   onChange={onAddressChange}
-                  className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
+                  className="textarea textarea-bordered w-full mt-2 placeholder:text-secondary rounded-md px-3"
                 />
               </label>
               <label className="text-secondary w-full">
@@ -197,12 +199,8 @@ function UpdateUser({ params }) {
                   onChange={onGenderChange}
                 >
                   <option value="">Select Gender</option>
-                  <option value="male" selected={userDetail.gender === 'male'}>
-                    Male
-                  </option>
-                  <option value="female" selected={userDetail.gender === 'female'}>
-                    Female
-                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
                 </select>
               </label>
               <label className="text-secondary w-full">
@@ -222,12 +220,8 @@ function UpdateUser({ params }) {
                   onChange={onRoleChange}
                 >
                   <option value="">Select Role</option>
-                  <option value="user" selected={userDetail.role === 'user'}>
-                    User
-                  </option>
-                  <option value="admin" selected={userDetail.role === 'admin'}>
-                    Admin
-                  </option>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
                 </select>
               </label>
               <label className="text-secondary w-full">
@@ -235,9 +229,10 @@ function UpdateUser({ params }) {
                 <input
                   type="file"
                   onChange={handleFileChange}
-                  className="file-input file-input-bordered file-input-sm w-full mt-2 text-secondary file:bg-secondary file:border-secondary file:text-white rounded-md px-3"
+                  className="file-input file-input-bordered h-10 file-input-sm w-full mt-2 text-secondary file:bg-secondary file:border-secondary file:text-white rounded-md"
                 />
               </label>
+              {/* <ProgressBar progress={43}/> */}
             </div>
             <div className="modal-action mt-6 flex justify-between">
               <button

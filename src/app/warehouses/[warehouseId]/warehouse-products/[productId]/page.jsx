@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 import { useParams } from 'next/navigation';
 
-import Container from '@/components/parts/ContainerWarehouse/warehouse-container';
+import Container from '@/app/warehouses/[warehouseId]/warehouse-container';
 
 const ProductDetailsPage = () => {
   const params = useParams();
