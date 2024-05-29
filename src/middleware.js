@@ -22,13 +22,17 @@ export function middleware(request) {
     '/warehouses/:path*'
   ];
 
+  const accessToken = request.cookies.get('accessToken');
   if (publicPaths.includes(request.nextUrl.pathname)) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+
+    if (accessToken) {
+      response.headers.set('accessToken', accessToken.value);
+    }
+    return response;
   }
 
   if (protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))) {
-    const accessToken = request.cookies.get('accessToken');
-
     if (!accessToken) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
