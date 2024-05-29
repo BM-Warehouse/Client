@@ -22,9 +22,9 @@ const useWarehouseStore = create((set) => ({
     limit: null
   },
 
-  getWarehouseData: async (page = 1) => {
+  getWarehouseData: async (page = 1, limit = 5) => {
     try {
-      const warehouses = await getAllWarehouses(page);
+      const warehouses = await getAllWarehouses(page, limit);
       const { pagination } = warehouses;
 
       set((_state) => ({ warehouseData: warehouses.warehouses, pagination }));

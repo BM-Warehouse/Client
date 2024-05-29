@@ -34,7 +34,7 @@ function ContainerProductsAdmin({ productsData }) {
   };
 
   useEffect(() => {
-    getWarehouseData();
+    getWarehouseData(1, 20);
   }, [getWarehouseData]);
 
   if (!productsData) {
