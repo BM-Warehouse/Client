@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 export function middleware(request) {
@@ -21,14 +22,19 @@ export function middleware(request) {
     '/warehouses',
     '/warehouses/:path*'
   ];
-
+  
   if (publicPaths.includes(request.nextUrl.pathname)) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+
+    const accessToken = request.cookies.get('accessToken');
+    if(accessToken) {
+      console.log(accessToken.value);
+      response.headers.set('accessToken', accessToken.value);
+    }
+    return response;
   }
 
   if (protectedPaths.some((path) => request.nextUrl.pathname.startsWith(path))) {
-    const accessToken = request.cookies.get('accessToken');
-
     if (!accessToken) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
