@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 export function middleware(request) {
@@ -22,13 +21,12 @@ export function middleware(request) {
     '/warehouses',
     '/warehouses/:path*'
   ];
-  
+
+  const accessToken = request.cookies.get('accessToken');
   if (publicPaths.includes(request.nextUrl.pathname)) {
     const response = NextResponse.next();
 
-    const accessToken = request.cookies.get('accessToken');
-    if(accessToken) {
-      console.log(accessToken.value);
+    if (accessToken) {
       response.headers.set('accessToken', accessToken.value);
     }
     return response;

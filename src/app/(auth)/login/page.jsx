@@ -6,10 +6,8 @@ import Login from './login';
 
 const LoginPage = () => {
   const headerList = headers();
-  const test = headerList.get('test');
-  return (
-    <Login accessToken={test}/>
-  );
+  const accessToken = headerList.get('accessToken');
+  return <Login accessToken={accessToken} />;
 };
 
 export default LoginPage;

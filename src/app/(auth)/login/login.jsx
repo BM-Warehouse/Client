@@ -4,9 +4,9 @@
 
 import { useEffect, useState } from 'react';
 
+import { decode } from 'jsonwebtoken';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import ReCAPTCHA from 'react-google-recaptcha';
 import toast from 'react-hot-toast';
 
@@ -14,25 +14,31 @@ import useInput from '@/hooks/useInput';
 import BASE_URL from '@/lib/baseUrl';
 import useAuthUserStore from '@/store/authUserStore';
 
-const Login = ({accessToken}) => {
+const Login = ({ accessToken }) => {
   const [username, onUsernameChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
-  const { role } = useAuthUserStore();
+  // const { role } = useAuthUserStore();
   const { asyncSetAuthUser } = useAuthUserStore();
-  const router = useRouter();
+  //   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState('');
 
+  const redirectWithToken = (token) => {
+    const userInfo = decode(token);
+    if (userInfo.role) {
+      if (userInfo.role === 'admin') {
+        window.location.href = '/dashboard';
+      } else if (userInfo.role === 'user') {
+        window.location.href = '/products';
+      }
+    }
+  };
+
   useEffect(() => {
-    // if (role) {
-    //   if (role === 'admin') {
-    //     window.location.href = '/dashboard';
-    //   } else if (role === 'user') {
-    //     window.location.href = '/products';
-    //   }
-    // }
-    console.log(accessToken);
-  }, [role, router]);
+    if (accessToken) {
+      redirectWithToken(accessToken);
+    }
+  }, [accessToken]);
 
   const onLogin = async () => {
     if (process.env.NEXT_PUBLIC_ENV === 'production' && !recaptchaToken) {
@@ -58,7 +64,8 @@ const Login = ({accessToken}) => {
 
       const data = await response.json();
       if (response.ok) {
-        await asyncSetAuthUser({ username, password });
+        const token = await asyncSetAuthUser({ username, password });
+        redirectWithToken(token);
         // toast.success('Login Success!');
       } else {
         toast.error(data.message || 'Login Failed! Please try again!');
