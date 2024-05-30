@@ -50,6 +50,7 @@ function ContainerProductsAdmin({ productsData }) {
               <th>ID</th>
               <th>Name</th>
               <th>Category</th>
+              <th>Price</th>
               <th>Total Stock</th>
               <th className="">Actions</th>
             </tr>
