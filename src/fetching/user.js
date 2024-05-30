@@ -176,7 +176,7 @@ const getOwnProfile = async () => {
     const {
       data: { me }
     } = responseJson;
-    console.log(responseJson);
+    // console.log(responseJson);
     return me;
   } catch (error) {
     // eslint-disable-next-line no-console
