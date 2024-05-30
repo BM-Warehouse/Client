@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 import Navbar from '@/components/parts/Navbar';
+import ProgressBar from '@/components/parts/ProgressBar';
 import Sidebar from '@/components/parts/Sidebar';
 import { uploadV3 } from '@/lib/upload';
 import useAuthUserStore from '@/store/authUserStore';
@@ -21,11 +22,17 @@ function UpdateUser({ params }) {
     asyncUpdateUser: state.asyncUpdateUser
   }));
   const [birthDate, setBirthDate] = useState('');
+  const [progress, setProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
   const router = useRouter();
 
   const handleBack = async () => {
     router.back('/users');
+  };
+
+  const handleProgressChange = (percentage) => {
+    setProgress(percentage);
   };
 
   const id = +params.userid;
@@ -49,6 +56,7 @@ function UpdateUser({ params }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsUploading(true);
     const form = new FormData(e.target);
     const name = form.get('name');
     const email = form.get('email');
@@ -64,9 +72,8 @@ function UpdateUser({ params }) {
 
     try {
       if (avatar.size !== 0) {
-        console.log('here');
         // eslint-disable-next-line camelcase
-        const { secure_url } = await uploadV3(avatar);
+        const { secure_url } = await uploadV3(avatar, handleProgressChange);
         // eslint-disable-next-line camelcase
         imageUrl = secure_url;
       }
@@ -212,7 +219,7 @@ function UpdateUser({ params }) {
                   className="file-input file-input-bordered h-10 file-input-sm w-full mt-2 text-secondary file:bg-secondary file:border-secondary file:text-white rounded-md"
                 />
               </label>
-              {/* <ProgressBar progress={43}/> */}
+              {isUploading && <ProgressBar progress={progress} />}
             </div>
             <div className="modal-action mt-6 flex justify-between">
               <button
