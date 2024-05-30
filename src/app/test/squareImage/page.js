@@ -9,6 +9,7 @@ const page = () => (
       width={500}
       height={50}
       className="w-96 h-full"
+      alt="test"
     />
   </div>
 );
