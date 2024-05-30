@@ -53,7 +53,7 @@ function DetailProduct({ params }) {
   }, [asyncGetDetail, id]);
 
   useEffect(() => {
-    getWarehouseData();
+    getWarehouseData(1, 20);
   }, [getWarehouseData]);
 
   useEffect(() => {

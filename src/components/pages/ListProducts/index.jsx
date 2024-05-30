@@ -1,17 +1,18 @@
+/* eslint-disable no-unused-vars */
+
 'use client';
 
 import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { HiPlus } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 
-// import NotFound from '@/app/not-found';
 import ToggleTheme from '@/components/elements/ToggleTheme';
 import ContainerProductsAdmin from '@/components/parts/ContainerProductsAdmin';
 import ContainerProductsUser from '@/components/parts/ContainerProductsUser';
 import Loading from '@/components/parts/Loading';
+import ModalFilterProducts from '@/components/parts/ModalFilterProducts';
 import Navbar from '@/components/parts/Navbar';
 import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
@@ -20,49 +21,43 @@ import useProductStore from '@/store/productStore';
 
 function ListProducts() {
   const { role } = useAuthUserStore();
-  const {
-    productsData,
-    asyncGetAll,
-    pagination,
-    filteredPagination,
-    allProductsData,
-    asyncGetAllFullProducts
-  } = useProductStore();
+  const { asyncGetAll, pagination, productsData } = useProductStore();
+  const [orderBy, setOrderBy] = useState('id');
+  const [orderType, setOrderType] = useState('asc');
 
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const keyword = searchParams.get('keyword');
-  const [searchKeyword, setSearchKeyword] = useState(keyword || '');
-
-  const filteredProducts = allProductsData.filter((product) =>
-    product.name.toLowerCase().includes((keyword || '').toLowerCase())
-  );
+  let tSearch = null;
 
   useEffect(() => {
     asyncGetAll();
-    asyncGetAllFullProducts();
-  }, [asyncGetAll, asyncGetAllFullProducts]);
+  }, [asyncGetAll]);
+
+  const handleSearchChange = (e) => {
+    clearTimeout(tSearch);
+    tSearch = setTimeout(async () => {
+      await asyncGetAll(e.target.value, 1, 12, orderBy, orderType);
+    }, 1000);
+  };
 
   const onPaginationClick = async (page) => {
-    await asyncGetAll(page);
+    await asyncGetAll('', page, 12, orderBy, orderType);
   };
 
-  const onSearchKeywordChange = ({ target }) => {
-    setSearchKeyword(target.value);
-    const params = new URLSearchParams(searchParams);
-    params.set('keyword', target.value);
-    router.push(`?${params.toString()}`);
+  const handleApplyFilter = async (e) => {
+    e.preventDefault();
+    await asyncGetAll('', 1, 12, orderBy, orderType);
+    document.getElementById('modal_filter_products').close();
   };
-  if (!productsData || !allProductsData) {
-    return <Loading />;
-  }
+
+  useEffect(() => {
+    asyncGetAll();
+  }, [asyncGetAll]);
 
   if (!role) {
     return <Loading />;
   }
 
   return (
-    <main className="product-page relative h-screen  bg-bgColor font-poppins">
+    <main className="product-page relative h-screen bg-bgColor font-poppins">
       <Navbar />
       <Sidebar />
       <ToggleTheme />
@@ -90,8 +85,7 @@ function ListProducts() {
               type="text"
               className="grow text-sm text-tertiary transition-none placeholder:text-tertiary"
               placeholder="Search product..."
-              value={searchKeyword}
-              onChange={onSearchKeywordChange}
+              onChange={(e) => handleSearchChange(e)}
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -107,22 +101,31 @@ function ListProducts() {
             </svg>
           </label>
           <div className="btn-filter ml-5 cursor-pointer rounded-lg p-1 hover:bg-secondary">
-            <IoFilterSharp className="text-3xl text-secondary hover:text-white" />
+            <IoFilterSharp
+              onClick={() => document.getElementById('modal_filter_products').showModal()}
+              className="text-3xl text-secondary hover:text-white"
+            />
           </div>
+          {/* Modal Filter */}
+          <ModalFilterProducts
+            handleApplyFilter={handleApplyFilter}
+            setOrderBy={setOrderBy}
+            setOrderType={setOrderType}
+          />
         </div>
       </div>
 
       {role === 'admin' ? (
-        <ContainerProductsAdmin productsData={keyword ? filteredProducts : productsData} />
+        <ContainerProductsAdmin productsData={productsData} />
       ) : (
         <div className="flex justify-center">
-          <ContainerProductsUser productsData={keyword ? filteredProducts : productsData} />
+          <ContainerProductsUser productsData={productsData} />
         </div>
       )}
 
       <Pagination
-        currentPage={keyword ? filteredPagination.currentPage : pagination.currentPage}
-        totalPage={keyword ? filteredPagination.totalPage : pagination.totalPage}
+        currentPage={pagination.currentPage}
+        totalPage={pagination.totalPage}
         onClick={onPaginationClick}
       />
     </main>

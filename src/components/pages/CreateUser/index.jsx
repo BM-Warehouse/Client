@@ -6,9 +6,12 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
+import Loading from '@/components/parts/Loading';
 import Navbar from '@/components/parts/Navbar';
+import ProgressBar from '@/components/parts/ProgressBar';
 import Sidebar from '@/components/parts/Sidebar';
 import useInput from '@/hooks/useInput';
+import { uploadV3 } from '@/lib/upload';
 import useAuthUserStore from '@/store/authUserStore';
 import useUsersStore from '@/store/userStore';
 
@@ -27,10 +30,13 @@ const AddUser = () => {
   const [file, setFile] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const { asyncAddUser } = useUsersStore();
+  const [progress, setProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+
   const router = useRouter();
 
   if (!role) {
-    return null;
+    return <Loading />;
   }
 
   const handleFileChange = (e) => {
@@ -39,6 +45,11 @@ const AddUser = () => {
 
   const handleBack = async () => {
     router.back();
+  };
+
+  const handleProgressChange = (percentage) => {
+    console.log(percentage);
+    setProgress(percentage);
   };
 
   const handleSubmit = async (e) => {
@@ -60,22 +71,10 @@ const AddUser = () => {
       return;
     }
 
-    if (!file) {
-      toast.error('Please select a file to upload.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'rwheysjo');
-
     try {
-      const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
-        method: 'POST',
-        body: formData
-      });
+      setIsUploading(true);
       // eslint-disable-next-line camelcase
-      const { secure_url } = await response.json();
+      const { secure_url } = await uploadV3(file, handleProgressChange);
       // eslint-disable-next-line camelcase
       const avatar = secure_url;
 
@@ -233,21 +232,22 @@ const AddUser = () => {
                   className="file-input file-input-bordered file-input-sm w-full mt-2 h-10 text-secondary file:bg-secondary file:border-secondary file:text-white rounded-md"
                 />
               </label>
+              {isUploading && <ProgressBar progress={progress} />}
             </div>
             <div className="modal-action mt-6 flex justify-between">
-              <button
-                type="button"
-                onClick={handleBack}
-                className="btn bg-secondary text-white rounded-md px-4 py-2"
-              >
-                Close
-              </button>
               <button
                 type="submit"
                 onClick={handleSubmit}
                 className="btn bg-secondary text-white rounded-md px-4 py-2"
               >
                 Submit
+              </button>
+              <button
+                type="button"
+                onClick={handleBack}
+                className="btn bg-secondary text-white rounded-md px-4 py-2"
+              >
+                Close
               </button>
             </div>
           </form>

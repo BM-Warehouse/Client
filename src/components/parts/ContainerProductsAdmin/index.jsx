@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import Loading from '@/components/parts/Loading';
 import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
 import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
 import RowProduct from '@/components/parts/RowProduct';
@@ -34,11 +35,11 @@ function ContainerProductsAdmin({ productsData }) {
   };
 
   useEffect(() => {
-    getWarehouseData();
+    getWarehouseData(1, 20);
   }, [getWarehouseData]);
 
   if (!productsData) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
@@ -50,6 +51,7 @@ function ContainerProductsAdmin({ productsData }) {
               <th>ID</th>
               <th>Name</th>
               <th>Category</th>
+              <th>Price</th>
               <th>Total Stock</th>
               <th className="">Actions</th>
             </tr>

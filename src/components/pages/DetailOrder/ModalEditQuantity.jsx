@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import toast from 'react-hot-toast';
+
 import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
 import { editProductInCheckout, getDetailOrder } from '@/fetching/orders';
@@ -30,7 +32,7 @@ const ModalEditQuantity = ({ checkoutId }) => {
           setTotalProductPrice(res.data.checkout.totalProductPrice);
         })
         .catch((e) => {
-          window.alert('getDetailOrder Error', e);
+          toast.success(`getDetailOrder Error: ${e.message}`);
         });
     });
     closeModalEditQuantity();

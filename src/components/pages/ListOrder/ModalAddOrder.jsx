@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 
 import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
 import { addCheckout } from '@/fetching/orders';
+import formatRupiah from '@/lib/formatRupiah';
 
 import { ListOrderContext } from './context';
 
@@ -137,7 +138,7 @@ const ModalAddOrder = () => {
                   <option value=""> </option>
                   {couriers.map((i) => (
                     <option key={i.id} value={i.id}>
-                      {i.name}
+                      {i.name} - {formatRupiah(i.price)}
                     </option>
                   ))}
                 </select>
