@@ -29,7 +29,6 @@ const getAllProducts = async (
     const { data } = responseJson;
     return data;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Error fetching data:', error.message);
     throw error;
   }

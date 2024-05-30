@@ -5,6 +5,7 @@ import useSidebarStore from '@/store/sidebarStore';
 
 function ContainerProductsUser({ productsData }) {
   const { expanded } = useSidebarStore();
+
   if (!productsData) {
     return <div>Loading...</div>;
   }

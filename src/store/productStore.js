@@ -13,7 +13,7 @@ import {
 
 const useProductStore = create((set) => ({
   productsData: [],
-  allProductsData: [],
+
   detailProduct: null,
   newProduct: null,
   pagination: {
@@ -24,17 +24,10 @@ const useProductStore = create((set) => ({
     currentPage: 1,
     limit: null
   },
-  filteredPagination: {
-    totalPage: null,
-    totalData: null,
-    nextPage: null,
-    prevPage: null,
-    currentPage: 1,
-    limit: null
-  },
-  async asyncGetAll(contains, page, limit, orderBy, orderType) {
+
+  async asyncGetAll(contains = '', page = 1, limit = 12, orderBy = 'id', orderType = 'asc') {
     try {
-      const data = await getAllProducts(contains, page, limit, orderBy, orderType);
+      const data = await getAllProducts(page, limit, contains, orderBy, orderType);
       set((_state) => ({
         productsData: data.products,
         pagination: data.pagination
@@ -116,17 +109,6 @@ const useProductStore = create((set) => ({
       }));
     } catch (error) {
       console.error('Error in asyncEditProduct:', error.message);
-    }
-  },
-  async asyncGetAllFullProducts(page = 1, limit = 99999) {
-    try {
-      const data = await getAllProducts(page, limit);
-      set((_state) => ({
-        allProductsData: data.products,
-        filterPagination: data.pagination
-      }));
-    } catch (error) {
-      console.error('Error in asyncGetAll:', error.message);
     }
   }
 }));
