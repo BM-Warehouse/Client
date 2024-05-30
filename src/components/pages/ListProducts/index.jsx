@@ -12,6 +12,7 @@ import ToggleTheme from '@/components/elements/ToggleTheme';
 import ContainerProductsAdmin from '@/components/parts/ContainerProductsAdmin';
 import ContainerProductsUser from '@/components/parts/ContainerProductsUser';
 import Loading from '@/components/parts/Loading';
+import ModalFilterProducts from '@/components/parts/ModalFilterProducts';
 import Navbar from '@/components/parts/Navbar';
 import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
@@ -39,6 +40,12 @@ function ListProducts() {
 
   const onPaginationClick = async (page) => {
     await asyncGetAll('', page, 12, orderBy, orderType);
+  };
+
+  const handleApplyFilter = async (e) => {
+    e.preventDefault();
+    await asyncGetAll('', 1, 12, orderBy, orderType);
+    document.getElementById('modal_filter_products').close();
   };
 
   useEffect(() => {
@@ -94,8 +101,16 @@ function ListProducts() {
             </svg>
           </label>
           <div className="btn-filter ml-5 cursor-pointer rounded-lg p-1 hover:bg-secondary">
-            <IoFilterSharp className="text-3xl text-secondary hover:text-white" />
+            <IoFilterSharp
+              onClick={() => document.getElementById('modal_filter_products').showModal()}
+              className="text-3xl text-secondary hover:text-white"
+            />
           </div>
+          <ModalFilterProducts
+            handleApplyFilter={handleApplyFilter}
+            setOrderBy={setOrderBy}
+            setOrderType={setOrderType}
+          />
         </div>
       </div>
 
