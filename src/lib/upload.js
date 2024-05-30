@@ -28,7 +28,7 @@ const uploadV2 = async (file) => {
   return res;
 };
 
-const uploadV3 = async (file, onProgressChange) => {
+const uploadV3 = async (file, onProgressChange = null) => {
   if (!file) {
     return null;
   }
@@ -45,7 +45,7 @@ const uploadV3 = async (file, onProgressChange) => {
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) {
         const percentComplete = Math.round((event.loaded / event.total) * 100);
-        onProgressChange(percentComplete);
+        if (onProgressChange) onProgressChange(percentComplete);
         // setProgress(percentComplete);
       }
     };
