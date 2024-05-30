@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
+import Loading from '@/components/parts/Loading';
 import Navbar from '@/components/parts/Navbar';
 import ProgressBar from '@/components/parts/ProgressBar';
 import Sidebar from '@/components/parts/Sidebar';
@@ -50,7 +51,7 @@ function UpdateUser({ params }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   if (!userDetail) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const handleSubmit = async (e) => {
@@ -102,7 +103,7 @@ function UpdateUser({ params }) {
   };
 
   if (!role) {
-    return null;
+    return <Loading />;
   }
 
   return (

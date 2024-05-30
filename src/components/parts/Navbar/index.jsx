@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-import BWMLogo from '@/assets/images/LogoBMW2.png';
+import BWMLogo from '@/assets/images/BMW_icon_N.png';
 import CartIcon from '@/components/elements/CartIcon';
 import ToggleTheme from '@/components/elements/ToggleTheme';
 import Loading from '@/components/parts/Loading';

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
+import Loading from '@/components/parts/Loading';
 import Navbar from '@/components/parts/Navbar';
 import ProgressBar from '@/components/parts/ProgressBar';
 import Sidebar from '@/components/parts/Sidebar';
@@ -35,7 +36,7 @@ const AddUser = () => {
   const router = useRouter();
 
   if (!role) {
-    return null;
+    return <Loading />;
   }
 
   const handleFileChange = (e) => {
