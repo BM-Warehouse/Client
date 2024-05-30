@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { HiUserAdd } from 'react-icons/hi';
 import { IoFilterSharp } from 'react-icons/io5';
 
+import Loading from '@/components/parts/Loading';
 import Navbar from '@/components/parts/Navbar';
 import Pagination from '@/components/parts/Pagination';
 import Sidebar from '@/components/parts/Sidebar';
@@ -38,7 +39,7 @@ function ListUsers() {
   };
 
   if (!role) {
-    return null;
+    return <Loading />;
   }
   return (
     <main className="user-page bg-bgColor relative h-screen font-poppins ">

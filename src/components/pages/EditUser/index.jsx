@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
+import Loading from '@/components/parts/Loading';
 import Navbar from '@/components/parts/Navbar';
 import Sidebar from '@/components/parts/Sidebar';
 import useInput from '@/hooks/useInput';
@@ -46,7 +47,7 @@ function UpdateUser({ params }) {
   const [file, setFile] = useState(null);
 
   if (!userDetail) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const handleFileChange = (e) => {
@@ -115,7 +116,7 @@ function UpdateUser({ params }) {
   };
 
   if (!role) {
-    return null;
+    return <Loading />;
   }
 
   return (

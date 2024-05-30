@@ -1,13 +1,14 @@
 'use client';
 
 import CardProduct from '@/components/parts/CardProduct';
+import Loading from '@/components/parts/Loading';
 import useSidebarStore from '@/store/sidebarStore';
 
 function ContainerProductsUser({ productsData }) {
   const { expanded } = useSidebarStore();
 
   if (!productsData) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

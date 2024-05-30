@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import Loading from '@/components/parts/Loading';
 import ModalAddStockProduct from '@/components/parts/ModalAddStockProduct';
 import ModalMoveStockProduct from '@/components/parts/ModalMoveStockProduct';
 import RowProduct from '@/components/parts/RowProduct';
@@ -38,7 +39,7 @@ function ContainerProductsAdmin({ productsData }) {
   }, [getWarehouseData]);
 
   if (!productsData) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
