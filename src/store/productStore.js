@@ -32,9 +32,9 @@ const useProductStore = create((set) => ({
     currentPage: 1,
     limit: null
   },
-  async asyncGetAll(page = 1) {
+  async asyncGetAll(contains, page, limit, orderBy, orderType) {
     try {
-      const data = await getAllProducts(page);
+      const data = await getAllProducts(contains, page, limit, orderBy, orderType);
       set((_state) => ({
         productsData: data.products,
         pagination: data.pagination
