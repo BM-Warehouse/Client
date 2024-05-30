@@ -1,7 +1,7 @@
 import BASE_URL from '@/lib/baseUrl';
 import { fetchWithToken } from '@/lib/fetchLib';
 
-const getAllProducts = async (page = 1, limit = 12, contains = '') => {
+const getAllProducts = async (page = 1, limit = 10, contains = '') => {
   try {
     const param = new URLSearchParams({
       page,
