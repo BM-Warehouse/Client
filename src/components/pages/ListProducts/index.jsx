@@ -106,6 +106,7 @@ function ListProducts() {
               className="text-3xl text-secondary hover:text-white"
             />
           </div>
+          {/* Modal Filter */}
           <ModalFilterProducts
             handleApplyFilter={handleApplyFilter}
             setOrderBy={setOrderBy}
