@@ -102,7 +102,7 @@ const addUser = async (
 
 const updateUser = async (
   id,
-  fullName,
+  name,
   email,
   username,
   password,
@@ -110,17 +110,29 @@ const updateUser = async (
   address,
   gender,
   birthdate,
-  avatar,
-  role
+  role,
+  avatar
 ) => {
   try {
+    console.log({
+      email,
+      username,
+      password,
+      name,
+      phone,
+      address,
+      gender,
+      birthdate,
+      role,
+      avatar
+    });
     const response = await fetchWithToken(`${BASE_URL}/users/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(
-        fullName,
+      body: JSON.stringify({
+        name,
         email,
         username,
         password,
@@ -130,7 +142,7 @@ const updateUser = async (
         birthdate,
         avatar,
         role
-      )
+      })
     });
     return response;
   } catch (error) {
