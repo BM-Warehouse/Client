@@ -71,21 +71,12 @@ const useUsersStore = create((set) => ({
 
   asyncUpdateUser: async (
     id,
-    fullName,
-    email,
-    username,
-    password,
-    phone,
-    address,
-    gender,
-    birthdate,
-    role,
-    avatar
+    { name, email, username, password, phone, address, gender, birthdate, role, avatar }
   ) => {
     try {
       const updatedUser = await updateUser(
         id,
-        fullName,
+        name,
         email,
         username,
         password,

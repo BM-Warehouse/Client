@@ -6,9 +6,12 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
+import Loading from '@/components/parts/Loading';
 import Navbar from '@/components/parts/Navbar';
+import ProgressBar from '@/components/parts/ProgressBar';
 import Sidebar from '@/components/parts/Sidebar';
 import useInput from '@/hooks/useInput';
+import { uploadV3 } from '@/lib/upload';
 import useAuthUserStore from '@/store/authUserStore';
 import useUsersStore from '@/store/userStore';
 
@@ -27,10 +30,13 @@ const AddUser = () => {
   const [file, setFile] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const { asyncAddUser } = useUsersStore();
+  const [progress, setProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+
   const router = useRouter();
 
   if (!role) {
-    return null;
+    return <Loading />;
   }
 
   const handleFileChange = (e) => {
@@ -39,6 +45,11 @@ const AddUser = () => {
 
   const handleBack = async () => {
     router.back();
+  };
+
+  const handleProgressChange = (percentage) => {
+    console.log(percentage);
+    setProgress(percentage);
   };
 
   const handleSubmit = async (e) => {
@@ -55,26 +66,15 @@ const AddUser = () => {
       !birthdate ||
       !roleUser
     ) {
+      console.log(fullName, email, username, password, phone, address, gender, birthdate, roleUser);
       toast.error('Please fill in all fields.');
       return;
     }
 
-    if (!file) {
-      toast.error('Please select a file to upload.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'rwheysjo');
-
     try {
-      const response = await fetch('https://api.cloudinary.com/v1_1/denyah3ls/image/upload', {
-        method: 'POST',
-        body: formData
-      });
+      setIsUploading(true);
       // eslint-disable-next-line camelcase
-      const { secure_url } = await response.json();
+      const { secure_url } = await uploadV3(file, handleProgressChange);
       // eslint-disable-next-line camelcase
       const avatar = secure_url;
 
@@ -105,10 +105,10 @@ const AddUser = () => {
       <Navbar />
       <Sidebar />
       <div className="add-user-page-content flex w-full flex-col items-center px-4 md:px-10 py-10 text-primary">
-        <div className="add-user-container mt-10 md:mt-20 flex flex-col items-center bg-tertiary px-4 md:px-8 xl:px-24 rounded-lg shadow-lg py-10 w-full max-w-2xl">
-          <h1 className="text-3xl font-bold mb-6">Add User</h1>
+        <div className="add-user-container mt-10 md:mt-20 flex flex-col items-center bg-primary px-4 md:px-8 xl:px-24 rounded-lg shadow-lg py-10 w-full max-w-2xl">
+          <h1 className="text-3xl font-bold mb-6 text-secondary">Add User</h1>
           <form className="flex flex-col w-full">
-            <div className="input-container space-y-4">
+            <div className="input-container flex flex-col space-y-3">
               <label className="text-secondary w-full">
                 Name:
                 <input
@@ -120,10 +120,12 @@ const AddUser = () => {
                   className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
                 />
               </label>
+              {/* <div className='mt-72'>
+              </div> */}
               <label className="text-secondary w-full">
                 Email:
                 <input
-                  type="text"
+                  type="email"
                   name="email"
                   value={email}
                   onChange={onEmailChange}
@@ -165,7 +167,7 @@ const AddUser = () => {
               <label className="text-secondary w-full">
                 Phone:
                 <input
-                  type="text"
+                  type="tel"
                   name="phone"
                   value={phone}
                   onChange={onPhoneChange}
@@ -175,13 +177,14 @@ const AddUser = () => {
               </label>
               <label className="text-secondary w-full">
                 Address:
-                <input
+                <textarea
                   type="text"
+                  rows={3}
                   name="address"
                   value={address}
                   onChange={onAddressChange}
                   placeholder="Address"
-                  className="input input-bordered w-full h-10 mt-2 placeholder:text-secondary rounded-md px-3"
+                  className="textarea textarea-bordered w-full mt-2 placeholder:text-secondary rounded-md px-3"
                 />
               </label>
               <label className="text-secondary w-full">
@@ -226,24 +229,25 @@ const AddUser = () => {
                   type="file"
                   name="avatar"
                   onChange={handleFileChange}
-                  className="file-input file-input-bordered file-input-sm w-full mt-2 text-secondary file:bg-secondary file:border-secondary file:text-white rounded-md px-3"
+                  className="file-input file-input-bordered file-input-sm w-full mt-2 h-10 text-secondary file:bg-secondary file:border-secondary file:text-white rounded-md"
                 />
               </label>
+              {isUploading && <ProgressBar progress={progress} />}
             </div>
             <div className="modal-action mt-6 flex justify-between">
-              <button
-                type="button"
-                onClick={handleBack}
-                className="btn bg-secondary text-white rounded-md px-4 py-2"
-              >
-                Close
-              </button>
               <button
                 type="submit"
                 onClick={handleSubmit}
                 className="btn bg-secondary text-white rounded-md px-4 py-2"
               >
                 Submit
+              </button>
+              <button
+                type="button"
+                onClick={handleBack}
+                className="btn bg-secondary text-white rounded-md px-4 py-2"
+              >
+                Close
               </button>
             </div>
           </form>

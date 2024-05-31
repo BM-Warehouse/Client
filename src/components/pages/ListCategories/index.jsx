@@ -61,7 +61,7 @@ function ListCategories() {
   if (isLoading)
     return (
       <div className="flex h-screen items-center justify-center">
-        <span className="loading loading-bars loading-lg text-tertiary"> </span>;
+        <span className="loading loading-bars loading-lg text-tertiary"> </span>
       </div>
     );
 

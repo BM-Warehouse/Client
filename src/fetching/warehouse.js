@@ -69,7 +69,7 @@ const getWarehouseDetails = async (id, page = 1, limit = 10) => {
 
     const { data } = responseJson;
     const { warehouse, pagination } = data;
-    console.log(warehouse.warehouse[0]);
+    // console.log(warehouse.warehouse[0]);
     const w = warehouse.warehouse[0];
 
     return { w, pagination };
@@ -99,7 +99,7 @@ const fetchBatches = async (productId, warehouseId, page = 1, limit = 5) => {
 const getWarehouseName = async (id) => {
   const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`);
   const warehouseDetails = await response.json();
-  return warehouseDetails.data.warehouse[0].name;
+  return warehouseDetails.data.warehouse.warehouse[0].name;
 };
 
 const addWarehouse = async (params) => {

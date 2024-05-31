@@ -50,6 +50,23 @@ module.exports = {
   },
   plugins: [require('daisyui'), require('tailwind-scrollbar-hide')],
   daisyui: {
-    themes: ['light']
+    themes: [
+      {
+        light: {
+          ...require('daisyui/src/theming/themes').light,
+          primary: '#f7f3ce',
+          secondary: '#7fb4ba',
+          accent: '#04b0c4'
+        }
+      },
+      {
+        dark: {
+          ...require('daisyui/src/theming/themes').dark,
+          primary: '#1a1a1a',
+          secondary: '#e0e0e0',
+          accent: '#bdbdbd'
+        }
+      }
+    ]
   }
 };

@@ -25,11 +25,11 @@ const OrderSteps = ({ status }) => {
   return (
     <div className="ml-20 my-5 flex justify-center items-center min-w-60">
       <ul className="steps">
-        <li className="step step-warning">Payment</li>
-        <li className={`step ${steps > 0 && 'step-warning'}`}>Packing</li>
-        <li className={`step ${steps > 1 && 'step-warning'}`}>Sent</li>
+        <li className="step step-secondary">Payment</li>
+        <li className={`step ${steps > 0 && 'step-secondary'}`}>Packing</li>
+        <li className={`step ${steps > 1 && 'step-secondary'}`}>Sent</li>
         {/* eslint-disable-next-line no-nested-ternary */}
-        <li className={`step ${steps === 3 ? 'step-warning' : steps === 4 ? 'step-' : ''}`}>
+        <li className={`step ${steps === 3 ? 'step-secondary' : steps === 4 ? 'step-' : ''}`}>
           {steps === 4 ? 'Error' : 'Received'}
         </li>
       </ul>

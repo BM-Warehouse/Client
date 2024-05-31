@@ -4,6 +4,7 @@ import { FiArrowUpRight } from 'react-icons/fi';
 import { HiOutlineTrash, HiArrowsExpand } from 'react-icons/hi';
 
 import ModalConfirmation from '@/components/parts/ModalConfirmation';
+import formatRupiah from '@/lib/formatRupiah';
 import useProductStore from '@/store/productStore';
 
 function RowProduct({ product, onOpenModal, onOpenMoveModal }) {
@@ -42,6 +43,7 @@ function RowProduct({ product, onOpenModal, onOpenMoveModal }) {
           ? product.productCategories[0].category.name
           : '-'}
       </td>
+      <td>{formatRupiah(product.price)}</td>
       <td>{product.totalStock}</td>
       <td>
         <div className="buttons-action flex justify-between">

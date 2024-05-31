@@ -8,6 +8,8 @@ import { IoFilterSharp } from 'react-icons/io5';
 
 import useWarehouseStore from '@/store/warehouseStore';
 
+import { openModalAddProductToWarehouse } from './ModalAddProductToWarehouse';
+
 const Container = ({ children }) => {
   const params = useParams();
   const { warehouseId } = params;
@@ -28,17 +30,6 @@ const Container = ({ children }) => {
       getWarehouseData(); // Refresh the warehouse data
       setNewWarehouse({ name: '', city: '', address: '' }); // Reset the form fields
       document.getElementById('add_warehouse_modal').close();
-    } catch (error) {
-      toast.error('Failed to add warehouse!');
-    }
-  };
-
-  const handleAddProductWarehouse = async (e) => {
-    e.preventDefault();
-    try {
-      toast.success('Product added to warehouse successfully!');
-      getWarehouseData(); // Refresh the warehouse data
-      document.getElementById('add_product_warehouse_modal').close();
     } catch (error) {
       toast.error('Failed to add warehouse!');
     }
@@ -86,7 +77,8 @@ const Container = ({ children }) => {
           <button
             className="inline-flex items-center border border-gray-300 bg-tertiary text-white py-2 px-4 rounded 
             shadow-sm hover:bg-secondary mb-2"
-            onClick={() => document.getElementById('add_product_warehouse_modal').showModal()}
+            // onClick={() => document.getElementById('add_product_warehouse_modal').showModal()}
+            onClick={openModalAddProductToWarehouse}
           >
             <BiPlus className="mr-2 text-white" /> Add Products To Warehouse
           </button>
@@ -168,55 +160,6 @@ const Container = ({ children }) => {
                 type="button"
                 className="btn bg-tertiary hover:bg-secondary text-white"
                 onClick={() => document.getElementById('add_warehouse_modal').close()}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      </dialog>
-
-      <dialog id="add_product_warehouse_modal" className="modal">
-        <div className="modal-box bg-primary text-secondary">
-          <h3 className="font-bold text-lg">Add Product To Warehouse</h3>
-          <form onSubmit={handleAddProductWarehouse}>
-            <div className="form-control">
-              <label className="label" htmlFor="warehouse">
-                Select Product
-              </label>
-              <select
-                name="warehouse"
-                className="select max-h-10 w-7/12 border border-tertiary bg-bgColor px-4 py-0 text-sm"
-                value="Select Warehosue"
-                onChange={() => {}}
-                required
-              >
-                <option disabled value="">
-                  Select Warehouse
-                </option>
-              </select>
-            </div>
-            <div className="form-control">
-              <label className="label" htmlFor="quantity">
-                Quantity
-              </label>
-              <input
-                className="input input-bordered"
-                type="number"
-                name="quantity"
-                value=""
-                required
-              />
-            </div>
-
-            <div className="modal-action">
-              <button type="submit" className="btn bg-tertiary hover:bg-secondary text-white">
-                Add
-              </button>
-              <button
-                type="button"
-                className="btn bg-tertiary hover:bg-secondary text-white"
-                onClick={() => document.getElementById('add_product_warehouse_modal').close()}
               >
                 Cancel
               </button>

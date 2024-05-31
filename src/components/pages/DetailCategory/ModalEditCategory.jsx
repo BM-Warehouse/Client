@@ -198,10 +198,9 @@ const ModalEditCategory2 = ({ id }) => {
       <TextArea label="Description" defaultValue={categoryDetail.description} name="description" />
       <InputFile label="Category Picture" name="image" />
       {isUploading && (
-        <>
+        <div className="w-full">
           <ProgressBar progress={progress} />
-          <span className="mx-auto text-secondary">{progress} %</span>
-        </>
+        </div>
       )}
       <div className="flex justify-center w-full">
         <ButtonPrimary className="mr-5" type="submit">
