@@ -22,13 +22,13 @@ const Hero = () => (
       >
         <Image src={Ellipse} alt="Ellipse" />
         <motion.div
-          className="text-content z-2 absolute left-10 top-14 max-w-[20rem] bg-transparent text-white md:left-20 md:top-28 md:max-w-[30rem]"
+          className="text-content z-2 absolute left-8 top-11 max-w-[18rem] bg-transparent text-white md:left-20 md:top-28 md:max-w-[30rem]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1 }}
         >
-          <h1 className="text-2xl font-bold md:text-4xl">Baby & Mom Warehouse</h1>
-          <p className="mt-3 text-sm md:mt-10 md:text-base">
+          <h1 className="text-lg font-bold md:text-4xl">Baby & Mom Warehouse</h1>
+          <p className="mt-3 text-[0.6rem] md:mt-10 md:text-base">
             BM WAREHOUSE is an organization created as the final project assignment for Rakamin
             Academy. We aim to revolutionize the warehousing industry by integrating cutting-edge
             technology with efficient logistics solutions. We strive to provide seamless warehousing
@@ -36,7 +36,9 @@ const Hero = () => (
             management
           </p>
           <Link href="/register">
-            <button className="btn btn-outline mt-3 w-40 text-white md:mt-10">Get Started</button>
+            <button className="btn btn-outline  mt-3 w-40 h-7 min-h-7 md:h-12 md:min-h-12 text-white md:mt-10">
+              Get Started
+            </button>
           </Link>
         </motion.div>
       </motion.div>
