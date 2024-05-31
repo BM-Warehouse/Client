@@ -48,7 +48,7 @@ function RowUser({ user }) {
             </span>
           </button>
           <button
-            className="mr-2 min-w-24 rounded-md bg-tertiary py-1 text-primary hover:bg-secondary"
+            className="mr-2 min-w-24 rounded-md bg-red-500 py-1 text-primary hover:bg-red-700"
             onClick={() => document.getElementById(`my_modal_${user.id}`).showModal()}
           >
             <span className="flex items-center justify-center">

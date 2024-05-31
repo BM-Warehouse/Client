@@ -15,7 +15,7 @@ import { uploadV3 } from '@/lib/upload';
 import useAuthUserStore from '@/store/authUserStore';
 import useUsersStore from '@/store/userStore';
 
-const AddUser = () => {
+const CreateUser = () => {
   const { role } = useAuthUserStore();
 
   const [fullName, onfullNameChange] = useInput('');
@@ -29,7 +29,7 @@ const AddUser = () => {
   const [roleUser, onRoleChange] = useInput('');
   const [file, setFile] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const { asyncAddUser } = useUsersStore();
+  const { asyncCreateUser } = useUsersStore();
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -48,7 +48,6 @@ const AddUser = () => {
   };
 
   const handleProgressChange = (percentage) => {
-    console.log(percentage);
     setProgress(percentage);
   };
 
@@ -78,7 +77,7 @@ const AddUser = () => {
       // eslint-disable-next-line camelcase
       const avatar = secure_url;
 
-      await asyncAddUser({
+      await asyncCreateUser({
         fullName,
         email,
         username,
@@ -106,7 +105,7 @@ const AddUser = () => {
       <Sidebar />
       <div className="add-user-page-content flex w-full flex-col items-center px-4 md:px-10 py-10 text-primary">
         <div className="add-user-container mt-10 md:mt-20 flex flex-col items-center bg-primary px-4 md:px-8 xl:px-24 rounded-lg shadow-lg py-10 w-full max-w-2xl">
-          <h1 className="text-3xl font-bold mb-6 text-secondary">Add User</h1>
+          <h1 className="text-3xl font-bold mb-6 text-secondary">Create User</h1>
           <form className="flex flex-col w-full">
             <div className="input-container flex flex-col space-y-3">
               <label className="text-secondary w-full">
@@ -236,18 +235,18 @@ const AddUser = () => {
             </div>
             <div className="modal-action mt-6 flex justify-between">
               <button
-                type="submit"
-                onClick={handleSubmit}
-                className="btn bg-secondary text-white rounded-md px-4 py-2"
-              >
-                Submit
-              </button>
-              <button
                 type="button"
                 onClick={handleBack}
                 className="btn bg-secondary text-white rounded-md px-4 py-2"
               >
                 Close
+              </button>
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                className="btn bg-secondary text-white rounded-md px-4 py-2"
+              >
+                Submit
               </button>
             </div>
           </form>
@@ -257,4 +256,4 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default CreateUser;
