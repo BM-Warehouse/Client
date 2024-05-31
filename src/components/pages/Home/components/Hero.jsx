@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
+// Images
 import Ellipse from '@/assets/images/Ellipse.png';
 import HumanTalk from '@/assets/images/HumanTalk.png';
 
