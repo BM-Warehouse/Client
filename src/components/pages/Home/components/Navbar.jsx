@@ -79,7 +79,10 @@ const Navbar = () => (
             <a href="#footer">Contact Us</a>
           </li>
           <li>
-            <a className="btn mx-5 my-2 bg-secondary text-base text-white hover:bg-tertiary">
+            <a
+              href="/login"
+              className="btn mx-5 my-2 bg-secondary text-base text-white hover:bg-tertiary"
+            >
               <FiLogIn /> <span>Log In</span>
             </a>
           </li>

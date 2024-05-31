@@ -14,6 +14,7 @@ import Hero from './components/Hero';
 import Navbar from './components/Navbar';
 import Sidebar from './components/sidebar';
 import WhyChooseUs from './components/WhyChooseUs';
+import './style.css';
 
 function Home() {
   const fullpageOptions = {
