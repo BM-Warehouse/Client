@@ -22,6 +22,7 @@ const iconCollection = {
 const ButtonPrimary = ({
   className,
   children,
+  type = 'button',
   icon,
   title,
   href = '#',
@@ -41,6 +42,7 @@ const ButtonPrimary = ({
         className={mergedClassName}
         onClick={onClick}
         title={title}
+        type={type}
         disable={disable}
         {...rest}
       >
@@ -55,6 +57,7 @@ const ButtonPrimary = ({
       className={mergedClassName}
       onClick={onClick}
       title={title}
+      type={type}
       disabled={disable}
       {...rest}
     >
@@ -74,6 +77,7 @@ const ButtonStrong = ({
   href = '#',
   onClick,
   disable,
+  type = 'button',
   ...rest
 }) => {
   let mergedClassName = 'relative min-w-10 min-h-9 rounded-md px-3 py-2 text-primary m-1 '; // harus ada spasi di akhir
@@ -84,7 +88,14 @@ const ButtonStrong = ({
     selectedIcon = cloneElement(iconCollection[icon], { className: children ? 'mr-1' : '' });
   return href !== '#' ? (
     <Link href={href}>
-      <button className={mergedClassName} onClick={onClick} title={title} {...rest}>
+      <button
+        className={mergedClassName}
+        onClick={onClick}
+        title={title}
+        disabled={disable}
+        type={type}
+        {...rest}
+      >
         <span className="flex items-center justify-center">
           {selectedIcon}
           {children}
@@ -97,6 +108,7 @@ const ButtonStrong = ({
       onClick={onClick}
       title={title}
       disabled={disable}
+      type={type}
       {...rest}
     >
       <span className="flex items-center justify-center">

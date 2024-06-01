@@ -13,6 +13,7 @@ import { getAllUsers } from '@/fetching/user';
 import ContainerOrders from './ContainerOrders';
 import ListOrderContextProvider, { ListOrderContext } from './context';
 import ModalAddOrder, { openModalAddOrder } from './ModalAddOrder';
+import ModalDeleteOrder from './ModalDeleteOrder';
 
 function Main() {
   const { data, setData, pagination, setPagination } = useContext(ListOrderContext);
@@ -101,6 +102,7 @@ function Main() {
 
       <ContainerOrders data={data} />
       <ModalAddOrder />
+      <ModalDeleteOrder />
 
       <Pagination
         currentPage={pagination.currentPage}

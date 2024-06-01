@@ -12,17 +12,22 @@ import Loading from '@/components/parts/Loading';
 import OrderSteps from '@/components/parts/OrderSteps';
 import Pagination from '@/components/parts/Pagination';
 import { DetailOrderContex } from '@/contexts/detailOrderContext';
+import { getAllCouriers } from '@/fetching/courier';
 import { sendOrder, getDetailOrder, confirmPayment } from '@/fetching/orders';
 import { getAllProducts } from '@/fetching/product';
+import { getAllUsers } from '@/fetching/user';
 import formatRupiah from '@/lib/formatRupiah';
 
 import ModalAddProduct from './ModalAddProduct';
 import ModalDeleteVerification from './ModalDeleteVerification';
+import ModalEditOrder, { openModalEditOrder } from './ModalEditOrder';
 import ModalEditQuantity from './ModalEditQuantity';
 
 const DetailOrder = ({ id }) => {
   const {
-    data,
+    data, // contain productCheckout Data
+    allData, // contain all detailOrderr Data
+    setAllData,
     setData,
     status,
     setStatus,
@@ -33,7 +38,9 @@ const DetailOrder = ({ id }) => {
     setTotalProductPrice,
     totalProductPrice,
     courierPrice,
-    setCourierPrice
+    setCourierPrice,
+    setCouriers,
+    setUsers
   } = useContext(DetailOrderContex);
 
   const [isLoading, setLoading] = useState(true);
@@ -77,8 +84,8 @@ const DetailOrder = ({ id }) => {
   // }, [selectedWarehouses]);
 
   // useEffect(() => {
-  //   console.log(">>>>", currentCheckoutId);
-  // }, [currentCheckoutId]);
+  //   console.log('>>>>', allData);
+  // }, [allData]);
 
   useEffect(() => {
     setCurrentCheckoutId(id);
@@ -90,6 +97,7 @@ const DetailOrder = ({ id }) => {
         return res.json();
       })
       .then((detailOrderData) => {
+        setAllData(detailOrderData.data);
         setData(detailOrderData.data.checkout.productCheckout);
         setStatus(detailOrderData.data.checkout.status);
         setPagination(detailOrderData.data.pagination);
@@ -97,6 +105,16 @@ const DetailOrder = ({ id }) => {
         setTotalProductPrice(detailOrderData.data.checkout.totalProductPrice);
         setCourierPrice(detailOrderData.data.checkout.couriers.price);
         setLoading(false);
+
+        Promise.all([getAllUsers('', 1, 9999), getAllCouriers(1, 9999)])
+          .then((r) => {
+            console.log(r);
+            setUsers(r[0].users);
+            setCouriers(r[1].data.couriers.couriers);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       })
       .catch((error) => {
         console.log('Error:', error);
@@ -109,7 +127,10 @@ const DetailOrder = ({ id }) => {
     setTotalPrice,
     setStatus,
     setTotalProductPrice,
-    setCourierPrice
+    setCourierPrice,
+    setAllData,
+    setCouriers,
+    setUsers
   ]);
 
   // useEffect(() => {
@@ -189,6 +210,16 @@ const DetailOrder = ({ id }) => {
           Confirm
         </ButtonPrimary>
         <ButtonPrimary
+          icon="edit"
+          title="Confirm Payment"
+          disable={status !== 'WAIT FOR PAYMENT'}
+          onClick={() => {
+            openModalEditOrder();
+          }}
+        >
+          Edit
+        </ButtonPrimary>
+        <ButtonPrimary
           icon="add"
           onClick={openProductSelectionDialog}
           disable={status !== 'WAIT FOR PAYMENT'}
@@ -205,8 +236,16 @@ const DetailOrder = ({ id }) => {
         </div>
       </div>
       <OrderSteps status={status} />
-      <div className="flex justify-end mr-4">
-        <div className="right-3 ml-28 mt-10 w-64">
+      <div className="flex justify-between items-end mr-8 ml-28">
+        <div className="right-3 w-full">
+          <p className="text-secondary text-md font-bold">
+            {allData.checkout.user.fullName} (@{allData.checkout.user.username})
+          </p>
+          <p className="text-secondary text-md">{allData.checkout.address}</p>
+          <p className="text-secondary text-md">{allData.checkout.couriers.name}</p>
+          <p className="text-secondary text-md">{allData.checkout.method}</p>
+        </div>
+        <div className="right-3 w-72">
           <div className="flex items-center justify-between">
             <span className="text-secondary text-md">Product Price:</span>
             <span className="text-secondary text-md">{formatRupiah(totalProductPrice)}</span>
@@ -222,6 +261,7 @@ const DetailOrder = ({ id }) => {
         </div>
       </div>
       <ContainerOrderDetail checkoutId={id} data={data} />
+      <ModalEditOrder checkoutId={id} />
       <ModalAddProduct onClose={closeProductSelectionDialog} show={isProductSelectOpen} />
       <ModalDeleteVerification checkoutId={id} />
       <ModalEditQuantity checkoutId={id} />
