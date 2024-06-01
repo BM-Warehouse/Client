@@ -8,7 +8,7 @@ const closeModalWithId = (id) => {
   document.getElementById(id).close();
 };
 
-const Select = ({ children, onChange, value, className, name, label, ...rest }) => (
+const Select = ({ children, onChange, value, defaultValue, className, name, label, ...rest }) => (
   <label className="form-control w-full">
     <div className="label">
       <span className="label-text text-secondary">{label}</span>
@@ -17,6 +17,7 @@ const Select = ({ children, onChange, value, className, name, label, ...rest }) 
       name={name}
       className={`select input-border-custom w-full text-secondary ${className || ''}`}
       value={value}
+      defaultValue={defaultValue}
       onChange={onChange}
       {...rest}
     >
