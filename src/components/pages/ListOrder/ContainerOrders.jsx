@@ -1,12 +1,11 @@
 import { useContext } from 'react';
 
-import toast from 'react-hot-toast';
-
 import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
-import { confirmPayment, deleteCheckout, getAllOrders } from '@/fetching/orders';
+import { confirmPayment, getAllOrders } from '@/fetching/orders';
 import formatRupiah from '@/lib/formatRupiah';
 
 import { ListOrderContext } from './context';
+import { openModalDeleteOrder } from './ModalDeleteOrder';
 
 function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
   const { setData, pagination } = useContext(ListOrderContext);
@@ -15,20 +14,6 @@ function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
   // }
   const handleConfirm = () => {
     confirmPayment(id).then(() => {
-      getAllOrders(pagination.currentPage)
-        .then((res) => res.json())
-        .then((res) => {
-          setData(res.data.checkouts);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    });
-  };
-
-  const handleDelete = () => {
-    deleteCheckout(id).then(() => {
-      toast.success('Successfully delete the checkout list');
       getAllOrders(pagination.currentPage)
         .then((res) => res.json())
         .then((res) => {
@@ -60,7 +45,13 @@ function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
         >
           Confirm
         </ButtonPrimary>
-        <ButtonStrong icon="delete" title="Remove Checkout" onClick={handleDelete}>
+        <ButtonStrong
+          icon="delete"
+          title="Remove Checkout"
+          onClick={() => {
+            openModalDeleteOrder(id);
+          }}
+        >
           Delete
         </ButtonStrong>
       </td>
