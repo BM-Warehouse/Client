@@ -22,7 +22,9 @@ import ModalEditQuantity from './ModalEditQuantity';
 
 const DetailOrder = ({ id }) => {
   const {
-    data,
+    data, // contain productCheckout Data
+    allData, // contain all detailOrderr Data
+    setAllData,
     setData,
     status,
     setStatus,
@@ -76,9 +78,9 @@ const DetailOrder = ({ id }) => {
   //   console.log(">>>>", selectedWarehouses);
   // }, [selectedWarehouses]);
 
-  // useEffect(() => {
-  //   console.log(">>>>", currentCheckoutId);
-  // }, [currentCheckoutId]);
+  useEffect(() => {
+    console.log('>>>>', allData);
+  }, [allData]);
 
   useEffect(() => {
     setCurrentCheckoutId(id);
@@ -90,6 +92,7 @@ const DetailOrder = ({ id }) => {
         return res.json();
       })
       .then((detailOrderData) => {
+        setAllData(detailOrderData.data);
         setData(detailOrderData.data.checkout.productCheckout);
         setStatus(detailOrderData.data.checkout.status);
         setPagination(detailOrderData.data.pagination);
@@ -109,7 +112,8 @@ const DetailOrder = ({ id }) => {
     setTotalPrice,
     setStatus,
     setTotalProductPrice,
-    setCourierPrice
+    setCourierPrice,
+    setAllData
   ]);
 
   // useEffect(() => {
@@ -205,8 +209,13 @@ const DetailOrder = ({ id }) => {
         </div>
       </div>
       <OrderSteps status={status} />
-      <div className="flex justify-end mr-4">
-        <div className="right-3 ml-28 mt-10 w-64">
+      <div className="flex justify-between mr-8 ml-28">
+        <div className="right-3 w-64">
+          <p className="text-secondary text-md font-bold">{allData.checkout.user.fullName}</p>
+          <p className="text-secondary text-md">{allData.checkout.address}</p>
+          <p className="text-secondary text-md">{allData.checkout.couriers.name}</p>
+        </div>
+        <div className="right-3 w-64">
           <div className="flex items-center justify-between">
             <span className="text-secondary text-md">Product Price:</span>
             <span className="text-secondary text-md">{formatRupiah(totalProductPrice)}</span>
