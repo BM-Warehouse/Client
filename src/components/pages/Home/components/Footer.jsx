@@ -6,7 +6,7 @@ import React from 'react';
 
 const Footer = () => (
   <div className="mt-10">
-    <div className="footer bg-primary p-10 text-tertiary">
+    <div className="footer bg-primary lg:p-20 text-tertiary lg:justify-items-center">
       <nav>
         <h6 className="footer-title">Services</h6>
         <a className="link-hover link">Branding</a>

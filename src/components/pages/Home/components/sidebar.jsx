@@ -86,15 +86,6 @@ const Sidebar = () => {
               <FaQuestionCircle />
             </button>
           </li>
-          <li data-menuanchor="contact-us">
-            <button
-              onClick={() => handleMoveToSection(5)}
-              className="sidebar-btn"
-              title="Contact Us"
-            >
-              <FaPhone />
-            </button>
-          </li>
         </ul>
       </motion.div>
     </div>
