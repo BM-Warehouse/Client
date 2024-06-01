@@ -13,11 +13,10 @@ const WhyChooseUs = () => (
           <MdWarehouse className="text-8xl" />
         </div>
         <div className="desc mt-3">
-          <h5 className="mb-2 text-lg font-bold">Lorem Ipsum</h5>
+          <h5 className="mb-2 text-lg font-bold">Efficient</h5>
           <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-            tincidunt ut laoreet dolore. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-            sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+            Our automation system improves operational efficiency, reduces costs, and ensures
+            optimal inventory accuracy for your business success.
           </p>
         </div>
       </div>
@@ -26,11 +25,10 @@ const WhyChooseUs = () => (
           <MdWarehouse className="text-8xl" />
         </div>
         <div className="desc mt-3">
-          <h5 className="mb-2 text-lg font-bold">Lorem Ipsum</h5>
+          <h5 className="mb-2 text-lg font-bold">Services Support</h5>
           <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-            tincidunt ut laoreet dolore. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-            sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+            24/7 customer support ensures all your warehousing issues are handled quickly, ensuring
+            smooth operations and maximum satisfaction.
           </p>
         </div>
       </div>
@@ -39,11 +37,10 @@ const WhyChooseUs = () => (
           <MdWarehouse className="text-8xl" />
         </div>
         <div className="desc mt-3">
-          <h5 className="mb-2 text-lg font-bold">Lorem Ipsum</h5>
+          <h5 className="mb-2 text-lg font-bold">Easy Integration</h5>
           <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-            tincidunt ut laoreet dolore. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-            sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+            Seamless integration with existing systems, real-time reporting, and intelligent
+            analytics help you make informed and fast business decisions.
           </p>
         </div>
       </div>
