@@ -13,7 +13,6 @@ import Sidebar from '@/components/parts/Sidebar';
 import { uploadV3 } from '@/lib/upload';
 import useAuthUserStore from '@/store/authUserStore';
 import useUsersStore from '@/store/userStore';
-// import ProgressBar from '@/components/parts/ProgressBar';
 
 function UpdateUser({ params }) {
   const { role } = useAuthUserStore();
@@ -24,6 +23,7 @@ function UpdateUser({ params }) {
   }));
   const [birthDate, setBirthDate] = useState('');
   const [progress, setProgress] = useState(0);
+  const [isLoading, setLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
 
   const router = useRouter();
@@ -39,7 +39,9 @@ function UpdateUser({ params }) {
   const id = +params.userid;
 
   useEffect(() => {
-    asyncGetDetail(id);
+    asyncGetDetail(id).then(() => {
+      setLoading(false);
+    });
   }, [asyncGetDetail, id]);
 
   useEffect(() => {
@@ -51,6 +53,10 @@ function UpdateUser({ params }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   if (!userDetail) {
+    return <Loading />;
+  }
+
+  if (isLoading) {
     return <Loading />;
   }
 

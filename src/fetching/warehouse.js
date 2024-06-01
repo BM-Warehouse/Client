@@ -79,17 +79,18 @@ const getWarehouseDetails = async (id, page = 1, limit = 10) => {
   }
 };
 
-const fetchBatches = async (productId, warehouseId, page = 1, limit = 5) => {
-  const url = `${BASE_URL}/warehouses/batches?page=${page}&limit=${limit}`;
+const fetchBatches = async (productId, warehouseId, page = 1, limit = 10) => {
+  const url = `${BASE_URL}/warehouses/batches?productId=${productId}&warehouseId=${warehouseId}&page=${page}&limit=${limit}`;
 
   try {
-    const response = await fetchWithToken(url);
+    const response = await fetchWithToken(url); // Use fetchWithToken if needed
     if (!response.ok) {
       throw new Error(`Failed to retrieve batches data: ${response.status} ${response.statusText}`);
     }
 
-    const data = await response.json();
-    return data;
+    const { data } = await response.json();
+    const { batches } = data; // Destructure batches directly
+    return batches;
   } catch (error) {
     console.error('Error fetching batches data:', error);
     throw error;

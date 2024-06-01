@@ -8,7 +8,7 @@ const closeModalWithId = (id) => {
   document.getElementById(id).close();
 };
 
-const Select = ({ children, onChange, value, className, name, label, ...rest }) => (
+const Select = ({ children, onChange, value, defaultValue, className, name, label, ...rest }) => (
   <label className="form-control w-full">
     <div className="label">
       <span className="label-text text-secondary">{label}</span>
@@ -17,6 +17,7 @@ const Select = ({ children, onChange, value, className, name, label, ...rest }) 
       name={name}
       className={`select input-border-custom w-full text-secondary ${className || ''}`}
       value={value}
+      defaultValue={defaultValue}
       onChange={onChange}
       {...rest}
     >
@@ -116,7 +117,7 @@ const TextArea = ({ className, name, label, value, onChange, defaultValue }) => 
 
 const Modal = ({ children, title, description, id, className, onSubmit, action }) => (
   <dialog id={id} className="modal">
-    <div className={`modal-box h-auto max-w-3xl p-12 bg-bgColor ${className}`}>
+    <div className={`modal-box h-auto w-auto p-12 bg-bgColor ${className}`}>
       <div className="flex flex-col items-center">
         <h2 className="font-bold text-2xl mb-5 text-secondary">{title}</h2>
         {description && <p className="py-4">{description}</p>}
