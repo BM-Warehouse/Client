@@ -1,7 +1,9 @@
 import { useContext } from 'react';
 
-import { ButtonPrimary } from '@/components/parts/Button';
-import { confirmPayment, getAllOrders } from '@/fetching/orders';
+import toast from 'react-hot-toast';
+
+import { ButtonPrimary, ButtonStrong } from '@/components/parts/Button';
+import { confirmPayment, deleteCheckout, getAllOrders } from '@/fetching/orders';
 import formatRupiah from '@/lib/formatRupiah';
 
 import { ListOrderContext } from './context';
@@ -13,6 +15,20 @@ function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
   // }
   const handleConfirm = () => {
     confirmPayment(id).then(() => {
+      getAllOrders(pagination.currentPage)
+        .then((res) => res.json())
+        .then((res) => {
+          setData(res.data.checkouts);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    });
+  };
+
+  const handleDelete = () => {
+    deleteCheckout(id).then(() => {
+      toast.success('Successfully delete the checkout list');
       getAllOrders(pagination.currentPage)
         .then((res) => res.json())
         .then((res) => {
@@ -44,6 +60,9 @@ function RowOrder({ id, userName, noResi, totalPrice, status, date }) {
         >
           Confirm
         </ButtonPrimary>
+        <ButtonStrong icon="delete" title="Remove Checkout" onClick={handleDelete}>
+          Delete
+        </ButtonStrong>
       </td>
     </tr>
   );
@@ -53,7 +72,7 @@ function ContainerOrders({ data }) {
   return (
     <div className="container-products mt-4  p-4 md:ml-20 ">
       <div className="overflow-x-auto rounded-xl border border-secondary px-7 py-5 ">
-        <table className="table table-zebra ">
+        <table className="table table-zebra">
           {/* head */}
           <thead className="text-tertiary">
             <tr className="text-base ">
@@ -63,7 +82,7 @@ function ContainerOrders({ data }) {
               <th>Order Date</th>
               <th>Total Price</th>
               <th>Status</th>
-              <th>Action</th>
+              <th className="w-96">Action</th>
             </tr>
           </thead>
           <tbody className=" text-tertiary">

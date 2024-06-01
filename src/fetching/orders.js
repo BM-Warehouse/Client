@@ -146,6 +146,22 @@ async function confirmPayment(checkoutId) {
   return resJson;
 }
 
+async function deleteCheckout(checkoutId) {
+  const response = await fetchWithToken(`${BASE_URL}/checkout/${checkoutId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (response.status !== 200) {
+    const resJson = await response.json();
+    throw new Error(JSON.stringify(resJson));
+  }
+  const resJson = await response.json();
+  return resJson;
+}
+
 export {
   getAllOrders,
   getDetailOrder,
@@ -154,5 +170,6 @@ export {
   deleteProductFromCheckout,
   editProductInCheckout,
   confirmPayment,
-  addCheckout
+  addCheckout,
+  deleteCheckout
 };
