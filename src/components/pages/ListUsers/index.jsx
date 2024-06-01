@@ -54,7 +54,7 @@ function ListUsers() {
             <button className="mt-5 min-w-28 rounded-md bg-tertiary px-3 py-2 text-primary hover:bg-secondary md:mt-0">
               <span className="flex items-center justify-center">
                 <HiUserAdd className="mr-1" />
-                Add User
+                Create User
               </span>
             </button>
           </Link>

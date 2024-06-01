@@ -7,6 +7,7 @@ const DetailContexProvider = ({ children }) => {
   const [selectedWarehouses, setSelectedWarehouses] = useState({});
   const [currentCheckoutId, setCurrentCheckoutId] = useState(0);
   const [data, setData] = useState([]);
+  const [allData, setAllData] = useState([]);
   const [page, setPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(0);
   const [productList, setProductList] = useState([]);
@@ -14,6 +15,8 @@ const DetailContexProvider = ({ children }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalProductPrice, setTotalProductPrice] = useState(0);
   const [courierPrice, setCourierPrice] = useState(0);
+  const [couriers, setCouriers] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const [pagination, setPagination] = useState({
     totalPage: null,
@@ -57,7 +60,13 @@ const DetailContexProvider = ({ children }) => {
         totalProductPrice,
         setTotalProductPrice,
         courierPrice,
-        setCourierPrice
+        setCourierPrice,
+        allData,
+        setAllData,
+        users,
+        setUsers,
+        couriers,
+        setCouriers
       }}
     >
       {children}

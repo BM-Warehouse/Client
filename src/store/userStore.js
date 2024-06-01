@@ -1,6 +1,12 @@
 import { create } from 'zustand';
 
-import { getAllUsers, getUserDetail, addUser, updateUser, destroyUserById } from '@/fetching/user';
+import {
+  getAllUsers,
+  getUserDetail,
+  createUser,
+  updateUser,
+  destroyUserById
+} from '@/fetching/user';
 
 const useUsersStore = create((set) => ({
   usersData: [],
@@ -36,7 +42,7 @@ const useUsersStore = create((set) => ({
     }
   },
 
-  asyncAddUser: async (
+  asyncCreateUser: async (
     fullName,
     email,
     username,
@@ -49,7 +55,7 @@ const useUsersStore = create((set) => ({
     avatar
   ) => {
     try {
-      const newUser = await addUser(
+      const newUser = await createUser(
         fullName,
         email,
         username,

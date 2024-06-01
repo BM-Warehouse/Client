@@ -1,10 +1,10 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable max-len */
 import { useState } from 'react';
 
 import { useParams, usePathname } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { BiPlus } from 'react-icons/bi';
-import { IoFilterSharp } from 'react-icons/io5';
 
 import useWarehouseStore from '@/store/warehouseStore';
 
@@ -12,10 +12,11 @@ import { openModalAddProductToWarehouse } from './ModalAddProductToWarehouse';
 
 const Container = ({ children }) => {
   const params = useParams();
-  const { warehouseId } = params;
+  const { warehouseId, productId } = params;
   const path = usePathname();
   const isDetailsPage = path === `/warehouses/${warehouseId}`;
-  // const isBatchDetails = path === `/warehouses/${warehouseId}/warehouse-products`;
+  const isProductDetailsPage =
+    path === `/warehouses/${warehouseId}/warehouse-products/${productId}`;
 
   const [newWarehouse, setNewWarehouse] = useState({ name: '', city: '', address: '' });
 
@@ -37,8 +38,8 @@ const Container = ({ children }) => {
 
   return (
     <div className="mx-4 mb-10 max-w-7xl md:mx-6 lg:mx-10 xl:mx-auto mt-32">
-      {!isDetailsPage ? (
-        <div className="flex justify-between flex-wrap mb-4">
+      {!isDetailsPage && !isProductDetailsPage ? (
+        <div className="flex justify-between flex-wrap">
           <button
             className="inline-flex items-center border border-gray-300 bg-tertiary text-white py-2 px-4 rounded 
             shadow-sm hover:bg-secondary mb-2"
@@ -67,17 +68,13 @@ const Container = ({ children }) => {
                 />
               </svg>
             </label>
-            <div className="btn-filter ml-5 cursor-pointer rounded-lg p-1 hover:bg-secondary">
-              <IoFilterSharp className="text-3xl text-secondary hover:text-white" />
-            </div>
           </div>
         </div>
-      ) : (
-        <div className="flex justify-between flex-wrap mb-4">
+      ) : isDetailsPage ? (
+        <div className="flex justify-between flex-wrap ">
           <button
             className="inline-flex items-center border border-gray-300 bg-tertiary text-white py-2 px-4 rounded 
             shadow-sm hover:bg-secondary mb-2"
-            // onClick={() => document.getElementById('add_product_warehouse_modal').showModal()}
             onClick={openModalAddProductToWarehouse}
           >
             <BiPlus className="mr-2 text-white" /> Add Products To Warehouse
@@ -102,12 +99,9 @@ const Container = ({ children }) => {
                 />
               </svg>
             </label>
-            <div className="btn-filter ml-5 cursor-pointer rounded-lg p-1 hover:bg-secondary">
-              <IoFilterSharp className="text-3xl text-secondary hover:text-white" />
-            </div>
           </div>
         </div>
-      )}
+      ) : null}
 
       <dialog id="add_warehouse_modal" className="modal">
         <div className="modal-box bg-primary text-secondary">

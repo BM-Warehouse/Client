@@ -61,11 +61,11 @@ const WarehousesPage = () => {
   return (
     <div>
       <Container>
-        <h1 className="mb-10 text-center text-2xl">Warehouses</h1>
+        <h1 className="mb-10 text-center text-2xl text-tertiary font-bold">Warehouses</h1>
         <div className="overflow-x-auto">
-          <table className="table">
+          <table className="table table-zebra">
             <thead>
-              <tr>
+              <tr className="text-lg text-tertiary">
                 <th>ID</th>
                 <th>Warehouse Name</th>
                 <th>City</th>
@@ -73,7 +73,7 @@ const WarehousesPage = () => {
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-tertiary">
               {warehouseData.map((warehouse) => (
                 <tr key={warehouse.id}>
                   <th>{warehouse.id}</th>
