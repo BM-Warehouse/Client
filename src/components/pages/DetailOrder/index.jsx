@@ -239,7 +239,7 @@ const DetailOrder = ({ id }) => {
       <div className="flex justify-between items-end mr-8 ml-28">
         <div className="right-3 w-full">
           <p className="text-secondary text-md font-bold">
-            {allData.checkout.user.fullName} (@{allData.checkout.user.username})
+            {allData?.checkout?.user?.fullName} (@{allData.checkout?.user?.username})
           </p>
           <p className="text-secondary text-md">{allData.checkout.address}</p>
           <p className="text-secondary text-md">{allData.checkout.couriers.name}</p>
