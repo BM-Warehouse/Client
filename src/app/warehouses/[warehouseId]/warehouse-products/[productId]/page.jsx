@@ -2,13 +2,15 @@
 
 import { useEffect, useState } from 'react';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import Container from '@/app/warehouses/[warehouseId]/warehouse-container';
+import Loading from '@/components/parts/Loading';
 import { fetchBatches } from '@/fetching/warehouse';
 
 const ProductDetailsPage = () => {
   const params = useParams();
+  const router = useRouter();
   const { productId, warehouseId } = params;
 
   const [batches, setBatches] = useState([]);
@@ -34,7 +36,7 @@ const ProductDetailsPage = () => {
   }, [productId, warehouseId]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
@@ -42,13 +44,22 @@ const ProductDetailsPage = () => {
   }
 
   return (
-    <div className="">
+    <div>
       <Container>
         <div className="overflow-x-auto">
-          <h1 className="text-center text-2xl mb-10">Product {productId} Batch Details</h1>
-          <table className="table">
+          <button
+            className="inline-flex items-center border border-gray-300 bg-tertiary text-white py-2 px-4 rounded 
+            shadow-sm hover:bg-secondary mb-2"
+            onClick={() => router.back()}
+          >
+            Back to Warehouse
+          </button>
+          <h1 className="text-center text-2xl mb-10 font-bold text-tertiary">
+            Product {productId} Batch Details
+          </h1>
+          <table className="table table-zebra">
             <thead>
-              <tr>
+              <tr className="font-bold text-tertiary text-lg">
                 <th>ID</th>
                 <th>Batch Name</th>
                 <th>Quantity</th>
@@ -56,7 +67,7 @@ const ProductDetailsPage = () => {
                 <th>Expiry Date</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-tertiary">
               {batches.map((batch) => (
                 <tr key={batch.id}>
                   <td>{batch.id}</td>
