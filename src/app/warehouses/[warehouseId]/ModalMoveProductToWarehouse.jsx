@@ -22,14 +22,11 @@ const ModalMoveProductToWarehouse = ({ warehouseId, productId }) => {
   const { getWarehouseDetails } = useWarehouseStore();
   const [warehouses, setWarehouses] = useState([]);
   useEffect(() => {
-    console.log(productId, warehouseId);
     getAllWarehouses(1, 9999)
       .then((r) => {
-        console.log(r);
         setWarehouses(r.warehouses);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((_e) => {
         toast.error('Fail to get products data');
       });
   }, [productId, warehouseId]);
@@ -40,8 +37,6 @@ const ModalMoveProductToWarehouse = ({ warehouseId, productId }) => {
     const destinationWarehouse = form.get('destinationWarehouse');
     const quantity = form.get('quantity');
 
-    console.log(productId, warehouseId, destinationWarehouse, quantity);
-
     moveProductWarehouse(productId, warehouseId, destinationWarehouse, quantity)
       .then(() => {
         toast.success('The Product has been succesfully moved');
@@ -49,7 +44,7 @@ const ModalMoveProductToWarehouse = ({ warehouseId, productId }) => {
         closeModalMoveProductToWarehouse();
       })
       .catch((e) => {
-        console.log(e);
+        throw e;
       });
   };
 

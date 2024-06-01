@@ -1,3 +1,5 @@
+// WarehouseDetailPage.jsx
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -23,8 +25,13 @@ import {
 } from './ModalReduceProductWarehouse';
 
 const WarehouseDetailPage = ({ params }) => {
-  const { _warehouseData, getWarehouseDetails, warehouseDetails, pagination, productsWarehouses } =
-    useWarehouseStore();
+  const {
+    getWarehouseDetails,
+    warehouseDetails,
+    pagination,
+    productsWarehouses,
+    deleteProductFromWarehouse
+  } = useWarehouseStore();
   const [loading, setLoading] = useState(true);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const id = +params.warehouseId;
@@ -39,8 +46,14 @@ const WarehouseDetailPage = ({ params }) => {
     openModalMoveProductToWarehouse();
   };
 
-  const handleDeleteProductFromWarehouse = () => {
-    toast.success('Product Deleted Successfully!');
+  const handleDeleteProductFromWarehouse = async (productId) => {
+    try {
+      await deleteProductFromWarehouse(id, productId);
+      toast.success('Product Deleted Successfully!');
+      getWarehouseDetails(id);
+    } catch (error) {
+      toast.error('Failed to delete product');
+    }
   };
 
   useEffect(() => {
@@ -52,19 +65,6 @@ const WarehouseDetailPage = ({ params }) => {
   const onPaginationClick = async (page) => {
     await getWarehouseDetails(id, page);
   };
-
-  // const handleDeleteProduct = async (productId) => {
-  //   try {
-  //     await deleteProductWarehouse(warehouseId, productId);
-  //     setWarehouse((prev) => ({
-  //       ...prev,
-  //       products: prev.products.filter((product) => product.productId !== productId)
-  //     }));
-  //     toast.success('Deleted Successfully');
-  //   } catch (error) {
-  //     toast.error('Failed to delete product');
-  //   }
-  // };
 
   if (loading)
     return (
@@ -128,7 +128,7 @@ const WarehouseDetailPage = ({ params }) => {
                         </button>
                         <button
                           className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg"
-                          onClick={handleDeleteProductFromWarehouse}
+                          onClick={() => handleDeleteProductFromWarehouse(product.product.id)}
                         >
                           <span className="flex items-center justify-center gap-2">
                             <HiOutlineTrash />
