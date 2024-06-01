@@ -13,10 +13,10 @@ const WhyChooseUs = () => (
           <MdWarehouse className="text-8xl" />
         </div>
         <div className="desc mt-3">
-          <h5 className="mb-2 text-lg font-bold">Efisien</h5>
+          <h5 className="mb-2 text-lg font-bold">Efficient</h5>
           <p>
-            Sistem otomatisasi kami meningkatkan efisiensi operasional, mengurangi biaya, dan
-            memastikan akurasi inventaris yang optimal untuk kesuksesan bisnis Anda.
+            Our automation system improves operational efficiency, reduces costs, and ensures
+            optimal inventory accuracy for your business success.
           </p>
         </div>
       </div>
@@ -25,10 +25,10 @@ const WhyChooseUs = () => (
           <MdWarehouse className="text-8xl" />
         </div>
         <div className="desc mt-3">
-          <h5 className="mb-2 text-lg font-bold">Dukungan Pelangganan</h5>
+          <h5 className="mb-2 text-lg font-bold">Services Support</h5>
           <p>
-            Dukungan pelanggan 24/7 memastikan semua masalah pergudangan Anda tertangani cepat,
-            menjamin kelancaran operasi dan kepuasan maksimal.
+            24/7 customer support ensures all your warehousing issues are handled quickly, ensuring
+            smooth operations and maximum satisfaction.
           </p>
         </div>
       </div>
@@ -37,10 +37,10 @@ const WhyChooseUs = () => (
           <MdWarehouse className="text-8xl" />
         </div>
         <div className="desc mt-3">
-          <h5 className="mb-2 text-lg font-bold">Integrasi Mudah</h5>
+          <h5 className="mb-2 text-lg font-bold">Easy Integration</h5>
           <p>
-            Integrasi mulus dengan sistem existing, pelaporan real-time, dan analitik cerdas
-            membantu Anda mengambil keputusan bisnis yang tepat dan cepat.
+            Seamless integration with existing systems, real-time reporting, and intelligent
+            analytics help you make informed and fast business decisions.
           </p>
         </div>
       </div>

@@ -9,24 +9,48 @@ const FAQ = () => (
       <div className="collapse mb-5 w-full rounded-sm border border-tertiary">
         <input type="checkbox" />
         <div className="text-md collapse-title font-medium text-tertiary md:text-lg xl:text-xl">
-          Apa saja langkah-langkah dasar dalam pengelolaan pergudangan yang efisien dan efektif?
+          What are the basic steps in efficient and effective warehouse management?
         </div>
         <div className="collapse-content text-xs md:text-sm xl:text-base">
           <p>
-            Langkah-langkah dasar meliputi penerimaan barang, penyimpanan, pengelolaan stok, dan
-            pengiriman barang secara teratur.
+            The basic steps include receiving goods, storing, managing stock, and shipping goods
+            regularly.
           </p>
         </div>
       </div>
       <div className="collapse mb-5 w-full rounded-sm border border-tertiary">
         <input type="checkbox" />
         <div className="text-md collapse-title font-medium text-tertiary md:text-lg xl:text-xl">
-          Apa pentingnya sistem manajemen pergudangan (WMS) dalam operasional gudang?
+          What is the importance of a warehouse management system (WMS) in warehouse operations?
         </div>
         <div className="collapse-content text-xs md:text-sm xl:text-base">
           <p>
-            WMS membantu dalam pengelolaan stok, tracking barang, optimasi ruang, dan meningkatkan
-            efisiensi operasional.
+            WMS helps in stock management, tracking goods, space optimization, and improving
+            operational efficiency.
+          </p>
+        </div>
+      </div>
+      <div className="collapse mb-5 w-full rounded-sm border border-tertiary">
+        <input type="checkbox" />
+        <div className="text-md collapse-title font-medium text-tertiary md:text-lg xl:text-xl">
+          How to handle damaged or expired goods in the warehouse?
+        </div>
+        <div className="collapse-content text-xs md:text-sm xl:text-base">
+          <p>
+            Identify and separate damaged or expired items, then follow disposal or return
+            procedures.
+          </p>
+        </div>
+      </div>
+      <div className="collapse mb-5 w-full rounded-sm border border-tertiary">
+        <input type="checkbox" />
+        <div className="text-md collapse-title font-medium text-tertiary md:text-lg xl:text-xl">
+          What are the important key performance indicators (KPIs) in warehouse management?
+        </div>
+        <div className="collapse-content text-xs md:text-sm xl:text-base">
+          <p>
+            Important KPIs include stock accuracy rates, order fulfillment times, operational costs,
+            and item damage rates.
           </p>
         </div>
       </div>
@@ -39,31 +63,6 @@ const FAQ = () => (
           <p>
             Identifikasi dan pisahkan barang rusak atau kadaluarsa, lalu ikuti prosedur pembuangan
             atau pengembalian.
-          </p>
-        </div>
-      </div>
-      <div className="collapse mb-5 w-full rounded-sm border border-tertiary">
-        <input type="checkbox" />
-        <div className="text-md collapse-title font-medium text-tertiary md:text-lg xl:text-xl">
-          Apa saja indikator kinerja utama (KPI) yang penting dalam manajemen gudang?
-        </div>
-        <div className="collapse-content text-xs md:text-sm xl:text-base">
-          <p>
-            KPI penting meliputi tingkat akurasi stok, waktu pemenuhan pesanan, biaya operasional,
-            dan tingkat kerusakan barang.
-          </p>
-        </div>
-      </div>
-      <div className="collapse mb-5 w-full rounded-sm border border-tertiary">
-        <input type="checkbox" />
-        <div className="text-md collapse-title font-medium text-tertiary md:text-lg xl:text-xl">
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh?
-        </div>
-        <div className="collapse-content text-xs md:text-sm xl:text-base">
-          <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh?Lorem
-            ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh?Lorem ipsum
-            dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh?
           </p>
         </div>
       </div>
