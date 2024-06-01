@@ -13,11 +13,10 @@ const WhyChooseUs = () => (
           <MdWarehouse className="text-8xl" />
         </div>
         <div className="desc mt-3">
-          <h5 className="mb-2 text-lg font-bold">Lorem Ipsum</h5>
+          <h5 className="mb-2 text-lg font-bold">Efisien</h5>
           <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-            tincidunt ut laoreet dolore. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-            sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+            Sistem otomatisasi kami meningkatkan efisiensi operasional, mengurangi biaya, dan
+            memastikan akurasi inventaris yang optimal untuk kesuksesan bisnis Anda.
           </p>
         </div>
       </div>
@@ -26,11 +25,10 @@ const WhyChooseUs = () => (
           <MdWarehouse className="text-8xl" />
         </div>
         <div className="desc mt-3">
-          <h5 className="mb-2 text-lg font-bold">Lorem Ipsum</h5>
+          <h5 className="mb-2 text-lg font-bold">Dukungan Pelangganan</h5>
           <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-            tincidunt ut laoreet dolore. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-            sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+            Dukungan pelanggan 24/7 memastikan semua masalah pergudangan Anda tertangani cepat,
+            menjamin kelancaran operasi dan kepuasan maksimal.
           </p>
         </div>
       </div>
@@ -39,11 +37,10 @@ const WhyChooseUs = () => (
           <MdWarehouse className="text-8xl" />
         </div>
         <div className="desc mt-3">
-          <h5 className="mb-2 text-lg font-bold">Lorem Ipsum</h5>
+          <h5 className="mb-2 text-lg font-bold">Integrasi Mudah</h5>
           <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-            tincidunt ut laoreet dolore. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-            sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+            Integrasi mulus dengan sistem existing, pelaporan real-time, dan analitik cerdas
+            membantu Anda mengambil keputusan bisnis yang tepat dan cepat.
           </p>
         </div>
       </div>

@@ -4,7 +4,7 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import BWMLogo from '@/assets/images/LogoBMW2.png';
+import BWMLogo from '@/assets/images/BMW_icon_new.png';
 
 const AboutUs = () => (
   <div className="mt-10 flex w-full flex-col items-center">
@@ -26,7 +26,7 @@ const AboutUs = () => (
         </p>
       </div>
       <div className="about-us-right mt-10 flex w-1/2 items-center justify-center xl:mt-0">
-        <Image src={BWMLogo} alt="Logo BM Warehouse" />
+        <Image src={BWMLogo} alt="Logo BM Warehouse" width={500} height={500} />
       </div>
     </div>
   </div>
