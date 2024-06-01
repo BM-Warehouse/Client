@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import { MdWarehouse } from 'react-icons/md';
+import { FaTools } from 'react-icons/fa';
+import { FaClipboardCheck, FaGears } from 'react-icons/fa6';
 
 const WhyChooseUs = () => (
   <div className="mt-10 flex w-full flex-col items-center">
@@ -10,7 +11,8 @@ const WhyChooseUs = () => (
     <div className="why-choose-us-content mx-3 mt-10 grid grid-cols-1 gap-10 md:grid-cols-2 xl:mx-10 xl:grid-cols-3 xl:gap-24">
       <div className="card-why-us flex h-[28rem] w-full flex-col items-center justify-center rounded-lg bg-secondary px-10 text-white">
         <div className="img">
-          <MdWarehouse className="text-8xl" />
+          {/* <MdWarehouse className="text-8xl" /> */}
+          <FaGears className="text-8xl" />
         </div>
         <div className="desc mt-3">
           <h5 className="mb-2 text-lg font-bold">Efficient</h5>
@@ -22,7 +24,7 @@ const WhyChooseUs = () => (
       </div>
       <div className="card-why-us flex h-[28rem] w-full flex-col items-center justify-center rounded-lg bg-secondary px-10 text-white">
         <div className="img">
-          <MdWarehouse className="text-8xl" />
+          <FaTools className="text-8xl" />
         </div>
         <div className="desc mt-3">
           <h5 className="mb-2 text-lg font-bold">Services Support</h5>
@@ -34,7 +36,7 @@ const WhyChooseUs = () => (
       </div>
       <div className="card-why-us flex h-[28rem] w-full flex-col items-center justify-center rounded-lg bg-secondary px-10 text-white">
         <div className="img">
-          <MdWarehouse className="text-8xl" />
+          <FaClipboardCheck className="text-8xl" />
         </div>
         <div className="desc mt-3">
           <h5 className="mb-2 text-lg font-bold">Easy Integration</h5>

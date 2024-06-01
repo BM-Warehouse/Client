@@ -126,12 +126,6 @@ const Login = ({ accessToken }) => {
             />
           )}
           <div className="flex flex-col gap-y-4 text-white">
-            <Link
-              href="/"
-              className="text-left font-semibold text-white underline underline-offset-1"
-            >
-              Forget Password?
-            </Link>
             <button
               onClick={onLogin}
               type="button"

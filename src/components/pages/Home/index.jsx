@@ -18,7 +18,7 @@ import './style.css';
 
 function Home() {
   const fullpageOptions = {
-    anchors: ['Home', 'about-us', 'why-choose-us', 'faq', 'contact-us'],
+    anchors: ['Home', 'about-us', 'why-choose-us', 'faq'],
     scrollingSpeed: 1000,
     licenseKey: 'gplv3-license',
     lockAnchors: false
@@ -45,8 +45,6 @@ function Home() {
               </div>
               <div className="section">
                 <FAQ />
-              </div>
-              <div className="section">
                 <Footer />
               </div>
             </main>
