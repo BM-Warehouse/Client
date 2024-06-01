@@ -12,6 +12,7 @@ import { HiOutlineTrash } from 'react-icons/hi';
 
 import { ModalAddProductToWarehouse } from '@/app/warehouses/[warehouseId]/ModalAddProductToWarehouse';
 import Container from '@/app/warehouses/[warehouseId]/warehouse-container';
+import Loading from '@/components/parts/Loading';
 import Pagination from '@/components/parts/Pagination';
 import useWarehouseStore from '@/store/warehouseStore';
 
@@ -66,12 +67,7 @@ const WarehouseDetailPage = ({ params }) => {
     await getWarehouseDetails(id, page);
   };
 
-  if (loading)
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <span className="loading loading-bars loading-lg text-tertiary"> </span>;
-      </div>
-    );
+  if (loading) return <Loading />;
 
   if (!warehouseDetails || !productsWarehouses) {
     return null;
@@ -81,18 +77,20 @@ const WarehouseDetailPage = ({ params }) => {
     <main className="category-page bg-bgColor relative h-screen font-poppins">
       <div className="w-full">
         <Container>
-          <h1 className="mb-10 text-center text-2xl">{warehouseDetails.name}</h1>
+          <h1 className="text-center text-2xl mb-10 font-bold text-tertiary">
+            {warehouseDetails.name}
+          </h1>
           <div className="flex justify-center">
-            <table className="table">
+            <table className="table table-zebra">
               <thead>
-                <tr>
+                <tr className="text-lg text-tertiary">
                   <th>Product ID</th>
                   <th>Product Name</th>
                   <th>Quantity</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="text-tertiary">
                 {productsWarehouses.map((product) => (
                   <tr key={product.product.id}>
                     <td>{product.product.id}</td>
