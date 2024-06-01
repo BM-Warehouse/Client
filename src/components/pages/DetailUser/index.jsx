@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -20,13 +20,20 @@ function DetailUser({ params }) {
   const { asyncDestroyUser } = useUsersStore((state) => ({
     asyncDestroyUser: state.asyncDestroyUser
   }));
+  const [isLoading, setLoading] = useState(true);
 
   const id = +params.userid;
   useEffect(() => {
-    asyncGetDetail(id);
+    asyncGetDetail(id).then(() => {
+      setLoading(false);
+    });
   }, [asyncGetDetail, id]);
 
   if (!userDetail) {
+    return <Loading />;
+  }
+
+  if (isLoading) {
     return <Loading />;
   }
 

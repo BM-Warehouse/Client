@@ -62,7 +62,7 @@ const getUserDetail = async (id) => {
   }
 };
 
-const addUser = async (
+const createUser = async (
   fullName,
   email,
   username,
@@ -197,4 +197,4 @@ const getOwnProfile = async () => {
   }
 };
 
-export { getOwnProfile, getUserDetail, getAllUsers, addUser, updateUser, destroyUserById };
+export { getOwnProfile, getUserDetail, getAllUsers, createUser, updateUser, destroyUserById };

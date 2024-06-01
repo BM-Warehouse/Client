@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+import Loading from '@/components/parts/Loading';
 import RowUser from '@/components/parts/RowUser';
 import useUsersStore from '@/store/userStore';
 
@@ -10,13 +11,20 @@ function TableUsers() {
     usersData: state.usersData,
     asyncGetAll: state.asyncGetAll
   }));
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    asyncGetAll();
+    asyncGetAll().then(() => {
+      setLoading(false);
+    });
   }, [asyncGetAll]);
 
   if (!usersData) {
-    return <div>Loading...</div>;
+    return <Loading />;
+  }
+
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (
