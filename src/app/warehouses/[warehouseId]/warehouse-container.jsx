@@ -38,8 +38,6 @@ const Container = ({ children }) => {
 
   return (
     <div className="mx-4 mb-10 max-w-7xl md:mx-6 lg:mx-10 xl:mx-auto mt-32">
-      {console.log(warehouseId, '<<<<<<<<<< WAREHOUSE ID')}
-      {console.log(productId, '<<<<<<<<<<< PRODUCT ID')}
       {!isDetailsPage && !isProductDetailsPage ? (
         <div className="flex justify-between flex-wrap">
           <button

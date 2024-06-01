@@ -6,7 +6,8 @@ import {
   addWarehouse,
   editWarehouse,
   removeWarehouse,
-  getWarehouseDetails
+  getWarehouseDetails,
+  deleteProductFromWarehouse
 } from '@/fetching/warehouse';
 
 const useWarehouseStore = create((set) => ({
@@ -88,6 +89,14 @@ const useWarehouseStore = create((set) => ({
 
   removeWarehouse: async (id) => {
     const removed = await removeWarehouse(id);
+    set((_state) => ({
+      removed
+    }));
+    return removed;
+  },
+
+  deleteProductWarehouse: async (warehouseId, productId) => {
+    const removed = await deleteProductFromWarehouse(warehouseId, productId);
     set((_state) => ({
       removed
     }));
