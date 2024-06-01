@@ -1,3 +1,5 @@
+// WarehouseDetailPage.jsx
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -10,6 +12,7 @@ import { HiOutlineTrash } from 'react-icons/hi';
 
 import { ModalAddProductToWarehouse } from '@/app/warehouses/[warehouseId]/ModalAddProductToWarehouse';
 import Container from '@/app/warehouses/[warehouseId]/warehouse-container';
+import Loading from '@/components/parts/Loading';
 import Pagination from '@/components/parts/Pagination';
 import useWarehouseStore from '@/store/warehouseStore';
 
@@ -23,8 +26,13 @@ import {
 } from './ModalReduceProductWarehouse';
 
 const WarehouseDetailPage = ({ params }) => {
-  const { _warehouseData, getWarehouseDetails, warehouseDetails, pagination, productsWarehouses } =
-    useWarehouseStore();
+  const {
+    getWarehouseDetails,
+    warehouseDetails,
+    pagination,
+    productsWarehouses,
+    deleteProductFromWarehouse
+  } = useWarehouseStore();
   const [loading, setLoading] = useState(true);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const id = +params.warehouseId;
@@ -39,8 +47,14 @@ const WarehouseDetailPage = ({ params }) => {
     openModalMoveProductToWarehouse();
   };
 
-  const handleDeleteProductFromWarehouse = () => {
-    toast.success('Product Deleted Successfully!');
+  const handleDeleteProductFromWarehouse = async (productId) => {
+    try {
+      await deleteProductFromWarehouse(id, productId);
+      toast.success('Product Deleted Successfully!');
+      getWarehouseDetails(id);
+    } catch (error) {
+      toast.error('Failed to delete product');
+    }
   };
 
   useEffect(() => {
@@ -53,25 +67,7 @@ const WarehouseDetailPage = ({ params }) => {
     await getWarehouseDetails(id, page);
   };
 
-  // const handleDeleteProduct = async (productId) => {
-  //   try {
-  //     await deleteProductWarehouse(warehouseId, productId);
-  //     setWarehouse((prev) => ({
-  //       ...prev,
-  //       products: prev.products.filter((product) => product.productId !== productId)
-  //     }));
-  //     toast.success('Deleted Successfully');
-  //   } catch (error) {
-  //     toast.error('Failed to delete product');
-  //   }
-  // };
-
-  if (loading)
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <span className="loading loading-bars loading-lg text-tertiary"> </span>;
-      </div>
-    );
+  if (loading) return <Loading />;
 
   if (!warehouseDetails || !productsWarehouses) {
     return null;
@@ -81,18 +77,20 @@ const WarehouseDetailPage = ({ params }) => {
     <main className="category-page bg-bgColor relative h-screen font-poppins">
       <div className="w-full">
         <Container>
-          <h1 className="mb-10 text-center text-2xl">{warehouseDetails.name}</h1>
+          <h1 className="text-center text-2xl mb-10 font-bold text-tertiary">
+            {warehouseDetails.name}
+          </h1>
           <div className="flex justify-center">
-            <table className="table">
+            <table className="table table-zebra">
               <thead>
-                <tr>
+                <tr className="text-lg text-tertiary">
                   <th>Product ID</th>
                   <th>Product Name</th>
                   <th>Quantity</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="text-tertiary">
                 {productsWarehouses.map((product) => (
                   <tr key={product.product.id}>
                     <td>{product.product.id}</td>
@@ -128,7 +126,7 @@ const WarehouseDetailPage = ({ params }) => {
                         </button>
                         <button
                           className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg"
-                          onClick={handleDeleteProductFromWarehouse}
+                          onClick={() => handleDeleteProductFromWarehouse(product.product.id)}
                         >
                           <span className="flex items-center justify-center gap-2">
                             <HiOutlineTrash />

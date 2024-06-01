@@ -166,14 +166,23 @@ const getWarehouseQuantities = async () => {
   }
 };
 
-const deleteProductFromWarehouse = async (id) => {
+const deleteProductFromWarehouse = async (warehouseId, productId) => {
   try {
-    const response = await fetchWithToken(`${BASE_URL}/warehouses/${id}`, {
-      method: 'DELETE'
-    });
-    return response;
+    const response = await fetchWithToken(
+      `${BASE_URL}/warehouses/${warehouseId}/products/${productId}`,
+      {
+        method: 'DELETE'
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to delete product');
+    }
+
+    return await response.json();
   } catch (error) {
-    throw new Error('Failed to fetch:', error);
+    throw new Error(`Failed to fetch: ${error.message}`);
   }
 };
 
