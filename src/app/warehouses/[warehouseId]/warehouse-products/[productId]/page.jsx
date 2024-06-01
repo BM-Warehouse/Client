@@ -1,28 +1,52 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useParams } from 'next/navigation';
 
 import Container from '@/app/warehouses/[warehouseId]/warehouse-container';
+import { fetchBatches } from '@/fetching/warehouse';
 
 const ProductDetailsPage = () => {
   const params = useParams();
-  const { productId } = params;
+  const { productId, warehouseId } = params;
+
+  const [batches, setBatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (productId) {
-      // Fetch product details here
+    const fetchBatchDetails = async () => {
+      try {
+        const data = await fetchBatches(productId, warehouseId);
+        console.log(data);
+        setBatches(data.batches);
+      } catch (err) {
+        setError(err.message || 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (productId && warehouseId) {
+      fetchBatchDetails();
     }
-  }, [productId]);
+  }, [productId, warehouseId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="">
       <Container>
         <div className="overflow-x-auto">
-          <h1 className="text-center text-2xl mb-10">Product 1 Batch Details</h1>
+          <h1 className="text-center text-2xl mb-10">Product {productId} Batch Details</h1>
           <table className="table">
-            {/* head */}
             <thead>
               <tr>
                 <th>ID</th>
@@ -33,30 +57,15 @@ const ProductDetailsPage = () => {
               </tr>
             </thead>
             <tbody>
-              {/* row 1 */}
-              <tr>
-                <td>1</td>
-                <td>Batch 1</td>
-                <td>1000</td>
-                <td>23-June-2024</td>
-                <td>23-August-2024</td>
-              </tr>
-              {/* row 2 */}
-              <tr>
-                <td>2</td>
-                <td>Batch 1</td>
-                <td>1000</td>
-                <td>23-June-2024</td>
-                <td>23-August-2024</td>
-              </tr>
-              {/* row 3 */}
-              <tr>
-                <td>3</td>
-                <td>Batch 2</td>
-                <td>500</td>
-                <td>23-August-2024</td>
-                <td>23-October-2024</td>
-              </tr>
+              {batches.map((batch) => (
+                <tr key={batch.id}>
+                  <td>{batch.id}</td>
+                  <td>{batch.batchName}</td>
+                  <td>{batch.stock}</td>
+                  <td>{new Date(batch.createdAt).toLocaleDateString()}</td>
+                  <td>{new Date(batch.expireDate).toLocaleDateString()}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
