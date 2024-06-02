@@ -4,7 +4,7 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import BWMLogo from '@/assets/images/BMW_icon_new.png';
+import BWMLogo from '@/assets/images/BMWarehouse.png';
 
 const AboutUs = () => (
   <div className="mt-10 flex w-full flex-col items-center">

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FiLogIn } from 'react-icons/fi';
 
-import BWMLogo from '@/assets/images/LogoBMW2.png';
+import BWMLogo from '@/assets/images/BMW_icon_N.png';
 
 const Navbar = () => (
   <motion.div
