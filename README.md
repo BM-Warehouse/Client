@@ -7,3 +7,12 @@
 5. Run `pnpm install` in project directory to install all the dependencies
 6. Run `pnpm prepare:husky`
 7. Run `pnpm dev` to start the website in your local machine with development mode or `pnpm start` to start the website in your local machine with production mode
+
+
+## PASWORD ADMIN ACCOUNT
+USERNAME : admin
+PASSWORD : admin
+
+## PASSWORD USER ACCOUNT
+USERNAME : user
+PASWWORD : user
